@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".group_setting">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@color/colorTopNavigationBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/button_group_setting_back"
+            android:backgroundTint="@color/colorFocusBottomMenu"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/ic_arrow_back_black_24dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"/>
+        <TextView
+            android:id="@+id/group_setting_title"
+            android:textColor="@color/colorFocusBottomMenu"
+            android:textSize="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:text="그룹 설정"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/button_group_setting_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/group_setting_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:background="#AAAAAA"/>
+
+            <EditText
+                android:id="@+id/group_setting_title_edit"
+                android:textColor="@color/colorFocusBottomMenu"
+                android:textSize="20dp"
+                android:text="그룹 이름"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                app:layout_constraintTop_toBottomOf="@+id/group_setting_image"
+                app:layout_constraintLeft_toRightOf="@+id/group_setting_image"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="5dp"
+                xmlns:app="http://schemas.android.com/apk/res-auto">
+
+                <TextView
+                    android:text="권한"
+                    android:textAlignment="center"
+                    android:layout_marginRight="15dp"
+                    app:layout_constraintRight_toLeftOf="@id/group_setting_member_kick_title"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:text="권한"
+                    android:textAlignment="center"
+                    android:id="@+id/group_setting_member_kick_title"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="64dp"
+                    android:layout_height="wrap_content"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <Button
+                android:id="@+id/group_setting_member_invite"
+                style="@style/TextAppearance.AppCompat.Widget.Button.Colored"
+                android:backgroundTint="#06F"
+                android:layout_margin="15dp"
+                android:textSize="12dp"
+                android:text="새로운 맴버 초대"
+                android:layout_gravity="center"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="128dp"
+                android:layout_height="48dp"/>
+
+            <Button
+                android:id="@+id/group_setting_delete"
+                style="@style/TextAppearance.AppCompat.Widget.Button.Colored"
+                android:backgroundTint="#F11"
+                android:textSize="18dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginHorizontal="32dp"
+                android:text="그룹 삭제"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

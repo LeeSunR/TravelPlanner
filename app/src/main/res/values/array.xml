@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="아이콘">
+        <item>비행기</item>
+        <item>자동차</item>
+        <item>버스</item>
+        <item>지하철</item>
+        <item>배</item>
+        <item>숙소</item>
+        <item>관광지</item>
+        <item>카페</item>
+        <item>식사</item>
+    </string-array>
+</resources>
