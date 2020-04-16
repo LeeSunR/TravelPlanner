@@ -116,7 +116,7 @@
             <Button
                 android:id="@+id/group_setting_delete"
                 style="@style/TextAppearance.AppCompat.Widget.Button.Colored"
-                android:backgroundTint="#F11"
+                android:backgroundTint="@color/colorAccent"
                 android:textSize="18dp"
                 android:layout_marginTop="60dp"
                 android:layout_marginBottom="20dp"
