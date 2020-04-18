@@ -16,12 +16,12 @@ private const val ARG_PARAM2 = "param2"
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [travelGroupList.OnFragmentInteractionListener] interface
+ * [home.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [travelGroupList.newInstance] factory method to
+ * Use the [home.newInstance] factory method to
  * create an instance of this fragment.
  */
-class travelGroupList : Fragment() {
+class home : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -40,7 +40,7 @@ class travelGroupList : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_group_list, container, false)
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -50,11 +50,11 @@ class travelGroupList : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
+        //if (context is OnFragmentInteractionListener) {
+        //    listener = context
+        //} else {
+        //    throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+        //}
     }
 
     override fun onDetach() {
@@ -85,12 +85,12 @@ class travelGroupList : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment travelGroupList.
+         * @return A new instance of fragment home.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            travelGroupList().apply {
+            home().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

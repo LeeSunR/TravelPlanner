@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/tab1"
+    <item android:id="@+id/tab_home"
         app:showAsAction="always"
         android:icon="@drawable/ic_home_black_24dp"
         android:state_checked="true"
         android:enabled="true"
         android:title="홈" />
-    <item android:id="@+id/tab2"
+    <item android:id="@+id/tab_group"
         android:icon="@drawable/ic_format_list_bulleted_black_24dp"
         app:showAsAction="always"
         android:enabled="true"
         android:title="내 여행 그룹"/>
-    <item android:id="@+id/tab3"
+    <item android:id="@+id/tab_profile"
         android:icon="@drawable/ic_person_black_24dp"
         app:showAsAction="always"
         android:enabled="true"
