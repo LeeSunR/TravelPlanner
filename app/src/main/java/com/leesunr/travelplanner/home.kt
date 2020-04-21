@@ -56,8 +56,14 @@ class home : Fragment() {
         exchange_button.setOnClickListener {
             val builder = AlertDialog.Builder(ContextThemeWrapper(mContext, R.style.Theme_AppCompat_Light_Dialog))
             builder.setItems(R.array.country, object :DialogInterface.OnClickListener{
-                override fun onClick(p0: DialogInterface?, p1: Int) {
-
+                override fun onClick(dialog: DialogInterface?, pos: Int) {
+                    val country_word = getResources().getStringArray(R.array.country_word)[pos]
+                    val country_name = getResources().getStringArray(R.array.country)[pos]
+                    (mContext as Activity).runOnUiThread{
+                        exchange_country_name.text=country_name
+                        val id = resources.getIdentifier("ic_flag_"+country_word,"drawable", (mContext as Activity).packageName)
+                        exchange_country_flag.setImageDrawable(resources.getDrawable(id))
+                    }
                 }
             })
             builder.setTitle("나라를 선택하세요")

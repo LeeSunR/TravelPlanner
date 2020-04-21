@@ -29,4 +29,22 @@
         <item>미국</item>
         <item>배트남</item>
     </string-array>
+    <string-array name="country_word">
+        <item>aud</item>
+        <item>brl</item>
+        <item>cad</item>
+        <item>chf</item>
+        <item>cny</item>
+        <item>eur</item>
+        <item>gbp</item>
+        <item>hkd</item>
+        <item>inr</item>
+        <item>jpy</item>
+        <item>mxn</item>
+        <item>rub</item>
+        <item>thb</item>
+        <item>twd</item>
+        <item>usd</item>
+        <item>vnd</item>
+    </string-array>
 </resources>
