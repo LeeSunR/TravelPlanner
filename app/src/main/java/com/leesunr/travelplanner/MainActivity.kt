@@ -12,20 +12,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //supportFragmentManager.beginTransaction().replace(R.id.fragmentView, groupList()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.fragmentView, home()).commit()
         bottomNavi.setOnNavigationItemSelectedListener { item: MenuItem ->
             when (item.itemId){
                 R.id.tab_home ->{
                     supportFragmentManager.beginTransaction().replace(R.id.fragmentView, home()).commit()
-                    return@setOnNavigationItemSelectedListener true
                 }
                 R.id.tab_group ->{
                     supportFragmentManager.beginTransaction().replace(R.id.fragmentView, groupList()).commit()
-                    return@setOnNavigationItemSelectedListener true
                 }
                 R.id.tab_profile ->{
                     supportFragmentManager.beginTransaction().replace(R.id.fragmentView, profile()).commit()
-                    return@setOnNavigationItemSelectedListener true
                 }
             }
             true

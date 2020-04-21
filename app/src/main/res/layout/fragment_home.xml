@@ -1,14 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context=".home">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:elevation="4dp"
+        android:background="@drawable/home_box_style"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/today_weather_place_pin"
+                android:background="@drawable/ic_place_black_24dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/today_weather_place_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/today_weather_place_text"
+                android:text="프랑스 파리"
+                app:layout_constraintTop_toTopOf="@+id/today_weather_place_pin"
+                app:layout_constraintBottom_toBottomOf="@+id/today_weather_place_pin"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:layout_margin="10dp"
+            android:id="@+id/today_weather_image"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_weather_sunny"
+            android:layout_width="80dp"
+            android:layout_height="80dp"/>
+        <TextView
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:text="맑음"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:textAlignment="center"
+            android:textSize="40dp"
+            android:text="20℃"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:elevation="4dp"
+        android:background="@drawable/home_box_style"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="내일"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:layout_margin="10dp"
+                android:id="@+id/tomorrow_weather_image"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_weather_sunny"
+                android:layout_width="32dp"
+                android:layout_height="32dp"/>
+            <LinearLayout
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tomorrow_weather_am"
+                    android:textSize="16dp"
+                    android:textColor="#0000FF"
+                    android:layout_marginHorizontal="5dp"
+                    android:text="20℃"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/tomorrow_weather_pm"
+                    android:textSize="16dp"
+                    android:textColor="#FF0000"
+                    android:layout_marginHorizontal="5dp"
+                    android:text="20℃"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </LinearLayout>
+        <View
+            android:layout_marginVertical="20dp"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#CDCDCD"/>
+        <LinearLayout
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="모레"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:layout_margin="10dp"
+                android:id="@+id/day_after_tomorrow_weather_image"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_weather_sunny"
+                android:layout_width="32dp"
+                android:layout_height="32dp"/>
+            <LinearLayout
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/day_after_tomorrow_weather_am"
+                    android:textSize="16dp"
+                    android:textColor="#00F"
+                    android:layout_marginHorizontal="5dp"
+                    android:text="20℃"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/day_after_tomorrow_weather_pm"
+                    android:textSize="16dp"
+                    android:textColor="#F00"
+                    android:layout_marginHorizontal="5dp"
+                    android:text="20℃"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>
