@@ -9,6 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".LoginActivity">
+        </activity>
         <activity android:name=".group_setting">
         </activity>
         <activity android:name=".group_plan_add">
