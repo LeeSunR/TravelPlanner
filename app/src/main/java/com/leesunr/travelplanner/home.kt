@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -24,9 +23,9 @@ import okhttp3.*
 import org.json.JSONArray
 import java.io.IOException
 import org.json.JSONObject
-import android.widget.ArrayAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import kotlin.math.roundToInt
 
 
 class home : Fragment() {
@@ -53,14 +52,27 @@ class home : Fragment() {
             val builder = AlertDialog.Builder(ContextThemeWrapper(mContext, R.style.Theme_AppCompat_Light_Dialog))
             builder.setItems(R.array.country, object :DialogInterface.OnClickListener{
                 override fun onClick(dialog: DialogInterface?, pos: Int) {
-                    val country_word = getResources().getStringArray(R.array.country_word)[pos]
-                    val country_name = getResources().getStringArray(R.array.country)[pos]
-                    (mContext as Activity).runOnUiThread{
-                        exchange_country_name.text=country_name
-                        val id = resources.getIdentifier("ic_flag_"+country_word,"drawable", (mContext as Activity).packageName)
+                    val countryWord = resources.getStringArray(R.array.country_word)[pos]
+                    val countryName = resources.getStringArray(R.array.country)[pos]
+                    val client = OkHttpClient()
+                    val queryPair:String = "KRW"+countryWord.toUpperCase()
+                    val apiUrl:String = "https://earthquake.kr:23490/query/$queryPair"
+                    val request = Request.Builder().url(apiUrl).build()
+                    client.newCall(request).enqueue(object :Callback{
+                        override fun onResponse(call: Call?, response: Response?) {
+                            val jsonObject = JSONObject(response?.body()?.string())
+                            val rate:Double = ((jsonObject.getJSONArray(queryPair).getDouble(0)*1000).roundToInt().toDouble())/1000
+                            (mContext as Activity).runOnUiThread{
+                                exchange_country_name.text=countryName
+                                Glide.with(mContext as Activity).load(resources.getIdentifier("ic_flag_"+countryWord,"drawable", (mContext as Activity).packageName)).apply(RequestOptions.circleCropTransform()).into(exchange_country_flag)
+                                exchange_country_cost_info.text = "1KRW = $rate"+countryWord.toUpperCase()
+                                exchange_country_cost.text =  (100/jsonObject.getJSONArray(queryPair).getDouble(0)).roundToInt().toString()+"KRW"
+                            }
+                        }
 
-                        Glide.with(mContext as Activity).load(id).apply(RequestOptions.circleCropTransform()).into(exchange_country_flag)
-                    }
+                        override fun onFailure(call: Call?, e: IOException?) {
+                        }
+                    })
                 }
             })
             builder.setTitle("나라를 선택하세요")
@@ -100,17 +112,17 @@ class home : Fragment() {
 
                             //현재
                             val timezone:String = jsonObject.getString("timezone")
-                            val todayTemp:String = Math.round(jsonObject.getJSONObject("current").getString("temp").toDouble()).toString()
+                            val todayTemp:String = jsonObject.getJSONObject("current").getString("temp").toDouble().roundToInt().toString()
                             val todayWeather:String = jsonObject.getJSONObject("current").getJSONArray("weather").getJSONObject(0).getString("description")
 
                             //내일
-                            val tomorrowTempMin:String = Math.round(jsonArray.getJSONObject(1).getJSONObject("temp").getString("min").toDouble()).toString()
-                            val tomorrowTempMax:String = Math.round(jsonArray.getJSONObject(1).getJSONObject("temp").getString("max").toDouble()).toString()
+                            val tomorrowTempMin:String = jsonArray.getJSONObject(1).getJSONObject("temp").getString("min").toDouble().roundToInt().toString()
+                            val tomorrowTempMax:String = jsonArray.getJSONObject(1).getJSONObject("temp").getString("max").toDouble().roundToInt().toString()
                            //val tomorrowWeather:String = jsonArray.getJSONObject(1).getJSONArray("weather").getJSONObject(0).getString("description")
 
                             //모레
-                            val dayAfterTomorrowTempMin:String = Math.round(jsonArray.getJSONObject(2).getJSONObject("temp").getString("min").toDouble()).toString()
-                            val dayAfterTomorrowTempMax:String = Math.round(jsonArray.getJSONObject(2).getJSONObject("temp").getString("max").toDouble()).toString()
+                            val dayAfterTomorrowTempMin:String = jsonArray.getJSONObject(2).getJSONObject("temp").getString("min").toDouble().roundToInt().toString()
+                            val dayAfterTomorrowTempMax:String = jsonArray.getJSONObject(2).getJSONObject("temp").getString("max").toDouble().roundToInt().toString()
                             //val dayAfterTomorrowWeather:String = jsonArray.getJSONObject(2).getJSONArray("weather").getJSONObject(0).getString("description")
 
                             (mContext as Activity).runOnUiThread{
