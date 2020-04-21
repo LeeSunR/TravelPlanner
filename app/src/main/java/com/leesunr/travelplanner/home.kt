@@ -25,12 +25,8 @@ import org.json.JSONArray
 import java.io.IOException
 import org.json.JSONObject
 import android.widget.ArrayAdapter
-
-
-
-
-
-
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 
 
 class home : Fragment() {
@@ -62,7 +58,8 @@ class home : Fragment() {
                     (mContext as Activity).runOnUiThread{
                         exchange_country_name.text=country_name
                         val id = resources.getIdentifier("ic_flag_"+country_word,"drawable", (mContext as Activity).packageName)
-                        exchange_country_flag.setImageDrawable(resources.getDrawable(id))
+                        //exchange_country_flag.setImageDrawable(resources.getDrawable(id))
+                        Glide.with(mContext as Activity).load(id).apply(RequestOptions.circleCropTransform()).into(exchange_country_flag)
                     }
                 }
             })
