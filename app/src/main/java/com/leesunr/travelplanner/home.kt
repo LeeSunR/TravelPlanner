@@ -58,7 +58,7 @@ class home : Fragment() {
                     (mContext as Activity).runOnUiThread{
                         exchange_country_name.text=country_name
                         val id = resources.getIdentifier("ic_flag_"+country_word,"drawable", (mContext as Activity).packageName)
-                        //exchange_country_flag.setImageDrawable(resources.getDrawable(id))
+
                         Glide.with(mContext as Activity).load(id).apply(RequestOptions.circleCropTransform()).into(exchange_country_flag)
                     }
                 }
