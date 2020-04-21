@@ -124,7 +124,7 @@
             app:layout_constraintRight_toLeftOf="@+id/layout_day_after_tomorrow"
             app:layout_constraintLeft_toRightOf="@+id/layout_tomorrow"
             android:layout_width="1dp"
-            android:layout_height="20dp"
+            android:layout_height="80dp"
             android:background="#CDCDCD"/>
         <LinearLayout
             android:id="@+id/layout_day_after_tomorrow"
@@ -173,6 +173,62 @@
                     android:layout_height="wrap_content"/>
             </LinearLayout>
         </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/exchange_button"
+        android:padding="20dp"
+        android:overScrollMode="never"
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:elevation="4dp"
+        android:background="@drawable/home_box_style"
+        android:clickable="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/exchange_country_flag"
+            android:layout_gravity="center"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/ic_jpy"
+            android:background="@drawable/home_box_style"
+            android:layout_width="64dp"
+            android:layout_height="64dp"/>
+
+        <TextView
+            android:id="@+id/exchange_country_name"
+            android:layout_marginLeft="10dp"
+            android:text="일본"
+            android:textSize="24dp"
+            app:layout_constraintLeft_toRightOf="@+id/exchange_country_flag"
+            app:layout_constraintTop_toTopOf="@+id/exchange_country_flag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/exchange_country_cost_info"
+            android:layout_marginLeft="10dp"
+            android:text="1KRW = 10.254JPY"
+            android:textSize="16dp"
+            app:layout_constraintLeft_toRightOf="@+id/exchange_country_flag"
+            app:layout_constraintBottom_toBottomOf="@+id/exchange_country_flag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/exchange_country_cost"
+            android:layout_marginLeft="10dp"
+            android:text="1024JPY"
+            android:textSize="24dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
