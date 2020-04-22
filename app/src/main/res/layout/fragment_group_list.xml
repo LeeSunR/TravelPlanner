@@ -38,6 +38,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
+        android:id="@+id/btn_goto_group_main"
         android:text="임시 그룹으로 이동"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

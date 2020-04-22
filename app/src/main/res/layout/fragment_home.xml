@@ -186,7 +186,7 @@
             android:layout_marginHorizontal="20dp"
             android:elevation="4dp"
             android:background="@drawable/home_box_style"
-            android:clickable="false"
+            android:clickable="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -233,17 +233,19 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <LinearLayout
+            android:id="@+id/goto_login"
             android:layout_margin="10dp"
-            android:padding="10dp"
+            android:padding="20dp"
             android:elevation="4dp"
             android:background="@drawable/home_box_style"
             android:layout_gravity="center"
             android:orientation="vertical"
+            android:clickable="true"
             android:layout_width="match_parent"
-            android:layout_height="1200dp">
+            android:layout_height="wrap_content">
             <TextView
-                android:text="오늘의 일정"
-                android:textSize="16dp"
+                android:text="로그인 엑티비티로 이동(임시)"
+                android:textSize="20dp"
                 android:textAlignment="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

@@ -84,6 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
+                android:id="@+id/profile_image_change"
                 android:text="프로필 이미지 변경"
                 android:background="@drawable/profile_box_inside_style"
                 android:paddingHorizontal="20dp"
@@ -93,6 +94,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <TextView
+                android:id="@+id/profile_nickname_change"
                 android:text="닉네임 변경"
                 android:background="@drawable/profile_box_inside_style"
                 android:paddingHorizontal="20dp"
@@ -102,6 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <TextView
+                android:id="@+id/profile_password_change"
                 android:text="비밀번호 변경"
                 android:background="@drawable/profile_box_inside_style"
                 android:paddingHorizontal="20dp"
@@ -111,6 +114,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <TextView
+                android:id="@+id/profile_logout"
                 android:text="로그아웃"
                 android:background="@drawable/profile_box_inside_style"
                 android:paddingHorizontal="20dp"
@@ -120,6 +124,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <TextView
+                android:id="@+id/profile_delete_account"
                 android:text="회원 탈퇴"
                 android:textColor="#F44"
                 android:background="@drawable/profile_box_inside_style"
@@ -176,6 +181,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <TextView
+                android:id="@+id/profile_privacy"
                 android:text="개인정보 처리방침"
                 android:background="@drawable/profile_box_inside_style"
                 android:paddingHorizontal="20dp"
@@ -185,6 +191,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <TextView
+                android:id="@+id/profile_license"
                 android:text="오픈소스 라이선스"
                 android:background="@drawable/profile_box_inside_style"
                 android:paddingHorizontal="20dp"
