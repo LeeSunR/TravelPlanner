@@ -1,6 +1,7 @@
 package com.leesunr.travelplanner
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
@@ -106,6 +107,7 @@ class home : Fragment() {
 
                             Log.i("result","fial")
                         }
+                        @SuppressLint("SetTextI18n")
                         override fun onResponse(call: Call, response: Response) {
                             val jsonObject = JSONObject(response?.body().string())
                             val jsonArray:JSONArray = jsonObject.getJSONArray("daily")
@@ -126,15 +128,15 @@ class home : Fragment() {
                             //val dayAfterTomorrowWeather:String = jsonArray.getJSONObject(2).getJSONArray("weather").getJSONObject(0).getString("description")
 
                             (mContext as Activity).runOnUiThread{
-                                today_weather_place_text.text = timezone
-                                today_weather_place_temp.text = todayTemp+"℃"
-                                today_weather_description.text = todayWeather
+                                today_weather_place_text?.text = timezone
+                                today_weather_place_temp?.text = "$todayTemp℃"
+                                today_weather_description?.text = todayWeather
 
-                                tomorrow_weather_max.text = tomorrowTempMax+"℃"
-                                tomorrow_weather_min.text = tomorrowTempMin+"℃"
+                                tomorrow_weather_max?.text = "$tomorrowTempMax℃"
+                                tomorrow_weather_min?.text = "$tomorrowTempMin℃"
 
-                                day_after_tomorrow_weather_max.text = dayAfterTomorrowTempMax+"℃"
-                                day_after_tomorrow_weather_min.text = dayAfterTomorrowTempMin+"℃"
+                                day_after_tomorrow_weather_max?.text = "$dayAfterTomorrowTempMax℃"
+                                day_after_tomorrow_weather_min?.text = "$dayAfterTomorrowTempMin℃"
                             }
                         }
                     })
