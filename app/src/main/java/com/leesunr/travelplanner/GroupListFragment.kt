@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_group_list.*
 
 
-class groupList : Fragment() {
+class GroupListFragment : Fragment() {
     private var mContext: Context? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +27,7 @@ class groupList : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         btn_goto_group_main.setOnClickListener {
-            val nextIntent = Intent(mContext, group_main::class.java)
+            val nextIntent = Intent(mContext, GroupMainActivity::class.java)
             startActivity(nextIntent)
         }
     }
