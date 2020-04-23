@@ -8,7 +8,8 @@
     tools:context=".GroupPlanAddActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@color/colorTopNavigationBack"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
@@ -16,9 +17,6 @@
             android:backgroundTint="@color/colorFocusBottomMenu"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginBottom="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="15dp"
             android:background="@drawable/ic_arrow_back_black_24dp"
             android:layout_width="26dp"
             android:layout_height="26dp"/>
@@ -26,8 +24,6 @@
             android:textColor="@color/colorFocusBottomMenu"
             android:textSize="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginTop="15dp"
             android:text="일정 등록"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -16,5 +16,6 @@ class GroupMainActivity : AppCompatActivity() {
         button_group_back.setOnClickListener { finish() }
         button_group_setting.setOnClickListener { startActivity(Intent(this,GroupSettingActivity::class.java)) }
         button_group_plan_add.setOnClickListener { startActivity(Intent(this,GroupPlanAddActivity::class.java)) }
+        button_group_chat.setOnClickListener { startActivity(Intent(this,GroupChatActivity::class.java)) }
     }
 }
