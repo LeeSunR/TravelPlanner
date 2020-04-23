@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction().replace(R.id.fragmentView, home()).commit()
                 }
                 R.id.tab_group ->{
-                    supportFragmentManager.beginTransaction().replace(R.id.fragmentView, groupList()).commit()
+                    supportFragmentManager.beginTransaction().replace(R.id.fragmentView, GroupListFragment()).commit()
                 }
                 R.id.tab_profile ->{
                     supportFragmentManager.beginTransaction().replace(R.id.fragmentView, profile()).commit()

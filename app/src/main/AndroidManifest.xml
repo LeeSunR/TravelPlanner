@@ -18,7 +18,7 @@
         </activity>
         <activity android:name=".group_setting"></activity>
         <activity android:name=".group_plan_add"></activity>
-        <activity android:name=".group_main"></activity>
+        <activity android:name=".GroupMainActivity"></activity>
         <activity android:name=".MainActivity">
              <intent-filter>
              <action android:name="android.intent.action.MAIN" />
