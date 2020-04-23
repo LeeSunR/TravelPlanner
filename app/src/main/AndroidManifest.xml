@@ -13,17 +13,18 @@
         android:roundIcon="@mipmap/ic_launcher_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SignUpActivity"></activity>
-        <activity android:name=".LoginActivity">
-        </activity>
-        <activity android:name=".group_setting"></activity>
-        <activity android:name=".group_plan_add"></activity>
-        <activity android:name=".GroupMainActivity"></activity>
+        <activity android:name=".GroupChatActivity"></activity>
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".GroupSettingActivity" />
+        <activity android:name=".GroupPlanAddActivity" />
+        <activity android:name=".GroupMainActivity" />
         <activity android:name=".MainActivity">
-             <intent-filter>
-             <action android:name="android.intent.action.MAIN" />
-             <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
