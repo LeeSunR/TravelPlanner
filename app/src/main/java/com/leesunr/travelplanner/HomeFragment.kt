@@ -30,7 +30,7 @@ import com.bumptech.glide.request.RequestOptions
 import kotlin.math.roundToInt
 
 
-class home : Fragment() {
+class HomeFragment : Fragment() {
 
     private var mContext: Context? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
