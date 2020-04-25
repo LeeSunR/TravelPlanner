@@ -13,5 +13,13 @@ class LoginActivity : AppCompatActivity() {
         login_signup.setOnClickListener { view ->
                 startActivity(Intent(this,SignUpActivity::class.java))
         }
+
+        login_find_uid.setOnClickListener { view ->
+            startActivity(Intent(this, FindIdPwActivity::class.java))
+        }
+
+        login_find_password.setOnClickListener { view ->
+            startActivity(Intent(this, FindIdPwActivity::class.java))
+        }
     }
 }

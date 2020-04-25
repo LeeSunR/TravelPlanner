@@ -41,12 +41,12 @@
             android:background="@drawable/profile_box_outside_style"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="50dp">
+            android:padding="40dp">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_marginBottom="50dp"
+                android:layout_marginBottom="30dp"
                 app:cardCornerRadius="50dp">
 
                 <ImageView
@@ -105,7 +105,7 @@
                     android:id="@+id/signup_nickname"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintHorizontal_chainStyle="spread"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@+id/signup_nickname_check"
                     app:layout_constraintTop_toTopOf="parent">
@@ -124,10 +124,23 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/custom_button"
                     android:text="중복확인"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/signup_nickname"
                     app:layout_constraintRight_toRightOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/signup_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edit_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="이메일을 입력해주세요"
+                    android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
             <Button
