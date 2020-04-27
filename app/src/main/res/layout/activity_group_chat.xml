@@ -89,8 +89,9 @@
         <TextView
             android:paddingHorizontal="20dp"
             android:paddingVertical="10dp"
+            android:layout_marginRight="100dp"
             android:background="@drawable/chatbox_others_style"
-            android:text="gfgd fdg re fdg dgfd gfdg dsg gdfg\ngfdggfd gfd"
+            android:text="gfgd fdg re fdg dgfd gfdg dsg gdfg\ngfdgg;ㅣㅏ;ㅏㅣ;ㅣㅏ;ㅏㅣ;ㅣㅏ;ㅏ;ㅣㅏ;ㅣㅏ;ㅣㅏ;fd gfd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
