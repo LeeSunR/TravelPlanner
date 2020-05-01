@@ -14,11 +14,11 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(Intent(this,SignUpActivity::class.java))
         }
 
-        login_find_uid.setOnClickListener { view ->
+        login_find_id.setOnClickListener { view ->
             startActivity(Intent(this, FindIdPwActivity::class.java))
         }
 
-        login_find_password.setOnClickListener { view ->
+        login_find_pwd.setOnClickListener { view ->
             startActivity(Intent(this, FindIdPwActivity::class.java))
         }
     }
