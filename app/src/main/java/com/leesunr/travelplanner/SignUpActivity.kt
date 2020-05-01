@@ -8,15 +8,29 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.leesunr.travelplanner.Retrofit.INodeJS
+import com.leesunr.travelplanner.Retrofit.RetrofitClient
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_sign_up.*
+import retrofit2.Retrofit
 
 class SignUpActivity : AppCompatActivity() {
+
+    lateinit var myAPI: INodeJS
+    var compositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
+
+        //Init API
+        val retrofit: Retrofit = RetrofitClient.instance
+        myAPI = retrofit.create(INodeJS::class.java)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 0)
@@ -70,6 +84,21 @@ class SignUpActivity : AppCompatActivity() {
             intent.type = MediaStore.Images.Media.CONTENT_TYPE
             startActivityForResult(intent, 1)
         }
+
+        signup_btn.setOnClickListener{
+            signup(signup_edt_id.text.toString(), signup_edt_pwd.text.toString(), signup_edt_nickname.text.toString(),
+            signup_edt_email.text.toString(), null)
+        }
+    }
+
+    private fun signup(id: String, pwd: String, nickname: String, email: String, photourl: String?) {
+        compositeDisposable.add(myAPI.signupUser(id, pwd, email, nickname, "photourl")
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe{ message ->
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            })
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

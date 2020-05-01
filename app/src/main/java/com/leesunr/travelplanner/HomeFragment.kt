@@ -115,7 +115,7 @@ class HomeFragment : Fragment() {
                         }
                         @SuppressLint("SetTextI18n")
                         override fun onResponse(call: Call, response: Response) {
-                            val jsonObject = JSONObject(response?.body().string())
+                            val jsonObject = JSONObject(response?.body()?.string())
                             val jsonArray:JSONArray = jsonObject.getJSONArray("daily")
 
                             //현재

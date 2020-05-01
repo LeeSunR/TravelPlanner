@@ -17,13 +17,13 @@
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="30dp"
-        app:layout_constraintBottom_toTopOf="@id/login_uid"
+        app:layout_constraintBottom_toTopOf="@id/login_id"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/login_uid"
+        android:id="@+id/login_id"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_margin="20dp"
@@ -31,13 +31,13 @@
         android:hint="아이디"
         android:inputType="text"
         android:paddingLeft="70dp"
-        app:layout_constraintBottom_toTopOf="@id/login_password"
+        app:layout_constraintBottom_toTopOf="@id/login_pwd"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_Title" />
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/login_password"
+        android:id="@+id/login_pwd"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginVertical="20dp"
@@ -45,9 +45,9 @@
         android:hint="비밀번호"
         android:inputType="textPassword"
         android:paddingLeft="70dp"
-        app:layout_constraintLeft_toLeftOf="@id/login_uid"
-        app:layout_constraintRight_toRightOf="@id/login_uid"
-        app:layout_constraintTop_toBottomOf="@+id/login_uid" />
+        app:layout_constraintLeft_toLeftOf="@id/login_id"
+        app:layout_constraintRight_toRightOf="@id/login_id"
+        app:layout_constraintTop_toBottomOf="@+id/login_id" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/login_btn"
@@ -58,9 +58,9 @@
         android:text="로그인"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
-        app:layout_constraintLeft_toLeftOf="@id/login_uid"
-        app:layout_constraintRight_toRightOf="@id/login_uid"
-        app:layout_constraintTop_toBottomOf="@id/login_password" />
+        app:layout_constraintLeft_toLeftOf="@id/login_id"
+        app:layout_constraintRight_toRightOf="@id/login_id"
+        app:layout_constraintTop_toBottomOf="@id/login_pwd" />
 
     <TextView
         android:id="@+id/login_text1"
