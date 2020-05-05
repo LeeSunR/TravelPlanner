@@ -37,32 +37,14 @@ class SignUpActivity : AppCompatActivity() {
 
         signup_close.setOnClickListener { this.finish() }
 
-        signup_id.isCounterEnabled = true
         signup_pwd.isCounterEnabled = true
         signup_pwd_chk.isCounterEnabled = true
         signup_nickname.isCounterEnabled = true
 
-        signup_id.counterMaxLength = 15
         signup_nickname.counterMaxLength = 10
 
-        signup_id.isErrorEnabled = true
         signup_nickname.isErrorEnabled = true
 
-        signup_edt_id.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (signup_edt_id.length() > 15) {
-                    signup_id.error = "아이디의 글자 수 최대 허용치를 초과하였습니다."
-                } else {
-                    signup_id.error = null
-                }
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-            }
-        })
         signup_edt_nickname.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -86,13 +68,12 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         signup_btn.setOnClickListener{
-            signup(signup_edt_id.text.toString(), signup_edt_pwd.text.toString(), signup_edt_nickname.text.toString(),
-            signup_edt_email.text.toString(), null)
+            signup(signup_edt_email.text.toString(), signup_edt_nickname.text.toString(), signup_edt_pwd.text.toString(), "photourl")
         }
     }
 
-    private fun signup(id: String, pwd: String, nickname: String, email: String, photourl: String?) {
-        compositeDisposable.add(myAPI.signupUser(id, pwd, email, nickname, "photourl")
+    private fun signup(email: String, nickname: String, password: String, photourl: String?) {
+        compositeDisposable.add(myAPI.signupUser(email, nickname, password, photourl!!)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe{ message ->
@@ -101,6 +82,7 @@ class SignUpActivity : AppCompatActivity() {
 
     }
 
+    // 프로필 사진 뷰에 삽입
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 

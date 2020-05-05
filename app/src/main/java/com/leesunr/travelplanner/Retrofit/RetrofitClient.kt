@@ -10,7 +10,7 @@ object RetrofitClient {
         get() {
             if (ourInstance == null)
                 ourInstance = Retrofit.Builder()
-                    .baseUrl("http://baka.kr:9009")
+                    .baseUrl("http://baka.kr:9009/")
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .build()
