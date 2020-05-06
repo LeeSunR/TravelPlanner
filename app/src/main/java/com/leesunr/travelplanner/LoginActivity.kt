@@ -2,6 +2,7 @@ package com.leesunr.travelplanner
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.leesunr.travelplanner.Retrofit.INodeJS
@@ -42,16 +43,21 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun login(id: String, pwd: String) {
-        compositeDisposable.add(myAPI.loginUser(id, pwd)
+    private fun login(userid: String, password: String) {
+        compositeDisposable.add(myAPI.loginUser(userid, password)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe{ message ->
-                if(message.contains("access_token"))
-                    Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
-                else
-                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-            })
+            .subscribe(
+                { ok ->
+                    Toast.makeText(this,"로그인 성공", Toast.LENGTH_SHORT).show()
+                    Log.d("login completed", ok)
+                },
+                { error ->
+                    Toast.makeText(this,"로그인 실패", Toast.LENGTH_SHORT).show()
+                    Log.d("login error", error.message)
+                }
+            )
+        )
     }
 
     override fun onStop() {

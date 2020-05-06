@@ -3,11 +3,13 @@ package com.leesunr.travelplanner
 import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.media.ExifInterface
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -72,13 +74,20 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun signup(email: String, nickname: String, password: String, photourl: String?) {
-        compositeDisposable.add(myAPI.signupUser(email, nickname, password, photourl!!)
+    private fun signup(userid: String, password: String, nickname: String, email: String, photourl: String?) {
+        compositeDisposable.add(myAPI.signupUser(userid, password, email, nickname, "photourl")
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe{ message ->
+            .subscribe(
+                { message ->
                     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-            })
+                },
+                { error ->
+                    Toast.makeText(this,"회원가입 실패", Toast.LENGTH_SHORT).show()
+                    Log.d("signup error", error.message)
+                }
+            )
+        )
 
     }
 
@@ -95,6 +104,7 @@ class SignUpActivity : AppCompatActivity() {
 
             var bitmap = BitmapFactory.decodeFile(source)
 //            signup_profile_photo.setImageBitmap(bitmap)
+
             Glide.with(this).load(bitmap).centerCrop().override(500).into(signup_profile_photo)
 
         }

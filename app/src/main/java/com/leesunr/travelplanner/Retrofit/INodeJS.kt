@@ -9,6 +9,7 @@ interface INodeJS {
     @POST("signup")
     @FormUrlEncoded
     fun signupUser(
+        @Field("userid") id: String,
         @Field("email") email: String,
         @Field("nickname") nickname: String,
         @Field("password") password: String,
@@ -18,7 +19,9 @@ interface INodeJS {
     @POST("login")
     @FormUrlEncoded
     fun loginUser(
-        @Field("email") email: String,
+        @Field("userid") userid: String,
         @Field("password") password: String
     ): Observable<String>
+
+
 }
