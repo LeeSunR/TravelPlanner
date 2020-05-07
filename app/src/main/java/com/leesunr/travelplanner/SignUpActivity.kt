@@ -3,7 +3,6 @@ package com.leesunr.travelplanner
 import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.media.ExifInterface
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -19,12 +18,18 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_sign_up.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Retrofit
+import java.io.File
+
 
 class SignUpActivity : AppCompatActivity() {
 
     lateinit var myAPI: INodeJS
     var compositeDisposable = CompositeDisposable()
+    var fileUri = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,13 +74,14 @@ class SignUpActivity : AppCompatActivity() {
             startActivityForResult(intent, 1)
         }
 
-        signup_btn.setOnClickListener{
-            signup(signup_edt_email.text.toString(), signup_edt_nickname.text.toString(), signup_edt_pwd.text.toString(), "photourl")
+        signup_btn.setOnClickListener {
+            signup(signup_edt_userid.text.toString(), signup_edt_pwd.text.toString(), signup_edt_nickname.text.toString(),
+                signup_edt_email.text.toString(), "photourl")
         }
     }
 
-    private fun signup(userid: String, password: String, nickname: String, email: String, photourl: String?) {
-        compositeDisposable.add(myAPI.signupUser(userid, password, email, nickname, "photourl")
+    private fun signup(userid: String, password: String, nickname: String, email: String, photourl: String) {
+        compositeDisposable.add(myAPI.signupUser(userid, email, nickname, password, "photourl")
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -83,13 +89,36 @@ class SignUpActivity : AppCompatActivity() {
                     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                 },
                 { error ->
-                    Toast.makeText(this,"회원가입 실패", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "회원가입 실패", Toast.LENGTH_SHORT).show()
                     Log.d("signup error", error.message)
                 }
             )
         )
-
+        uploadStorage(fileUri)
     }
+
+    fun uploadStorage(path: String) {
+        val file = File(path)
+        var requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
+        var body: MultipartBody.Part = MultipartBody.Part.createFormData("imagefile", file.name, requestBody)
+        val userid: RequestBody = RequestBody.create(MediaType.parse("text/plain"), signup_edt_userid.text.toString())
+
+        // 파일, 사용자 아이디, 파일이름
+        compositeDisposable.add(myAPI.uploadProfile(body, userid)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { message ->
+                    Log.d("upload", message)
+                },
+                { error ->
+                    Toast.makeText(this, "프로필 사진 업로드 실패", Toast.LENGTH_SHORT).show()
+                    Log.d("upload error", error.message)
+                }
+            )
+        )
+    }
+
 
     // 프로필 사진 뷰에 삽입
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -101,12 +130,12 @@ class SignUpActivity : AppCompatActivity() {
 
             var index = c.getColumnIndex(MediaStore.Images.Media.DATA)
             var source = c.getString(index)
+            fileUri = source
 
             var bitmap = BitmapFactory.decodeFile(source)
-//            signup_profile_photo.setImageBitmap(bitmap)
-
             Glide.with(this).load(bitmap).centerCrop().override(500).into(signup_profile_photo)
 
+            //uploadStorage(source)
         }
     }
 }

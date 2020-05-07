@@ -57,6 +57,47 @@
             </androidx.cardview.widget.CardView>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/signup_userid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/signup_edt_userid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="아이디를 입력해주세요"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/signup_pwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/signup_edt_pwd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="비밀번호를 입력해주세요"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/signup_pwd_chk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/signup_edt_pwd_chk"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="비밀번호를 다시 한번 입력해주세요"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/signup_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -100,34 +141,6 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/signup_pwd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:passwordToggleEnabled="true">
-
-                <EditText
-                    android:id="@+id/signup_edt_pwd"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="비밀번호를 입력해주세요"
-                    android:inputType="textPassword" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/signup_pwd_chk"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:passwordToggleEnabled="true">
-
-                <EditText
-                    android:id="@+id/signup_edt_pwd_chk"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="비밀번호를 다시 한번 입력해주세요"
-                    android:inputType="textPassword" />
-            </com.google.android.material.textfield.TextInputLayout>
 
 
             <Button
