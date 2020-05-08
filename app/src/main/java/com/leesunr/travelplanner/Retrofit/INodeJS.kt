@@ -16,9 +16,9 @@ interface INodeJS {
     @FormUrlEncoded
     fun signupUser(
         @Field("userid") id: String,
-        @Field("email") email: String,
-        @Field("nickname") nickname: String,
         @Field("password") password: String,
+        @Field("nickname") nickname: String,
+        @Field("email") email: String,
         @Field("photourl") photourl: String
     ): Observable<String>
 

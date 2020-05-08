@@ -11,6 +11,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_login.*
+import org.json.JSONObject
 import retrofit2.Retrofit
 
 class LoginActivity : AppCompatActivity() {
@@ -27,19 +28,24 @@ class LoginActivity : AppCompatActivity() {
         myAPI = retrofit.create(INodeJS::class.java)
 
         login_signup.setOnClickListener {
-            startActivity(Intent(this, SignUpActivity::class.java))
+            myStartActivity(SignUpActivity::class.java)
         }
 
         login_find_id.setOnClickListener {
-            startActivity(Intent(this, FindIdPwActivity::class.java))
+            myStartActivity(FindIdPwActivity::class.java)
         }
 
         login_find_pwd.setOnClickListener {
-            startActivity(Intent(this, FindIdPwActivity::class.java))
+            myStartActivity(FindIdPwActivity::class.java)
         }
 
         login_btn.setOnClickListener {
-            login(login_id.text.toString(), login_pwd.text.toString())
+            var user_id = login_id.text.toString()
+            var password = login_pwd.text.toString()
+            if(user_id.length > 0 && password.length > 0)
+                login(user_id, password)
+            else
+                Toast.makeText(this, "아이디 또는 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -50,7 +56,19 @@ class LoginActivity : AppCompatActivity() {
             .subscribe(
                 { ok ->
                     Toast.makeText(this,"로그인 성공", Toast.LENGTH_SHORT).show()
+                    myStartActivity(MainActivity::class.java)
                     Log.d("login completed", ok)
+
+                    val jsonObject = JSONObject(ok)
+                    val access_token = jsonObject.getString("access_token")
+                    val refresh_token = jsonObject.getString("refresh_token")
+                    //SharedPreferences 사용하여 access_token 디바이스에 저장
+                    App.prefs_access.myAccessToken = access_token
+                    App.prefs_refresh.myRefreshToken = refresh_token
+                    /*val msg1 = App.prefs_access.myAccessToken
+                    val msg2 = App.prefs_refresh.myRefreshToken
+                    Log.d("AcessToken : ", msg1)
+                    Log.d("RefreshToken : ", msg2)*/
                 },
                 { error ->
                     Toast.makeText(this,"로그인 실패", Toast.LENGTH_SHORT).show()
@@ -68,5 +86,11 @@ class LoginActivity : AppCompatActivity() {
     override fun onDestroy() {
         compositeDisposable.clear()
         super.onDestroy()
+    }
+
+    private fun myStartActivity(c: Class<*>) {
+        val intent = Intent(this, c)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
     }
 }

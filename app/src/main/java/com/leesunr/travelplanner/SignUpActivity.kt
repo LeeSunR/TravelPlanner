@@ -31,9 +31,20 @@ class SignUpActivity : AppCompatActivity() {
     var compositeDisposable = CompositeDisposable()
     var fileUri = ""
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
+
+        var user_id = signup_edt_userid.text.toString()
+        var password = signup_edt_pwd.text.toString()
+        var passwordCheck = signup_edt_pwd_chk.text.toString()
+        var email = signup_edt_email.text.toString()
+        var nickname = signup_edt_nickname.text.toString()
 
         //Init API
         val retrofit: Retrofit = RetrofitClient.instance
@@ -55,7 +66,6 @@ class SignUpActivity : AppCompatActivity() {
         signup_edt_nickname.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (signup_edt_nickname.length() > 10) {
                     signup_nickname.error = "닉네임의 글자 수 최대 허용치를 초과하였습니다."
@@ -63,7 +73,6 @@ class SignUpActivity : AppCompatActivity() {
                     signup_nickname.error = null
                 }
             }
-
             override fun afterTextChanged(s: Editable?) {
             }
         })
@@ -75,18 +84,27 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         signup_btn.setOnClickListener {
-            signup(signup_edt_userid.text.toString(), signup_edt_pwd.text.toString(), signup_edt_nickname.text.toString(),
-                signup_edt_email.text.toString(), "photourl")
+            if(user_id.length > 0 && password.length > 0 && passwordCheck.length > 0 && nickname.length > 0 && email.length > 0){
+                if(password.equals(passwordCheck))
+                    signup(user_id, password, nickname, email, "photo_url")
+                else
+                    Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "회원정보를 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
-    private fun signup(userid: String, password: String, nickname: String, email: String, photourl: String) {
-        compositeDisposable.add(myAPI.signupUser(userid, email, nickname, password, "photourl")
+    private fun signup(user_id: String, password: String, nickname: String, email: String, photourl: String) {
+        compositeDisposable.add(myAPI.signupUser(user_id, password, nickname, email, photourl)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { message ->
-                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                { success ->
+                    Toast.makeText(this, success, Toast.LENGTH_SHORT).show()
+                    myStartActivity(LoginActivity::class.java)
+                    Log.d("signup success", success)
+
                 },
                 { error ->
                     Toast.makeText(this, "회원가입 실패", Toast.LENGTH_SHORT).show()
@@ -137,5 +155,21 @@ class SignUpActivity : AppCompatActivity() {
 
             //uploadStorage(source)
         }
+    }
+
+    private fun myStartActivity(c: Class<*>) {
+        val intent = Intent(this, c)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
+    }
+
+    override fun onStop() {
+        compositeDisposable.clear()
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        compositeDisposable.clear()
+        super.onDestroy()
     }
 }
