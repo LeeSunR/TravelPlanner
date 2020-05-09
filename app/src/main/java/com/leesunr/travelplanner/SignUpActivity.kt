@@ -11,6 +11,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import com.bumptech.glide.Glide
 import com.leesunr.travelplanner.Retrofit.INodeJS
 import com.leesunr.travelplanner.Retrofit.RetrofitClient
@@ -21,7 +22,9 @@ import kotlinx.android.synthetic.main.activity_sign_up.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import java.io.File
 
@@ -101,10 +104,10 @@ class SignUpActivity : AppCompatActivity() {
         val file = File(path)
         var requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
         var body: MultipartBody.Part = MultipartBody.Part.createFormData("imagefile", file.name, requestBody)
-        val userID: RequestBody = RequestBody.create(MediaType.parse("text/plain"), signup_edt_userid.text.toString())
+//        val userID: RequestBody = RequestBody.create(MediaType.parse("text/plain"), user_id)
 
         // 파일, 사용자 아이디, 파일이름
-        compositeDisposable.add(myAPI.uploadProfile(body, userID)
+        compositeDisposable.add(myAPI.uploadProfile(body)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(

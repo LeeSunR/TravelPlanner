@@ -32,7 +32,6 @@ interface INodeJS {
     @Multipart
     @POST("/uploadProfile")
     fun uploadProfile(
-        @Part imagefile : MultipartBody.Part,
-        @Part("profile_userid") userid: RequestBody
+        @Part imagefile : MultipartBody.Part
     ): Observable<String>
 }
