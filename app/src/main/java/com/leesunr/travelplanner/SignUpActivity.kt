@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.activity_sign_up.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.json.JSONObject
 import retrofit2.Retrofit
 import java.io.File
 
@@ -30,6 +31,7 @@ class SignUpActivity : AppCompatActivity() {
     lateinit var myAPI: INodeJS
     var compositeDisposable = CompositeDisposable()
     var fileUri = ""
+    private var photoURL = "http://baka.kr:9009/"
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -39,12 +41,6 @@ class SignUpActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
-
-        var user_id = signup_edt_userid.text.toString()
-        var password = signup_edt_pwd.text.toString()
-        var passwordCheck = signup_edt_pwd_chk.text.toString()
-        var email = signup_edt_email.text.toString()
-        var nickname = signup_edt_nickname.text.toString()
 
         //Init API
         val retrofit: Retrofit = RetrofitClient.instance
@@ -84,9 +80,15 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         signup_btn.setOnClickListener {
-            if(user_id.length > 0 && password.length > 0 && passwordCheck.length > 0 && nickname.length > 0 && email.length > 0){
+            var user_id = signup_edt_userid.text.toString()
+            var password = signup_edt_pwd.text.toString()
+            var passwordCheck = signup_edt_pwd_chk.text.toString()
+            var email = signup_edt_email.text.toString()
+            var nickname = signup_edt_nickname.text.toString()
+
+            if(user_id.isNotEmpty() && password.isNotEmpty() && passwordCheck.isNotEmpty() && nickname.isNotEmpty() && email.isNotEmpty()){
                 if(password.equals(passwordCheck))
-                    signup(user_id, password, nickname, email, "photo_url")
+                    uploadStorage(fileUri, user_id, password, nickname, email)
                 else
                     Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
             } else {
@@ -95,43 +97,43 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
+    private fun uploadStorage(path: String, user_id: String, password: String, nickname: String, email: String) {
+        val file = File(path)
+        var requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
+        var body: MultipartBody.Part = MultipartBody.Part.createFormData("imagefile", file.name, requestBody)
+        val userID: RequestBody = RequestBody.create(MediaType.parse("text/plain"), signup_edt_userid.text.toString())
+
+        // 파일, 사용자 아이디, 파일이름
+        compositeDisposable.add(myAPI.uploadProfile(body, userID)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { message ->
+                    photoURL += message
+                    signup(user_id, password, nickname, email, photoURL)
+                    Log.d("upload", photoURL)
+                },
+                { error ->
+                    Toast.makeText(this, "프로필 사진 업로드 실패", Toast.LENGTH_SHORT).show()
+                    Log.d("upload error", error.message)
+                }
+            )
+        )
+    }
+
     private fun signup(user_id: String, password: String, nickname: String, email: String, photourl: String) {
         compositeDisposable.add(myAPI.signupUser(user_id, password, nickname, email, photourl)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { success ->
-                    Toast.makeText(this, success, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "회원가입 성공", Toast.LENGTH_SHORT).show()
+                    Log.d("sign up success", success)
                     myStartActivity(LoginActivity::class.java)
-                    Log.d("signup success", success)
-
                 },
                 { error ->
                     Toast.makeText(this, "회원가입 실패", Toast.LENGTH_SHORT).show()
-                    Log.d("signup error", error.message)
-                }
-            )
-        )
-        uploadStorage(fileUri)
-    }
-
-    fun uploadStorage(path: String) {
-        val file = File(path)
-        var requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
-        var body: MultipartBody.Part = MultipartBody.Part.createFormData("imagefile", file.name, requestBody)
-        val userid: RequestBody = RequestBody.create(MediaType.parse("text/plain"), signup_edt_userid.text.toString())
-
-        // 파일, 사용자 아이디, 파일이름
-        compositeDisposable.add(myAPI.uploadProfile(body, userid)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { message ->
-                    Log.d("upload", message)
-                },
-                { error ->
-                    Toast.makeText(this, "프로필 사진 업로드 실패", Toast.LENGTH_SHORT).show()
-                    Log.d("upload error", error.message)
+                    Log.d("sign up error", error.message)
                 }
             )
         )
@@ -148,12 +150,11 @@ class SignUpActivity : AppCompatActivity() {
 
             var index = c.getColumnIndex(MediaStore.Images.Media.DATA)
             var source = c.getString(index)
-            fileUri = source
 
             var bitmap = BitmapFactory.decodeFile(source)
             Glide.with(this).load(bitmap).centerCrop().override(500).into(signup_profile_photo)
 
-            //uploadStorage(source)
+            fileUri = source
         }
     }
 
