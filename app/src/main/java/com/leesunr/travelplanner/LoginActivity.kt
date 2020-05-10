@@ -92,5 +92,6 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this, c)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
+        finish()
     }
 }
