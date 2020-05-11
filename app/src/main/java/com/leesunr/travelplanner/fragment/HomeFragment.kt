@@ -86,11 +86,6 @@ class HomeFragment : Fragment() {
 
             builder.show()
         }
-
-        goto_login.setOnClickListener {
-            val intent: Intent = Intent(mContext, LoginActivity::class.java)
-            startActivity(intent)
-        }
     }
 
     override fun onAttach(context: Context) {

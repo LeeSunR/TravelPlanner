@@ -2,7 +2,9 @@ package com.leesunr.travelplanner.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.media.ThumbnailUtils
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -24,6 +26,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Retrofit
 import java.io.File
+import java.io.FileOutputStream
 
 
 class SignUpActivity : AppCompatActivity() {
@@ -97,9 +100,22 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun uploadStorage(path: String, user_id: String, password: String, nickname: String, email: String) {
-        val file = File(path)
-        var requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
-        var body: MultipartBody.Part = MultipartBody.Part.createFormData("imagefile", file.name, requestBody)
+
+
+        val bitmap = BitmapFactory.decodeFile(path) //이미지 비트맵으로 열기
+        val newBitmap = ThumbnailUtils.extractThumbnail(bitmap, 128, 128); //비트맵 크기 및 비율 변경
+
+        //PNG로 변경하여 임시 저장
+        val file = File(getExternalFilesDir("tmp").path+"profile.png")
+        val fileStream = FileOutputStream(file)
+        newBitmap.compress(Bitmap.CompressFormat.PNG, 0, FileOutputStream(file))
+        fileStream.close()
+
+        //임시 저장된 이미지 전송
+        val newile = File(getExternalFilesDir("tmp").path+"profile.png")
+
+        var requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), newile)
+        var body: MultipartBody.Part = MultipartBody.Part.createFormData("imagefile", newile.name, requestBody)
 //        val userID: RequestBody = RequestBody.create(MediaType.parse("text/plain"), user_id)
         Log.e("file",file.name)
         // 파일, 사용자 아이디, 파일이름

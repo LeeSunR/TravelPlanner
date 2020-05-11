@@ -232,24 +232,6 @@
                 android:layout_height="wrap_content"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <LinearLayout
-            android:padding="15dp"
-            android:layout_marginVertical="10dp"
-            android:layout_marginHorizontal="20dp"
-            android:id="@+id/goto_login"
-            android:elevation="4dp"
-            android:background="@drawable/home_box_style"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            android:clickable="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:text="로그인 엑티비티로 이동(임시)"
-                android:textSize="20dp"
-                android:textAlignment="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
+
     </LinearLayout>
 </ScrollView>
