@@ -1,4 +1,4 @@
-package com.leesunr.travelplanner
+package com.leesunr.travelplanner.util
 
 import android.content.Context
 import android.content.SharedPreferences

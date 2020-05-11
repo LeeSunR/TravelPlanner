@@ -1,7 +1,8 @@
-package com.leesunr.travelplanner
+package com.leesunr.travelplanner.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.leesunr.travelplanner.R
 
 class GroupPlanAddActivity : AppCompatActivity() {
 

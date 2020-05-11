@@ -1,12 +1,8 @@
-package com.leesunr.travelplanner.Retrofit
+package com.leesunr.travelplanner.retrofit
 
-import android.app.Activity
-import android.content.Intent
 import android.util.Log
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.startActivity
-import com.leesunr.travelplanner.App
-import com.leesunr.travelplanner.LoginActivity
+import com.leesunr.travelplanner.util.App
+import com.leesunr.travelplanner.util.JWT
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -86,11 +82,12 @@ class RefreshTokenInterceptor(): Interceptor {
     }
 }
 
+//엑세스토큰 재발급
 class AccessTokenAuthenticator () : Authenticator {
     override fun authenticate(route: Route, response: Response): Request? {
         if(response.code()==401){ //엑세스 토큰이 만료됨
 
-            Log.e("[Authenticator]","trying renewal accessToken")
+            Log.i("[Authenticator]","trying renewal accessToken")
 
             val newAccessToken = runBlocking {
                 GlobalScope.async(Dispatchers.Default) {
@@ -98,7 +95,7 @@ class AccessTokenAuthenticator () : Authenticator {
                 }.await()
             }
 
-            if(newAccessToken==null)return null
+            if(newAccessToken==null) return null
             else {
                 App.prefs_access.myAccessToken = newAccessToken
                 return response.request().newBuilder()
@@ -122,10 +119,10 @@ class AccessTokenAuthenticator () : Authenticator {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { ok ->
-                        Log.d("[result_ok]","엑세스 토큰이 재발급 되었습니다. : $ok")
+                        Log.i("[Authenticator]","엑세스 토큰이 재발급 되었습니다. : $ok")
                         continuation.resume(JSONObject(ok).getString("access_token"))
                     },
-                    { error ->
+                    {
                         continuation.resume(null)
                     }
                 )

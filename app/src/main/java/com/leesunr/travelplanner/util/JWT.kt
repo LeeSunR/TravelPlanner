@@ -1,4 +1,4 @@
-package com.leesunr.travelplanner.Retrofit
+package com.leesunr.travelplanner.util
 
 import android.util.Base64
 import org.json.JSONObject
@@ -11,7 +11,11 @@ object JWT {
         try {
             val split = JWTEncoded.split(".").toTypedArray()
             if (split.size==3)
-                return JSONObject(getJson(split[1]))
+                return JSONObject(
+                    getJson(
+                        split[1]
+                    )
+                )
             else
                 return null
         } catch (e: UnsupportedEncodingException) {

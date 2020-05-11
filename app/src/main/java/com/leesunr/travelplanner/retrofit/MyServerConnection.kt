@@ -1,11 +1,12 @@
-package com.leesunr.travelplanner.Retrofit
+package com.leesunr.travelplanner.retrofit
 
 import android.app.Activity
 import android.content.Intent
 import android.util.Log
 import androidx.core.app.ActivityCompat
-import com.leesunr.travelplanner.App
-import com.leesunr.travelplanner.LoginActivity
+import com.leesunr.travelplanner.util.App
+import com.leesunr.travelplanner.activity.LoginActivity
+import com.leesunr.travelplanner.util.JWT
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

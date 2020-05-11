@@ -1,4 +1,4 @@
-package com.leesunr.travelplanner
+package com.leesunr.travelplanner.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,6 +7,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import com.leesunr.travelplanner.fragment.FindIdFragment
+import com.leesunr.travelplanner.fragment.FindPwFragment
+import com.leesunr.travelplanner.R
 
 class FindIdPwActivity : AppCompatActivity() {
 

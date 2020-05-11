@@ -1,4 +1,4 @@
-package com.leesunr.travelplanner.Retrofit
+package com.leesunr.travelplanner.retrofit
 
 import io.reactivex.Observable
 import okhttp3.*

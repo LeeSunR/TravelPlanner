@@ -1,8 +1,6 @@
-package com.leesunr.travelplanner
+package com.leesunr.travelplanner.fragment
 
-import android.content.Context
 import android.content.DialogInterface
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
-import kotlinx.android.synthetic.main.fragment_find_id.*
+import com.leesunr.travelplanner.R
 import kotlinx.android.synthetic.main.fragment_find_pw.*
 
 open class FindPwFragment : Fragment() {

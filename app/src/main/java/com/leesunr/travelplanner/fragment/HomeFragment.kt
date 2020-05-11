@@ -1,4 +1,4 @@
-package com.leesunr.travelplanner
+package com.leesunr.travelplanner.fragment
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -27,6 +27,8 @@ import java.io.IOException
 import org.json.JSONObject
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.leesunr.travelplanner.R
+import com.leesunr.travelplanner.activity.LoginActivity
 import kotlin.math.roundToInt
 
 
@@ -51,7 +53,9 @@ class HomeFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         exchange_button.setOnClickListener {
-            val builder = AlertDialog.Builder(ContextThemeWrapper(mContext, R.style.Theme_AppCompat_Light_Dialog))
+            val builder = AlertDialog.Builder(ContextThemeWrapper(mContext,
+                R.style.Theme_AppCompat_Light_Dialog
+            ))
             builder.setItems(R.array.country, object :DialogInterface.OnClickListener{
                 override fun onClick(dialog: DialogInterface?, pos: Int) {
                     val countryWord = resources.getStringArray(R.array.country_word)[pos]

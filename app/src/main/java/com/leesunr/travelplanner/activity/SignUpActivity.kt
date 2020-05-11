@@ -1,4 +1,4 @@
-package com.leesunr.travelplanner
+package com.leesunr.travelplanner.activity
 
 import android.app.Activity
 import android.content.Intent
@@ -11,10 +11,10 @@ import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
 import com.bumptech.glide.Glide
-import com.leesunr.travelplanner.Retrofit.INodeJS
-import com.leesunr.travelplanner.Retrofit.RetrofitClient
+import com.leesunr.travelplanner.R
+import com.leesunr.travelplanner.retrofit.INodeJS
+import com.leesunr.travelplanner.retrofit.RetrofitClient
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -22,9 +22,6 @@ import kotlinx.android.synthetic.main.activity_sign_up.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import java.io.File
 

@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GroupChatActivity">
+    tools:context=".activity.GroupChatActivity">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:paddingHorizontal="20dp"
         android:paddingVertical="15dp"
