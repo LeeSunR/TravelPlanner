@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
+import com.bumptech.glide.Glide
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.activity.LoginActivity
 import com.leesunr.travelplanner.model.User
@@ -36,6 +37,8 @@ class ProfileFragment : Fragment() {
         val payload = JWT.decoded(App.prefs_access.myAccessToken)
         val user = User().parseUser(payload!!)
         val dateFormat = SimpleDateFormat("yyyy-MM-dd");
+
+        Glide.with(this).load(getString(R.string.server_base_url)+user.photourl).into(profile_image);
         profile_nickname.text = user.nickname
         profile_id.text = user.id
         profile_regdate.text = "가입일 : ${dateFormat.format(user.regdate)}"
