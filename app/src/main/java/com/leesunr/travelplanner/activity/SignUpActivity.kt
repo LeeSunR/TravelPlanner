@@ -31,7 +31,6 @@ class SignUpActivity : AppCompatActivity() {
     lateinit var myAPI: INodeJS
     var compositeDisposable = CompositeDisposable()
     var fileUri = ""
-    private var photoURL = "http://baka.kr:9009/"
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -102,16 +101,15 @@ class SignUpActivity : AppCompatActivity() {
         var requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
         var body: MultipartBody.Part = MultipartBody.Part.createFormData("imagefile", file.name, requestBody)
 //        val userID: RequestBody = RequestBody.create(MediaType.parse("text/plain"), user_id)
-
+        Log.e("file",file.name)
         // 파일, 사용자 아이디, 파일이름
         compositeDisposable.add(myAPI.uploadProfile(body)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { message ->
-                    photoURL += message
-                    signup(user_id, password, nickname, email, photoURL)
-                    Log.d("upload", photoURL)
+                    signup(user_id, password, nickname, email, message)
+                    Log.d("upload", message)
                 },
                 { error ->
                     Toast.makeText(this, "프로필 사진 업로드 실패", Toast.LENGTH_SHORT).show()
@@ -121,8 +119,8 @@ class SignUpActivity : AppCompatActivity() {
         )
     }
 
-    private fun signup(user_id: String, password: String, nickname: String, email: String, photourl: String) {
-        compositeDisposable.add(myAPI.signupUser(user_id, password, nickname, email, photourl)
+    private fun signup(user_id: String, password: String, nickname: String, email: String, photoUrl: String) {
+        compositeDisposable.add(myAPI.signupUser(user_id, password, nickname, email, photoUrl)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(

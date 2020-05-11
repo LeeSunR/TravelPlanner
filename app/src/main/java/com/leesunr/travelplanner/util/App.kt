@@ -1,9 +1,12 @@
 package com.leesunr.travelplanner.util
 
 import android.app.Application
+import android.content.Context
 
 class App : Application() {
+
     companion object {
+        lateinit var context: Context
         lateinit var prefs_access : MySharedPreferences
         lateinit var prefs_refresh : MySharedPreferences
     }
@@ -14,6 +17,8 @@ class App : Application() {
             MySharedPreferences(applicationContext)
         prefs_refresh =
             MySharedPreferences(applicationContext)
+
+        context = applicationContext
         super.onCreate()
     }
 }

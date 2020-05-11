@@ -7,19 +7,21 @@ import java.nio.charset.Charset
 
 object JWT {
     @Throws(Exception::class)
-    fun decoded(JWTEncoded: String):JSONObject? {
-        try {
-            val split = JWTEncoded.split(".").toTypedArray()
-            if (split.size==3)
-                return JSONObject(
-                    getJson(
-                        split[1]
+    fun decoded(JWTEncoded: String?):JSONObject? {
+        if(JWTEncoded!=null){
+            try {
+                val split = JWTEncoded!!.split(".").toTypedArray()
+                if (split.size==3)
+                    return JSONObject(
+                        getJson(
+                            split[1]
+                        )
                     )
-                )
-            else
+                else
+                    return null
+            } catch (e: UnsupportedEncodingException) {
                 return null
-        } catch (e: UnsupportedEncodingException) {
-            return null
+            }
         }
         return null
     }

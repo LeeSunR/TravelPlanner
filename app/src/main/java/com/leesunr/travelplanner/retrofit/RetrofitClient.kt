@@ -1,6 +1,12 @@
 package com.leesunr.travelplanner.retrofit
 
+import android.app.Application
+import android.content.Context
+import android.content.res.Resources
 import android.util.Log
+import android.os.Bundle
+import com.leesunr.travelplanner.R
+
 import com.leesunr.travelplanner.util.App
 import com.leesunr.travelplanner.util.JWT
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -24,7 +30,7 @@ object RetrofitClient {
         get() {
             if (ourInstance == null)
                 ourInstance = Retrofit.Builder()
-                    .baseUrl("http://baka.kr:9009/")
+                    .baseUrl(App.context.resources.getString(R.string.server_base_url))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .build()
@@ -37,10 +43,11 @@ object RetrofitClientWithAccessToken {
     private var ourInstance: Retrofit? = null
     val instance: Retrofit
         get() {
+            App.context.resources
             if (ourInstance == null)
                 ourInstance = Retrofit.Builder()
                     .client(OkHttpClient().newBuilder().addInterceptor(AccessTokenInterceptor()).authenticator(AccessTokenAuthenticator()).build())
-                    .baseUrl("http://baka.kr:9009/")
+                    .baseUrl(App.context.resources.getString(R.string.server_base_url))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .build()
@@ -56,7 +63,7 @@ object RetrofitClientWithRefreshToken {
             if (ourInstance == null)
                 ourInstance = Retrofit.Builder()
                     .client(OkHttpClient().newBuilder().addInterceptor(RefreshTokenInterceptor()).build())
-                    .baseUrl("http://baka.kr:9009/")
+                    .baseUrl(App.context.resources.getString(R.string.server_base_url))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .build()
