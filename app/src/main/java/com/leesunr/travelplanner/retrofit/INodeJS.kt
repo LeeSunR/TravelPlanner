@@ -40,4 +40,23 @@ interface INodeJS {
         @Field("gname") gname : String,
         @Field("photourl") photourl : String
     ) : Observable<String>
+
+    @POST("passwordChange")
+    @FormUrlEncoded
+    fun passwordChange(
+        @Field("nowpw") nowpw : String,
+        @Field("newpw") newpw : String
+    ) : Observable<String>
+
+    @POST("nicknameChange")
+    @FormUrlEncoded
+    fun nicknameChange(
+        @Field("newnickname") newnickname : String
+    ) : Observable<String>
+
+    @Multipart
+    @POST("userPhotoChange")
+    fun userPhotoChange(
+        @Part imagefile : MultipartBody.Part
+    ) : Observable<String>
 }

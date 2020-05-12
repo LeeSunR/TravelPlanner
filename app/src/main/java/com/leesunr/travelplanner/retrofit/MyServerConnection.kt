@@ -38,7 +38,7 @@ object MyServerAPI {
                         ok?.invoke(it)
                     },
                     { it ->
-                        if(error.invoke(it.toString())){
+                        if(error.invoke(it.toString()) && it.message!!.contains("401")){ //만료된 토큰이라면
                             App.prefs_access.myAccessToken = null
                             App.prefs_refresh.myRefreshToken = null
                             val intent = Intent(activity, LoginActivity::class.java)

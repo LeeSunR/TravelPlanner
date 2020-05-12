@@ -1,12 +1,7 @@
 package com.leesunr.travelplanner.retrofit
 
-import android.app.Application
-import android.content.Context
-import android.content.res.Resources
 import android.util.Log
-import android.os.Bundle
 import com.leesunr.travelplanner.R
-
 import com.leesunr.travelplanner.util.App
 import com.leesunr.travelplanner.util.JWT
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -21,8 +16,10 @@ import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.lang.Exception
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+
 
 object RetrofitClient {
     private var ourInstance: Retrofit? = null
@@ -76,7 +73,24 @@ class AccessTokenInterceptor(): Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request: Request = chain.request()
         val newRequest:Request = request.newBuilder().addHeader("Authorization", App.prefs_access.myAccessToken).build()
-        return chain.proceed(newRequest)
+
+        val response = chain.proceed(newRequest)
+        val contentType = response.body()!!.contentType()
+        val content = response.body()!!.string()
+
+        //결과에 토큰이 있으면 저장
+        try {
+            val jsonObject = JSONObject(content)
+            val access_token = jsonObject.getString("access_token")
+            val refresh_token = jsonObject.getString("refresh_token")
+            App.prefs_access.myAccessToken = access_token
+            App.prefs_refresh.myRefreshToken = refresh_token
+            Log.d("[token renewal]","ok")
+        }catch (e:Exception){
+        }
+
+        val wrappedBody = ResponseBody.create(contentType, content)
+        return response.newBuilder().body(wrappedBody).build()
     }
 }
 
