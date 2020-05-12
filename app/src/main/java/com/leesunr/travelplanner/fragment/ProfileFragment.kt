@@ -9,6 +9,9 @@ import android.graphics.BitmapFactory
 import android.media.ThumbnailUtils
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.InputType.TYPE_CLASS_TEXT
+import android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -116,6 +119,9 @@ class ProfileFragment : Fragment() {
             pwNow.hint="기존 비밀번호"
             pwNew.hint="새로운 비밀번호"
             pwNewConfirm.hint="새로운 비밀번호 확인"
+            pwNow.transformationMethod = PasswordTransformationMethod.getInstance()
+            pwNew.transformationMethod = PasswordTransformationMethod.getInstance()
+            pwNewConfirm.transformationMethod = PasswordTransformationMethod.getInstance()
             linearLayout.setPadding(dpAsPixels,0,dpAsPixels,0)
             linearLayout.orientation = LinearLayout.VERTICAL
             linearLayout.addView(pwNow)
