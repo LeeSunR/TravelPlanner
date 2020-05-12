@@ -24,9 +24,9 @@ object MyServerAPI {
             if (error.invoke("invalid_token")) {
                 App.prefs_access.myAccessToken = null
                 App.prefs_refresh.myRefreshToken = null
-                val intent: Intent = Intent(activity, LoginActivity::class.java)
+                val intent = Intent(activity, LoginActivity::class.java)
                 activity.startActivity(intent)
-                ActivityCompat.finishAffinity(activity);
+                ActivityCompat.finishAffinity(activity)
             }
         }else {
             val compositeDisposable = CompositeDisposable()
@@ -41,7 +41,7 @@ object MyServerAPI {
                         if(error.invoke(it.toString())){
                             App.prefs_access.myAccessToken = null
                             App.prefs_refresh.myRefreshToken = null
-                            val intent: Intent = Intent(activity, LoginActivity::class.java)
+                            val intent = Intent(activity, LoginActivity::class.java)
                             activity.startActivity(intent)
                             ActivityCompat.finishAffinity(activity);
                         }

@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".activity.GroupCreateActivity"></activity>
         <activity android:name=".activity.FindIdPwActivity" />
         <activity android:name=".activity.GroupChatActivity" />
         <activity android:name=".activity.SignUpActivity" />

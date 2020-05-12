@@ -29,8 +29,15 @@ interface INodeJS {
     fun renewalAccessToken(): Observable<String>
 
     @Multipart
-    @POST("/uploadProfile")
+    @POST("uploadProfile")
     fun uploadProfile(
         @Part imagefile : MultipartBody.Part
     ): Observable<String>
+
+    @POST("createGroup")
+    @FormUrlEncoded
+    fun createGroup(
+        @Field("gname") gname : String,
+        @Field("photourl") photourl : String
+    ) : Observable<String>
 }

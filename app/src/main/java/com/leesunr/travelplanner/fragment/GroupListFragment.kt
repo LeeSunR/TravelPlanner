@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.leesunr.travelplanner.R
+import com.leesunr.travelplanner.activity.GroupCreateActivity
 import com.leesunr.travelplanner.activity.GroupMainActivity
 import kotlinx.android.synthetic.main.fragment_group_list.*
 
@@ -30,6 +31,11 @@ class GroupListFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         btn_goto_group_main.setOnClickListener {
             val nextIntent = Intent(mContext, GroupMainActivity::class.java)
+            startActivity(nextIntent)
+        }
+
+        btn_goto_group_create.setOnClickListener { view ->
+            val nextIntent = Intent(mContext, GroupCreateActivity::class.java)
             startActivity(nextIntent)
         }
     }

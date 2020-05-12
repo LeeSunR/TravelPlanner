@@ -16,7 +16,7 @@
         android:layout_height="48dp"/>
 
     <TextView
-        android:id="@+id/travel_group_mamber_number"
+        android:id="@+id/travel_group_member_number"
         android:layout_marginLeft="15dp"
         android:text="참가자 : 8명"
         app:layout_constraintLeft_toRightOf="@+id/travel_group_image"

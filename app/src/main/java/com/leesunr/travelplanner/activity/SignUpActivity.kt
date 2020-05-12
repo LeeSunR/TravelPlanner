@@ -101,7 +101,6 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun uploadStorage(path: String, user_id: String, password: String, nickname: String, email: String) {
 
-
         val bitmap = BitmapFactory.decodeFile(path) //이미지 비트맵으로 열기
         val newBitmap = ThumbnailUtils.extractThumbnail(bitmap, 128, 128); //비트맵 크기 및 비율 변경
 
@@ -112,12 +111,12 @@ class SignUpActivity : AppCompatActivity() {
         fileStream.close()
 
         //임시 저장된 이미지 전송
-        val newile = File(getExternalFilesDir("tmp").path+"profile.png")
+        val newFile = File(getExternalFilesDir("tmp").path+"profile.png")
 
-        var requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), newile)
-        var body: MultipartBody.Part = MultipartBody.Part.createFormData("imagefile", newile.name, requestBody)
+        var requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), newFile)
+        var body: MultipartBody.Part = MultipartBody.Part.createFormData("imagefile", newFile.name, requestBody)
 //        val userID: RequestBody = RequestBody.create(MediaType.parse("text/plain"), user_id)
-        Log.e("file",file.name)
+        Log.e("file", file.name)
         // 파일, 사용자 아이디, 파일이름
         compositeDisposable.add(myAPI.uploadProfile(body)
             .subscribeOn(Schedulers.io())
@@ -128,7 +127,7 @@ class SignUpActivity : AppCompatActivity() {
                     Log.d("upload", message)
                 },
                 { error ->
-                    Toast.makeText(this, "프로필 사진 업로드 실패", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "사진 업로드 실패", Toast.LENGTH_SHORT).show()
                     Log.d("upload error", error.message)
                 }
             )
@@ -152,7 +151,6 @@ class SignUpActivity : AppCompatActivity() {
             )
         )
     }
-
 
     // 프로필 사진 뷰에 삽입
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
