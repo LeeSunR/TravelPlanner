@@ -41,6 +41,9 @@ interface INodeJS {
         @Field("photourl") photourl : String
     ) : Observable<String>
 
+    @POST("groupList")
+    fun loadGroupList() : Observable<String>
+
     @POST("passwordChange")
     @FormUrlEncoded
     fun passwordChange(
