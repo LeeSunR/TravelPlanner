@@ -37,6 +37,10 @@ class HomeFragment : Fragment() {
     private var mContext: Context? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
+    companion object {
+        const val LOCATION_REQUEST_CODE = 0xDA41
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -45,13 +49,14 @@ class HomeFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_home, null)
 
-        getLocation()
+
 
         return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        getLocation()
         exchange_button.setOnClickListener {
             val builder = AlertDialog.Builder(ContextThemeWrapper(mContext,
                 R.style.Theme_AppCompat_Light_Dialog
@@ -95,59 +100,108 @@ class HomeFragment : Fragment() {
 
     fun getLocation(){
         if(ContextCompat.checkSelfPermission(mContext as Activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(mContext as Activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),1000) // 권한 요청
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),LOCATION_REQUEST_CODE) // 권한 요청
         }else{
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext as Activity)
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location : Location? ->
-                    Log.i("위도", location?.latitude.toString())
-                    Log.i("경도", location?.longitude.toString())
-                    val client = OkHttpClient()
-
-                    val apiUrl: String = "https://api.openweathermap.org/data/2.5/onecall?lang=kr&units=metric&appid=f3aff0322884727e09206a2c1fa06384"+"&lat="+location?.latitude.toString()+"&lon="+location?.longitude.toString()
-                    val request = Request.Builder().url(apiUrl).build()
-
-                    client.newCall(request).enqueue(object: Callback {
-                        override fun onFailure(call: Call, e: IOException){
-
-                            Log.i("result","fial")
-                        }
-                        @SuppressLint("SetTextI18n")
-                        override fun onResponse(call: Call, response: Response) {
-                            val jsonObject = JSONObject(response?.body()?.string())
-                            val jsonArray:JSONArray = jsonObject.getJSONArray("daily")
-
-                            //현재
-                            val timezone:String = jsonObject.getString("timezone")
-                            val todayTemp:String = jsonObject.getJSONObject("current").getString("temp").toDouble().roundToInt().toString()
-                            val todayWeather:String = jsonObject.getJSONObject("current").getJSONArray("weather").getJSONObject(0).getString("description")
-
-                            //내일
-                            val tomorrowTempMin:String = jsonArray.getJSONObject(1).getJSONObject("temp").getString("min").toDouble().roundToInt().toString()
-                            val tomorrowTempMax:String = jsonArray.getJSONObject(1).getJSONObject("temp").getString("max").toDouble().roundToInt().toString()
-                           //val tomorrowWeather:String = jsonArray.getJSONObject(1).getJSONArray("weather").getJSONObject(0).getString("description")
-
-                            //모레
-                            val dayAfterTomorrowTempMin:String = jsonArray.getJSONObject(2).getJSONObject("temp").getString("min").toDouble().roundToInt().toString()
-                            val dayAfterTomorrowTempMax:String = jsonArray.getJSONObject(2).getJSONObject("temp").getString("max").toDouble().roundToInt().toString()
-                            //val dayAfterTomorrowWeather:String = jsonArray.getJSONObject(2).getJSONArray("weather").getJSONObject(0).getString("description")
-
-                            (mContext as Activity).runOnUiThread{
-                                today_weather_place_text?.text = timezone
-                                today_weather_place_temp?.text = "$todayTemp℃"
-                                today_weather_description?.text = todayWeather
-
-                                tomorrow_weather_max?.text = "$tomorrowTempMax℃"
-                                tomorrow_weather_min?.text = "$tomorrowTempMin℃"
-
-                                day_after_tomorrow_weather_max?.text = "$dayAfterTomorrowTempMax℃"
-                                day_after_tomorrow_weather_min?.text = "$dayAfterTomorrowTempMin℃"
-                            }
-                        }
-                    })
-                }
+            weatherUpdate();
         }
     }
 
 
+    fun weatherUpdate(){
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext as Activity)
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location : Location? ->
+                Log.i("위도", location?.latitude.toString())
+                Log.i("경도", location?.longitude.toString())
+                val client = OkHttpClient()
+
+                val apiUrl: String = "https://api.openweathermap.org/data/2.5/onecall?lang=kr&units=metric&appid=f3aff0322884727e09206a2c1fa06384"+"&lat="+location?.latitude.toString()+"&lon="+location?.longitude.toString()
+                val request = Request.Builder().url(apiUrl).build()
+
+                client.newCall(request).enqueue(object: Callback {
+                    override fun onFailure(call: Call, e: IOException){
+
+                        Log.i("result","fial")
+                    }
+                    @SuppressLint("SetTextI18n")
+                    override fun onResponse(call: Call, response: Response) {
+                        val jsonObject = JSONObject(response?.body()?.string())
+                        val jsonArray:JSONArray = jsonObject.getJSONArray("daily")
+
+                        //현재
+                        val timezone:String = jsonObject.getString("timezone")
+                        val todayTemp:String = jsonObject.getJSONObject("current").getString("temp").toDouble().roundToInt().toString()
+                        val todayWeather:String = jsonObject.getJSONObject("current").getJSONArray("weather").getJSONObject(0).getString("description")
+                        val todayWeatherIcon:String = jsonObject.getJSONObject("current").getJSONArray("weather").getJSONObject(0).getString("icon")
+
+                        //내일
+                        val tomorrowTempMin:String = jsonArray.getJSONObject(1)
+                            .getJSONObject("temp")
+                            .getString("min")
+                            .toDouble()
+                            .roundToInt()
+                            .toString()
+                        val tomorrowTempMax:String = jsonArray.getJSONObject(1)
+                            .getJSONObject("temp")
+                            .getString("max")
+                            .toDouble()
+                            .roundToInt()
+                            .toString()
+                        val tomorrowWeatherIcon:String = jsonArray.getJSONObject(1)
+                            .getJSONArray("weather")
+                            .getJSONObject(0)
+                            .getString("icon")
+
+                        Log.e("날씨 아이콘",tomorrowWeatherIcon);
+                        //val tomorrowWeather:String = jsonArray.getJSONObject(1).getJSONArray("weather").getJSONObject(0).getString("description")
+
+                        //모레
+                        val dayAfterTomorrowTempMin:String = jsonArray.getJSONObject(2)
+                            .getJSONObject("temp")
+                            .getString("min")
+                            .toDouble()
+                            .roundToInt()
+                            .toString()
+                        val dayAfterTomorrowTempMax:String = jsonArray.getJSONObject(2)
+                            .getJSONObject("temp")
+                            .getString("max")
+                            .toDouble()
+                            .roundToInt()
+                            .toString()
+                        val dayAfterTomorrowWeatherIcon:String = jsonArray.getJSONObject(2)
+                            .getJSONArray("weather")
+                            .getJSONObject(0)
+                            .getString("icon")
+                        //val dayAfterTomorrowWeather:String = jsonArray.getJSONObject(2).getJSONArray("weather").getJSONObject(0).getString("description")
+
+                        (mContext as Activity).runOnUiThread{
+                            today_weather_place_text?.text = timezone
+                            today_weather_place_temp?.text = "$todayTemp℃"
+                            today_weather_description?.text = todayWeather
+                            Glide.with(mContext as Activity).load("http://openweathermap.org/img/wn/$todayWeatherIcon@2x.png").into(today_weather_image)
+
+                            tomorrow_weather_max?.text = "$tomorrowTempMax℃"
+                            tomorrow_weather_min?.text = "$tomorrowTempMin℃"
+                            Glide.with(mContext as Activity).load("http://openweathermap.org/img/wn/$tomorrowWeatherIcon@2x.png").into(tomorrow_weather_image)
+
+                            day_after_tomorrow_weather_max?.text = "$dayAfterTomorrowTempMax℃"
+                            day_after_tomorrow_weather_min?.text = "$dayAfterTomorrowTempMin℃"
+                            Glide.with(mContext as Activity).load("http://openweathermap.org/img/wn/$dayAfterTomorrowWeatherIcon@2x.png").into(day_after_tomorrow_weather_image)
+
+                        }
+                    }
+                })
+            }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if(requestCode==LOCATION_REQUEST_CODE &&  grantResults.size > 0){
+            weatherUpdate()
+        }else
+            Log.e("[error]","LOCATION_REQUEST_CODE Permission denied")
+    }
 }

@@ -46,7 +46,6 @@
                 android:layout_margin="10dp"
                 android:id="@+id/today_weather_image"
                 android:layout_gravity="center"
-                android:background="@drawable/ic_weather_sunny"
                 android:layout_width="80dp"
                 android:layout_height="80dp"/>
             <TextView
@@ -94,7 +93,6 @@
                     android:layout_margin="10dp"
                     android:id="@+id/tomorrow_weather_image"
                     android:layout_gravity="center"
-                    android:background="@drawable/ic_weather_sunny"
                     android:layout_width="32dp"
                     android:layout_height="32dp"/>
                 <LinearLayout
@@ -150,7 +148,6 @@
                     android:layout_margin="10dp"
                     android:id="@+id/day_after_tomorrow_weather_image"
                     android:layout_gravity="center"
-                    android:background="@drawable/ic_weather_sunny"
                     android:layout_width="32dp"
                     android:layout_height="32dp"/>
                 <LinearLayout
