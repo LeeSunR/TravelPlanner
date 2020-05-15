@@ -1,4 +1,4 @@
-package com.leesunr.travelplanner
+package com.leesunr.travelplanner.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.model.Group
 import java.text.SimpleDateFormat
 
@@ -18,10 +19,12 @@ class GroupListAdapter (val context: Context, val groupList: ArrayList<Group>) :
 
         if(convertView == null){
             view = LayoutInflater.from(context).inflate(R.layout.list_item_group, null)
-            holder = ViewHolder()
+            holder =
+                ViewHolder()
             holder.groupName = view.findViewById(R.id.travel_group_title)
             holder.groupPhoto = view.findViewById(R.id.travel_group_image)
             holder.groupRegdate = view.findViewById(R.id.travel_group_date)
+            holder.groupMemberCount = view.findViewById(R.id.travel_group_member_count)
 
             view.tag = holder
             /* convertView가 null, 즉 최초로 화면을 실행할 때에
@@ -38,6 +41,7 @@ class GroupListAdapter (val context: Context, val groupList: ArrayList<Group>) :
         Glide.with(context).load(group.gphotourl).into(holder.groupPhoto!!)
         holder.groupName?.text = group.gname
         holder.groupRegdate?.text = "생성일 : ${SimpleDateFormat("yyyy-MM-dd").format(group.gregdate)}"
+        holder.groupMemberCount?.text = "참가자 : ${group.gmember_count}명"
 
         return view
     }
@@ -58,6 +62,7 @@ class GroupListAdapter (val context: Context, val groupList: ArrayList<Group>) :
         var groupName : TextView? = null
         var groupRegdate: TextView? = null
         var groupPhoto : ImageView? = null
+        var groupMemberCount : TextView? = null
     }
 
 }

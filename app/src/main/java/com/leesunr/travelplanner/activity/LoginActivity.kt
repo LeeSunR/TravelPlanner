@@ -67,10 +67,6 @@ class LoginActivity : AppCompatActivity() {
                     //SharedPreferences 사용하여 access_token 디바이스에 저장
                     App.prefs_access.myAccessToken = access_token
                     App.prefs_refresh.myRefreshToken = refresh_token
-                    /*val msg1 = App.prefs_access.myAccessToken
-                    val msg2 = App.prefs_refresh.myRefreshToken
-                    Log.d("AcessToken : ", msg1)
-                    Log.d("RefreshToken : ", msg2)*/
                 },
                 { error ->
                     Toast.makeText(this,"로그인 실패", Toast.LENGTH_SHORT).show()

@@ -59,7 +59,6 @@ class ProfileFragment : Fragment() {
         val payload = JWT.decoded(App.prefs_access.myAccessToken)
         val user = User().parseUser(payload!!)
         val dateFormat = SimpleDateFormat("yyyy-MM-dd");
-
         Glide.with(this)
             .load(getString(R.string.server_base_url)+user.photourl)
             .signature(ObjectKey(System.currentTimeMillis()))

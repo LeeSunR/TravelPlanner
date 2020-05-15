@@ -9,10 +9,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SimpleAdapter
 import android.widget.Toast
-import androidx.fragment.app.FragmentTransaction
-import com.leesunr.travelplanner.GroupListAdapter
+import com.leesunr.travelplanner.adapter.GroupListAdapter
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.activity.GroupCreateActivity
 import com.leesunr.travelplanner.activity.GroupMainActivity
@@ -22,8 +20,6 @@ import com.leesunr.travelplanner.retrofit.MyServerAPI
 import com.leesunr.travelplanner.retrofit.RetrofitClientWithAccessToken
 import kotlinx.android.synthetic.main.fragment_group_list.*
 import org.json.JSONArray
-import java.text.SimpleDateFormat
-
 
 class GroupListFragment : Fragment() {
     private var mContext: Context? = null
@@ -64,13 +60,16 @@ class GroupListFragment : Fragment() {
                 //    lateinit var groupMemberCnt : IntArray
 
                 for(i in 0 until jsonArray.length()){
-                    Log.e("i = ", i.toString())
                     val jsonObject = jsonArray.getJSONObject(i)
                     val group = Group().parseGroup(jsonObject)
                     groupList.add(group)
                 }
 
-                val groupAdapter = GroupListAdapter(mContext as Activity, groupList)
+                val groupAdapter =
+                    GroupListAdapter(
+                        mContext as Activity,
+                        groupList
+                    )
                 listView_group.adapter = groupAdapter
                 Log.e("GroupList: ", "success")
             },

@@ -13,28 +13,17 @@ import android.util.Log
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.leesunr.travelplanner.R
-import com.leesunr.travelplanner.fragment.GroupListFragment
 import com.leesunr.travelplanner.retrofit.INodeJS
 import com.leesunr.travelplanner.retrofit.MyServerAPI
-import com.leesunr.travelplanner.retrofit.RetrofitClient
 import com.leesunr.travelplanner.retrofit.RetrofitClientWithAccessToken
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_group_create.*
-import kotlinx.android.synthetic.main.activity_group_main.*
-import kotlinx.android.synthetic.main.activity_sign_up.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Retrofit
 import java.io.File
 import java.io.FileOutputStream
 
 class GroupCreateActivity : AppCompatActivity() {
-
-    val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
-    var compositeDisposable = CompositeDisposable()
     var fileUri = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +31,7 @@ class GroupCreateActivity : AppCompatActivity() {
         setContentView(R.layout.activity_group_create)
 
         //토큰 검사
+        val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
         MyServerAPI.call(this, myAPI.checkAccessToken(), {}, {return@call true})
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
@@ -102,27 +92,23 @@ class GroupCreateActivity : AppCompatActivity() {
 //        val userID: RequestBody = RequestBody.create(MediaType.parse("text/plain"), user_id)
         Log.e("file", file.name)
         // 파일, 사용자 아이디, 파일이름
-        compositeDisposable.add(myAPI.uploadProfile(body)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
+        val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
+        MyServerAPI.call(this, myAPI.uploadProfile(body),
                 { message ->
                     createGroup(gname, message)
                     Log.d("upload", message)
                 },
                 { error ->
                     Toast.makeText(this, "사진 업로드 실패", Toast.LENGTH_SHORT).show()
-                    Log.d("upload error", error.message)
+                    Log.d("upload error", error)
+                    return@call true
                 }
             )
-        )
     }
 
     private fun createGroup(gname : String, photourl : String) {
-        compositeDisposable.add(myAPI.createGroup(gname, photourl)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
+        val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
+        MyServerAPI.call(this, myAPI.createGroup(gname, photourl),
                 { result ->
                     Toast.makeText(this, "그룹 만들기 성공", Toast.LENGTH_SHORT).show()
                     Log.d("group create: ", result)
@@ -130,19 +116,9 @@ class GroupCreateActivity : AppCompatActivity() {
                 },
                 { error ->
                     Toast.makeText(this, "그룹 만들기 실패", Toast.LENGTH_SHORT).show()
-                    Log.d("group create error", error.message)
+                    Log.d("group create error", error)
+                    return@call true
                 }
             )
-        )
-    }
-
-    override fun onStop() {
-        compositeDisposable.clear()
-        super.onStop()
-    }
-
-    override fun onDestroy() {
-        compositeDisposable.clear()
-        super.onDestroy()
     }
 }
