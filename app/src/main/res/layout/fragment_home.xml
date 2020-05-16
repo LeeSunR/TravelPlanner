@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"/>
                 <TextView
                     android:id="@+id/today_weather_place_text"
-                    android:text="프랑스 파리"
+                    android:text=""
                     app:layout_constraintTop_toTopOf="@+id/today_weather_place_pin"
                     app:layout_constraintBottom_toBottomOf="@+id/today_weather_place_pin"
                     app:layout_constraintRight_toRightOf="parent"
@@ -52,20 +52,19 @@
                 android:id="@+id/today_weather_description"
                 android:textAlignment="center"
                 android:textSize="20dp"
-                android:text="맑음"
+                android:text="불러오는중"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:id="@+id/today_weather_place_temp"
                 android:textAlignment="center"
                 android:textSize="40dp"
-                android:text="20℃"
+                android:text=""
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:padding="10dp"
             android:layout_marginVertical="10dp"
             android:layout_marginHorizontal="20dp"
             android:elevation="4dp"
@@ -74,101 +73,183 @@
             android:layout_height="wrap_content">
             <LinearLayout
                 android:orientation="vertical"
-                android:id="@+id/layout_tomorrow"
+                android:id="@+id/layout_weather_1"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/weather_line"
+                app:layout_constraintRight_toLeftOf="@+id/layout_weather_2"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginHorizontal="20dp"
                 android:layout_marginVertical="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-
                 <TextView
-                    android:text="내일"
+                    android:id="@+id/weather_day_1"
+                    android:text=""
                     android:textAlignment="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
                 <ImageView
                     android:layout_margin="10dp"
-                    android:id="@+id/tomorrow_weather_image"
+                    android:id="@+id/weather_image_1"
                     android:layout_gravity="center"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"/>
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"/>
                 <LinearLayout
                     android:layout_gravity="center"
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:id="@+id/tomorrow_weather_min"
-                        android:textSize="16dp"
+                        android:id="@+id/weather_min_1"
+                        android:textSize="12dp"
                         android:textColor="#0000FF"
                         android:layout_marginHorizontal="5dp"
-                        android:text="20℃"
+                        android:text=""
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <TextView
-                        android:id="@+id/tomorrow_weather_max"
-                        android:textSize="16dp"
+                        android:id="@+id/weather_max_1"
+                        android:textSize="12dp"
                         android:textColor="#FF0000"
                         android:layout_marginHorizontal="5dp"
-                        android:text="20℃"
+                        android:text=""
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
             </LinearLayout>
-            <View
-                android:id="@+id/weather_line"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/layout_day_after_tomorrow"
-                app:layout_constraintLeft_toRightOf="@+id/layout_tomorrow"
-                android:layout_width="1dp"
-                android:layout_height="80dp"
-                android:background="#CDCDCD"/>
+
             <LinearLayout
-                android:id="@+id/layout_day_after_tomorrow"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="10dp"
+                android:orientation="vertical"
+                android:id="@+id/layout_weather_2"
+                app:layout_constraintRight_toLeftOf="@+id/layout_weather_3"
+                app:layout_constraintLeft_toRightOf="@+id/layout_weather_1"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/weather_line"
-                android:orientation="vertical"
+                android:layout_marginVertical="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-
                 <TextView
-                    android:text="모레"
+                    android:id="@+id/weather_day_2"
+                    android:text=""
                     android:textAlignment="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
                 <ImageView
                     android:layout_margin="10dp"
-                    android:id="@+id/day_after_tomorrow_weather_image"
+                    android:id="@+id/weather_image_2"
                     android:layout_gravity="center"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"/>
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"/>
                 <LinearLayout
                     android:layout_gravity="center"
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:id="@+id/day_after_tomorrow_weather_min"
-                        android:textSize="16dp"
-                        android:textColor="#00F"
+                        android:id="@+id/weather_min_2"
+                        android:textSize="12dp"
+                        android:textColor="#0000FF"
                         android:layout_marginHorizontal="5dp"
-                        android:text="20℃"
+                        android:text=""
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <TextView
-                        android:id="@+id/day_after_tomorrow_weather_max"
-                        android:textSize="16dp"
-                        android:textColor="#F00"
+                        android:id="@+id/weather_max_2"
+                        android:textSize="12dp"
+                        android:textColor="#FF0000"
                         android:layout_marginHorizontal="5dp"
-                        android:text="20℃"
+                        android:text=""
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/layout_weather_3"
+                app:layout_constraintRight_toLeftOf="@+id/layout_weather_4"
+                app:layout_constraintLeft_toRightOf="@+id/layout_weather_2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginVertical="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/weather_day_3"
+                    android:text=""
+                    android:textAlignment="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <ImageView
+                    android:layout_margin="10dp"
+                    android:id="@+id/weather_image_3"
+                    android:layout_gravity="center"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"/>
+                <LinearLayout
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/weather_min_3"
+                        android:textSize="12dp"
+                        android:textColor="#0000FF"
+                        android:layout_marginHorizontal="5dp"
+                        android:text=""
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/weather_max_3"
+                        android:textSize="12dp"
+                        android:textColor="#FF0000"
+                        android:layout_marginHorizontal="5dp"
+                        android:text=""
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/layout_weather_4"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/layout_weather_3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginVertical="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/weather_day_4"
+                    android:text=""
+                    android:textAlignment="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <ImageView
+                    android:layout_margin="10dp"
+                    android:id="@+id/weather_image_4"
+                    android:layout_gravity="center"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"/>
+                <LinearLayout
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/weather_min_4"
+                        android:textSize="12dp"
+                        android:textColor="#0000FF"
+                        android:layout_marginHorizontal="5dp"
+                        android:text=""
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/weather_max_4"
+                        android:textSize="12dp"
+                        android:textColor="#FF0000"
+                        android:layout_marginHorizontal="5dp"
+                        android:text=""
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -193,7 +274,6 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:src="@drawable/ic_flag_jpy"
                 android:background="@drawable/home_box_style"
                 android:layout_width="64dp"
                 android:layout_height="64dp"/>
@@ -201,7 +281,7 @@
             <TextView
                 android:id="@+id/exchange_country_name"
                 android:layout_marginLeft="10dp"
-                android:text="일본"
+                android:text=""
                 android:textSize="24dp"
                 app:layout_constraintLeft_toRightOf="@+id/exchange_country_flag"
                 app:layout_constraintTop_toTopOf="@+id/exchange_country_flag"
@@ -211,7 +291,7 @@
             <TextView
                 android:id="@+id/exchange_country_cost_info"
                 android:layout_marginLeft="10dp"
-                android:text="1KRW = 10.254JPY"
+                android:text=""
                 android:textSize="16dp"
                 app:layout_constraintLeft_toRightOf="@+id/exchange_country_flag"
                 app:layout_constraintBottom_toBottomOf="@+id/exchange_country_flag"
@@ -221,10 +301,22 @@
             <TextView
                 android:id="@+id/exchange_country_cost"
                 android:layout_marginLeft="10dp"
-                android:text="1024JPY"
+                android:text=""
                 android:textSize="24dp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:id="@+id/exchange_placeholder"
+                android:text="환율정보를 확인하려면 클릭하세요"
+                android:textSize="16dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

@@ -10,6 +10,7 @@
         <item>관광지</item>
         <item>카페</item>
         <item>식사</item>
+        <item>추가바람</item>
     </string-array>
     <string-array name="country">
         <item>오스트레일리아</item>
@@ -27,7 +28,7 @@
         <item>태국</item>
         <item>대만</item>
         <item>미국</item>
-        <item>배트남</item>
+<!--        <item>배트남</item>-->
     </string-array>
     <string-array name="country_word">
         <item>aud</item>
@@ -45,6 +46,16 @@
         <item>thb</item>
         <item>twd</item>
         <item>usd</item>
-        <item>vnd</item>
+<!--        <item>vnd</item>-->
+    </string-array>
+    <string-array name="dayOfWeek">
+        <item>오류</item>
+        <item>일</item>
+        <item>월</item>
+        <item>화</item>
+        <item>수</item>
+        <item>목</item>
+        <item>금</item>
+        <item>토</item>
     </string-array>
 </resources>

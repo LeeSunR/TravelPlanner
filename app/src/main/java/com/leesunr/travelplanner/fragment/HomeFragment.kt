@@ -6,7 +6,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -15,8 +14,9 @@ import android.view.ContextThemeWrapper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -27,8 +27,12 @@ import java.io.IOException
 import org.json.JSONObject
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.leesunr.travelplanner.R
-import com.leesunr.travelplanner.activity.LoginActivity
+import com.leesunr.travelplanner.model.Weather
+import com.leesunr.travelplanner.util.App
+import java.util.*
 import kotlin.math.roundToInt
 
 
@@ -49,13 +53,12 @@ class HomeFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_home, null)
 
-
-
         return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        weatherViewUpdate()
         getLocation()
         exchange_button.setOnClickListener {
             val builder = AlertDialog.Builder(ContextThemeWrapper(mContext,
@@ -71,7 +74,9 @@ class HomeFragment : Fragment() {
                     val request = Request.Builder().url(apiUrl).build()
                     client.newCall(request).enqueue(object :Callback{
                         override fun onResponse(call: Call?, response: Response?) {
+                            exchange_placeholder.visibility = INVISIBLE
                             val jsonObject = JSONObject(response?.body()?.string())
+                            Log.e("result",jsonObject.toString())
                             val rate:Double = ((jsonObject.getJSONArray(queryPair).getDouble(0)*1000).roundToInt().toDouble())/1000
                             (mContext as Activity).runOnUiThread{
                                 exchange_country_name.text=countryName
@@ -80,7 +85,6 @@ class HomeFragment : Fragment() {
                                 exchange_country_cost.text =  (100/jsonObject.getJSONArray(queryPair).getDouble(0)).roundToInt().toString()+"KRW"
                             }
                         }
-
                         override fun onFailure(call: Call?, e: IOException?) {
                         }
                     })
@@ -111,16 +115,12 @@ class HomeFragment : Fragment() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext as Activity)
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location : Location? ->
-                Log.i("위도", location?.latitude.toString())
-                Log.i("경도", location?.longitude.toString())
                 val client = OkHttpClient()
-
                 val apiUrl: String = "https://api.openweathermap.org/data/2.5/onecall?lang=kr&units=metric&appid=f3aff0322884727e09206a2c1fa06384"+"&lat="+location?.latitude.toString()+"&lon="+location?.longitude.toString()
                 val request = Request.Builder().url(apiUrl).build()
 
                 client.newCall(request).enqueue(object: Callback {
                     override fun onFailure(call: Call, e: IOException){
-
                         Log.i("result","fial")
                     }
                     @SuppressLint("SetTextI18n")
@@ -129,66 +129,34 @@ class HomeFragment : Fragment() {
                         val jsonArray:JSONArray = jsonObject.getJSONArray("daily")
 
                         //현재
-                        val timezone:String = jsonObject.getString("timezone")
-                        val todayTemp:String = jsonObject.getJSONObject("current").getString("temp").toDouble().roundToInt().toString()
-                        val todayWeather:String = jsonObject.getJSONObject("current").getJSONArray("weather").getJSONObject(0).getString("description")
-                        val todayWeatherIcon:String = jsonObject.getJSONObject("current").getJSONArray("weather").getJSONObject(0).getString("icon")
+                        var weather = arrayOf(Weather(),Weather(),Weather(),Weather(),Weather());
 
-                        //내일
-                        val tomorrowTempMin:String = jsonArray.getJSONObject(1)
-                            .getJSONObject("temp")
-                            .getString("min")
-                            .toDouble()
-                            .roundToInt()
-                            .toString()
-                        val tomorrowTempMax:String = jsonArray.getJSONObject(1)
-                            .getJSONObject("temp")
-                            .getString("max")
-                            .toDouble()
-                            .roundToInt()
-                            .toString()
-                        val tomorrowWeatherIcon:String = jsonArray.getJSONObject(1)
-                            .getJSONArray("weather")
-                            .getJSONObject(0)
-                            .getString("icon")
+                        weather[0].weatherIcon = jsonObject.getJSONObject("current").getJSONArray("weather").getJSONObject(0).getString("icon")
+                        weather[0].weatherName = jsonObject.getJSONObject("current").getJSONArray("weather").getJSONObject(0).getString("description")
+                        weather[0].tempNow = jsonObject.getJSONObject("current").getString("temp").toDouble().roundToInt()
+                        weather[0].timezone = jsonObject.getString("timezone")
+                        weather[0].date = Date(jsonObject.getJSONObject("current").getLong("dt")*1000L)
 
-                        Log.e("날씨 아이콘",tomorrowWeatherIcon);
-                        //val tomorrowWeather:String = jsonArray.getJSONObject(1).getJSONArray("weather").getJSONObject(0).getString("description")
-
-                        //모레
-                        val dayAfterTomorrowTempMin:String = jsonArray.getJSONObject(2)
-                            .getJSONObject("temp")
-                            .getString("min")
-                            .toDouble()
-                            .roundToInt()
-                            .toString()
-                        val dayAfterTomorrowTempMax:String = jsonArray.getJSONObject(2)
-                            .getJSONObject("temp")
-                            .getString("max")
-                            .toDouble()
-                            .roundToInt()
-                            .toString()
-                        val dayAfterTomorrowWeatherIcon:String = jsonArray.getJSONObject(2)
-                            .getJSONArray("weather")
-                            .getJSONObject(0)
-                            .getString("icon")
-                        //val dayAfterTomorrowWeather:String = jsonArray.getJSONObject(2).getJSONArray("weather").getJSONObject(0).getString("description")
-
-                        (mContext as Activity).runOnUiThread{
-                            today_weather_place_text?.text = timezone
-                            today_weather_place_temp?.text = "$todayTemp℃"
-                            today_weather_description?.text = todayWeather
-                            Glide.with(mContext as Activity).load("http://openweathermap.org/img/wn/$todayWeatherIcon@2x.png").into(today_weather_image)
-
-                            tomorrow_weather_max?.text = "$tomorrowTempMax℃"
-                            tomorrow_weather_min?.text = "$tomorrowTempMin℃"
-                            Glide.with(mContext as Activity).load("http://openweathermap.org/img/wn/$tomorrowWeatherIcon@2x.png").into(tomorrow_weather_image)
-
-                            day_after_tomorrow_weather_max?.text = "$dayAfterTomorrowTempMax℃"
-                            day_after_tomorrow_weather_min?.text = "$dayAfterTomorrowTempMin℃"
-                            Glide.with(mContext as Activity).load("http://openweathermap.org/img/wn/$dayAfterTomorrowWeatherIcon@2x.png").into(day_after_tomorrow_weather_image)
-
+                        for (i in 1 until 5){
+                            weather[i].tempMin = jsonArray.getJSONObject(i)
+                                .getJSONObject("temp")
+                                .getString("min")
+                                .toDouble()
+                                .roundToInt()
+                            weather[i].tempMax = jsonArray.getJSONObject(i)
+                                .getJSONObject("temp")
+                                .getString("max")
+                                .toDouble()
+                                .roundToInt()
+                            weather[i].weatherIcon = jsonArray.getJSONObject(i)
+                                .getJSONArray("weather")
+                                .getJSONObject(0)
+                                .getString("icon")
+                            weather[i].date = Date(jsonArray.getJSONObject(i).getLong("dt")*1000L)
                         }
+
+                        App.prefs_weather.weatherJsonString = Gson().toJson(weather)
+                        weatherViewUpdate()
                     }
                 })
             }
@@ -203,5 +171,46 @@ class HomeFragment : Fragment() {
             weatherUpdate()
         }else
             Log.e("[error]","LOCATION_REQUEST_CODE Permission denied")
+    }
+    
+    fun weatherViewUpdate(){
+
+        val gson = Gson()
+        val jsonString = App.prefs_weather.weatherJsonString
+        if(jsonString==null) return
+        var weatherArray = gson.fromJson(jsonString, Array<Weather>::class.java)   
+        
+        (mContext as Activity).runOnUiThread{
+            today_weather_place_text?.text = weatherArray[0].timezone
+            today_weather_place_temp?.text = "${weatherArray[0].tempNow}℃"
+            today_weather_description?.text = weatherArray[0].weatherName
+            if(today_weather_image!=null)
+                Glide.with(mContext as Activity).load("http://openweathermap.org/img/wn/${weatherArray[0].weatherIcon}@2x.png").into(today_weather_image)
+
+            weather_day_1?.text = resources.getStringArray(R.array.dayOfWeek)[weatherArray[1].getDayOfWeek()]
+            weather_max_1?.text = "${weatherArray[1].tempMax}℃"
+            weather_min_1?.text = "${weatherArray[1].tempMin}℃"
+            if(weather_image_1!=null)
+                Glide.with(mContext as Activity).load("http://openweathermap.org/img/wn/${weatherArray[1].weatherIcon}@2x.png").into(weather_image_1)
+
+            weather_day_2?.text = resources.getStringArray(R.array.dayOfWeek)[weatherArray[2].getDayOfWeek()]
+            weather_max_2?.text = "${weatherArray[2].tempMax}℃"
+            weather_min_2?.text = "${weatherArray[2].tempMin}℃"
+            if(weather_image_2!=null)
+                Glide.with(mContext as Activity).load("http://openweathermap.org/img/wn/${weatherArray[2].weatherIcon}@2x.png").into(weather_image_2)
+
+            weather_day_3?.text = resources.getStringArray(R.array.dayOfWeek)[weatherArray[3].getDayOfWeek()]
+            weather_max_3?.text = "${weatherArray[3].tempMax}℃"
+            weather_min_3?.text = "${weatherArray[3].tempMin}℃"
+            if(weather_image_3!=null)
+                Glide.with(mContext as Activity).load("http://openweathermap.org/img/wn/${weatherArray[3].weatherIcon}@2x.png").into(weather_image_3)
+
+            weather_day_4?.text = resources.getStringArray(R.array.dayOfWeek)[weatherArray[4].getDayOfWeek()]
+            weather_max_4?.text = "${weatherArray[4].tempMax}℃"
+            weather_min_4?.text = "${weatherArray[4].tempMin}℃"
+            if(weather_image_4!=null)
+                Glide.with(mContext as Activity).load("http://openweathermap.org/img/wn/${weatherArray [4].weatherIcon}@2x.png").into(weather_image_4)
+
+        }
     }
 }
