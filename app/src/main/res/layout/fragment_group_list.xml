@@ -37,12 +37,6 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-        android:id="@+id/btn_goto_group_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="임시 그룹으로 이동" />
-
     <ListView
         android:id="@+id/listView_group"
         android:layout_width="match_parent"

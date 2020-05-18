@@ -39,11 +39,6 @@ class GroupListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        btn_goto_group_main.setOnClickListener {
-            val nextIntent = Intent(mContext, GroupMainActivity::class.java)
-            startActivity(nextIntent)
-        }
-
         btn_goto_group_create.setOnClickListener { view ->
             val nextIntent = Intent(mContext, GroupCreateActivity::class.java)
             startActivityForResult(nextIntent, 1)
@@ -71,6 +66,12 @@ class GroupListFragment : Fragment() {
                         groupList
                     )
                 listView_group.adapter = groupAdapter
+
+                listView_group.setOnItemClickListener { parent, view, position, id ->
+                    val intent = Intent(mContext, GroupMainActivity::class.java)
+                    intent.putExtra("group", groupList[position])
+                    startActivity(intent)
+                }
                 Log.e("GroupList: ", "success")
             },
             { error ->
