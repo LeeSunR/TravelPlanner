@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 import com.leesunr.travelplanner.util.App
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.retrofit.INodeJS
@@ -15,6 +17,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONObject
 import retrofit2.Retrofit
+import kotlin.concurrent.thread
 
 class LoginActivity : AppCompatActivity() {
 
@@ -52,28 +55,37 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun login(userid: String, password: String) {
-        compositeDisposable.add(myAPI.loginUser(userid, password)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { ok ->
-                    Toast.makeText(this,"로그인 성공", Toast.LENGTH_SHORT).show()
-                    myStartActivity(MainActivity::class.java)
-                    Log.d("login completed", ok)
-
-                    val jsonObject = JSONObject(ok)
-                    val access_token = jsonObject.getString("access_token")
-                    val refresh_token = jsonObject.getString("refresh_token")
-                    //SharedPreferences 사용하여 access_token 디바이스에 저장
-                    App.prefs_access.myAccessToken = access_token
-                    App.prefs_refresh.myRefreshToken = refresh_token
-                },
-                { error ->
-                    Toast.makeText(this,"로그인 실패", Toast.LENGTH_SHORT).show()
-                    Log.d("login error", error.message)
+        thread {
+            FirebaseInstanceId.getInstance().deleteInstanceId()
+            FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    return@OnCompleteListener
                 }
-            )
-        )
+                val fcmtoken = task.result?.token
+                compositeDisposable.add(myAPI.loginUser(userid, password, fcmtoken!!)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                        { ok ->
+                            Toast.makeText(this,"로그인 성공", Toast.LENGTH_SHORT).show()
+                            myStartActivity(MainActivity::class.java)
+                            Log.d("login completed", ok)
+
+                            val jsonObject = JSONObject(ok)
+                            val access_token = jsonObject.getString("access_token")
+                            val refresh_token = jsonObject.getString("refresh_token")
+                            //SharedPreferences 사용하여 access_token 디바이스에 저장
+                            App.prefs_access.myAccessToken = access_token
+                            App.prefs_refresh.myRefreshToken = refresh_token
+                        },
+                        { error ->
+                            Toast.makeText(this,"로그인 실패", Toast.LENGTH_SHORT).show()
+                            Log.d("login error", error.message)
+                        }
+                    )
+                )
+            })
+        }
     }
 
     override fun onStop() {

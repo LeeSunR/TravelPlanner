@@ -19,6 +19,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <service android:name=".google.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity android:name=".activity.GroupCreateActivity"></activity>
         <activity android:name=".activity.FindIdPwActivity" />
         <activity android:name=".activity.GroupChatActivity" />

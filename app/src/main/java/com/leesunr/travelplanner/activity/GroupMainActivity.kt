@@ -9,16 +9,16 @@ import kotlinx.android.synthetic.main.activity_group_main.*
 
 class GroupMainActivity : AppCompatActivity() {
 
+    lateinit var group: Group
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group_main)
 
-        var gno : Int? = null
 
         if(intent.hasExtra("group")){
-            var group = intent.getParcelableExtra<Group>("group")
+            group = intent.getParcelableExtra<Group>("group")
             button_group_title.text = group.gname
-            gno = group.gno!!
         }
 
         button_group_back.setOnClickListener { finish() }
@@ -27,11 +27,14 @@ class GroupMainActivity : AppCompatActivity() {
         }
         button_group_plan_add.setOnClickListener {
             val intent = Intent(this, GroupPlanAddActivity::class.java)
-            intent.putExtra("gno", gno)
+            intent.putExtra("gno", group.gno)
             startActivity(intent)
         }
+
         button_group_chat.setOnClickListener {
-            startActivity(Intent(this, GroupChatActivity::class.java))
+            val intent = Intent(this, GroupChatActivity::class.java)
+            intent.putExtra("group", group)
+            startActivity(intent)
         }
     }
 }

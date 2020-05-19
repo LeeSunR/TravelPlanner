@@ -30,115 +30,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:gravity="left"
+    <ScrollView
+        android:id="@+id/scroll_group_chat"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
-            android:layout_margin="5dp"
-            android:text="닉네임"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="10dp"
-            android:background="@drawable/chatbox_others_style"
-            android:text="gfgd fdg re fdg dgfd gfdg dsg gdfg\ngfdggfd gfd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:layout_margin="5dp"
-            android:text="2020년 4월 24일  13시 32분"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:gravity="left"
+        <LinearLayout
+            android:id="@+id/layout_group_chat"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_margin="5dp"
-            android:text="닉네임"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_group_chat_message"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="10dp"
-            android:background="@drawable/chatbox_others_style"
-            android:text="gfgd fdg re fdg dgfd gfdg dsg gdfg\ngfdggfd gfd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:layout_margin="5dp"
-            android:text="2020년 4월 24일  13시 32분"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:gravity="left"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_margin="5dp"
-            android:text="닉네임"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="10dp"
-            android:layout_marginRight="100dp"
-            android:background="@drawable/chatbox_others_style"
-            android:text="gfgd fdg re fdg dgfd gfdg dsg gdfg\ngfdgg;ㅣㅏ;ㅏㅣ;ㅣㅏ;ㅏㅣ;ㅣㅏ;ㅏ;ㅣㅏ;ㅣㅏ;ㅣㅏ;fd gfd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:layout_margin="5dp"
-            android:text="2020년 4월 24일  13시 32분"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:gravity="right"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="10dp"
-            android:background="@drawable/chatbox_me_style"
-            android:text="gfgd fdg re fdg dgfd gfdg dsg gdfg\ngfdggfd gfd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:layout_margin="5dp"
-            android:text="2020년 4월 24일  13시 32분"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:gravity="left"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_margin="5dp"
-            android:text="닉네임"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="10dp"
-            android:background="@drawable/chatbox_others_style"
-            android:text="gfgd fdg re fdg dgfd gfdg dsg gdfg\ngfdggfd gfd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:layout_margin="5dp"
-            android:text="2020년 4월 24일  13시 32분"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="메세지를 입력하세요"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/btn_group_chat_send"
+            android:layout_marginHorizontal="8dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"/>
     </LinearLayout>
 </LinearLayout>

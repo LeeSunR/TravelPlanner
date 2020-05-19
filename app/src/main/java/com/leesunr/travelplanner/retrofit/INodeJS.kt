@@ -21,7 +21,8 @@ interface INodeJS {
     @FormUrlEncoded
     fun loginUser(
         @Field("userid") userid: String,
-        @Field("password") password: String
+        @Field("password") password: String,
+        @Field("fcmtoken") fcmtoken: String
     ): Observable<String>
 
     @POST("checkAccessToken")

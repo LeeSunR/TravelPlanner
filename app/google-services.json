@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "527310411782",
+    "firebase_url": "https://travelplanner-eb6fc.firebaseio.com",
+    "project_id": "travelplanner-eb6fc",
+    "storage_bucket": "travelplanner-eb6fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527310411782:android:2bc41d9f39ddbe3b428b87",
+        "android_client_info": {
+          "package_name": "com.leesunr.travelplanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "527310411782-tobolj3p8ieoqrfudoh40frr55abqa6f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.leesunr.travelplanner",
+            "certificate_hash": "6938cec00d54bbb5083ca7dcbdc5df32935378d3"
+          }
+        },
+        {
+          "client_id": "527310411782-os93bffdrr5dkfksam3tc4idkd5o27ut.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC13mZjNyxfQgugbxMgP-5lIwFnzBssux8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "527310411782-os93bffdrr5dkfksam3tc4idkd5o27ut.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
