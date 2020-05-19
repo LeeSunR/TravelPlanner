@@ -3,6 +3,8 @@ package com.leesunr.travelplanner.retrofit
 import io.reactivex.Observable
 import okhttp3.*
 import retrofit2.http.*
+import java.sql.Date
+import java.sql.Time
 
 interface INodeJS {
     @POST("signup")
@@ -61,5 +63,17 @@ interface INodeJS {
     @POST("userPhotoChange")
     fun userPhotoChange(
         @Part imagefile : MultipartBody.Part
+    ) : Observable<String>
+
+    @POST("createPlan")
+    @FormUrlEncoded
+    fun createPlan(
+        @Field("gno") gno : Int,
+        @Field("pname") pname : String,
+        @Field("pcomment") pcomment : String,
+        @Field("pinfo") pinfo : String,
+        @Field("ptype") ptype : String,
+        @Field("start_date") start_date : Date,
+        @Field("start_time") start_time : Time
     ) : Observable<String>
 }

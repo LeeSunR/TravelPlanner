@@ -10,7 +10,7 @@
         <item>관광지</item>
         <item>카페</item>
         <item>식사</item>
-        <item>추가바람</item>
+        <item>액티비티</item>
     </string-array>
     <string-array name="country">
         <item>오스트레일리아</item>
