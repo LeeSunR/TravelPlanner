@@ -28,6 +28,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             message.message = json.getString("message")
             message.nickname = json.getString("nickname")
             message.timestamp = json.getLong("timestamp")
+            message.photourl = json.getString("photourl")
             dbHandler.insert(message)
         }
     }

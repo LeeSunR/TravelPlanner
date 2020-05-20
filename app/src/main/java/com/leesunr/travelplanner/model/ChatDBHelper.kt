@@ -9,7 +9,7 @@ import android.util.Log
 class ChatDBHelper(context:Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION){
 
     companion object{
-        private const val DB_VERSION = 7
+        private const val DB_VERSION = 9
         private const val DB_NAME = "TRAVELPLANNER"
         private const val TABLE_NAME = "CHAT"
         private const val CNO = "cno"
@@ -18,6 +18,7 @@ class ChatDBHelper(context:Context): SQLiteOpenHelper(context, DB_NAME, null, DB
         private const val TIMESTAMP = "timestamp"
         private const val NICKNAME = "nickname"
         private const val MESSAGE = "message"
+        private const val PHOTOURL = "photourl"
         private const val CONFIRMED= "confirmed"
     }
 
@@ -28,6 +29,7 @@ class ChatDBHelper(context:Context): SQLiteOpenHelper(context, DB_NAME, null, DB
                 "$ID TEXT," +
                 "$TIMESTAMP LONG," +
                 "$NICKNAME TEXT," +
+                "$PHOTOURL TEXT," +
                 "$CONFIRMED BOOLEAN DEFAULT FALSE," +
                 "$MESSAGE TEXT)")
         db!!.execSQL(CREATE_TABLE_QUERY)
@@ -47,6 +49,7 @@ class ChatDBHelper(context:Context): SQLiteOpenHelper(context, DB_NAME, null, DB
         contentValues.put(TIMESTAMP,message.timestamp)
         contentValues.put(NICKNAME,message.nickname)
         contentValues.put(MESSAGE,message.message)
+        contentValues.put(PHOTOURL,message.photourl)
         db.insert(TABLE_NAME ,null ,contentValues)
         Log.e("insert","insert")
 
@@ -67,7 +70,7 @@ class ChatDBHelper(context:Context): SQLiteOpenHelper(context, DB_NAME, null, DB
                 message.gno = cursor.getInt(cursor.getColumnIndex(GNO))
                 message.cno = cursor.getInt(cursor.getColumnIndex(CNO))
                 message.id = cursor.getString(cursor.getColumnIndex(ID))
-                Log.e("select",message.message)
+                message.photourl = cursor.getString(cursor.getColumnIndex(PHOTOURL))
                 list.add(message)
             }while (cursor.moveToNext())
         }

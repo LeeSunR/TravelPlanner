@@ -10,6 +10,7 @@ class Message(
     var id : String? = null,
     var timestamp : Long? = null,
     var nickname : String? = null,
+    var photourl : String? = null,
     var message : String? = null
 )
 {

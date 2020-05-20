@@ -1,18 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:paddingTop="4dp"
     android:gravity="left"
-    android:layout_marginRight="64dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/tv_checkbox_others_nickname"
-        android:layout_margin="5dp"
-        android:text="닉네임"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/im_checkbox_profile"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_width="32dp"
+            android:layout_height="32dp"/>
+        <TextView
+            app:layout_constraintLeft_toRightOf="@+id/im_checkbox_profile"
+            app:layout_constraintTop_toTopOf="@+id/im_checkbox_profile"
+            app:layout_constraintBottom_toBottomOf="@+id/im_checkbox_profile"
+            android:id="@+id/tv_checkbox_nickname"
+            android:layout_margin="5dp"
+            android:text="닉네임"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <TextView
-        android:id="@+id/tv_checkbox_others_message"
+        android:id="@+id/tv_checkbox_message"
+        android:layout_marginRight="64dp"
         android:paddingHorizontal="20dp"
         android:paddingVertical="10dp"
         android:background="@drawable/chatbox_others_style"
@@ -20,9 +35,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <TextView
-        android:id="@+id/tv_checkbox_others_date"
+        android:visibility="visible"
+        android:id="@+id/tv_checkbox_date"
         android:layout_margin="5dp"
         android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/tv_checkbox_id"
+        android:text=""
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 </LinearLayout>

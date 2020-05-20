@@ -4,10 +4,16 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.TransformationUtils.circleCrop
+import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.model.ChatDBHelper
@@ -33,6 +39,8 @@ class GroupChatActivity : AppCompatActivity() {
     private lateinit var group:Group
     private lateinit var mSocket:Socket
     private lateinit var user:User
+    private var lastMessage:Message? = null
+    private var lastLayout:LinearLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +66,26 @@ class GroupChatActivity : AppCompatActivity() {
             scroll_group_chat.fullScroll(ScrollView.FOCUS_DOWN)
         }
 
+        layout_group_chat.setOnHierarchyChangeListener(object: ViewGroup.OnHierarchyChangeListener {
+            override fun onChildViewRemoved(parent: View?, child: View?) {}
+
+            override fun onChildViewAdded(parent: View?, child: View?) {
+                val layout = parent as LinearLayout
+                if(layout.childCount>1){
+                    val previousChild = layout.getChildAt(layout.childCount-2)
+                    if(previousChild.findViewById<TextView>(R.id.tv_checkbox_id).text == child!!.findViewById<TextView>(R.id.tv_checkbox_id).text)
+                        if(previousChild.findViewById<TextView>(R.id.tv_checkbox_date).text == child!!.findViewById<TextView>(R.id.tv_checkbox_date).text)
+                            previousChild.findViewById<TextView>(R.id.tv_checkbox_date).visibility = View.GONE
+
+                    if(child!!.findViewById<TextView>(R.id.tv_checkbox_id).text!=user.id)
+                        if(previousChild.findViewById<TextView>(R.id.tv_checkbox_id).text == child!!.findViewById<TextView>(R.id.tv_checkbox_id).text){
+                            child.findViewById<TextView>(R.id.tv_checkbox_nickname).visibility = View.GONE
+                            child.findViewById<ImageView>(R.id.im_checkbox_profile).visibility = View.GONE
+                        }
+                }
+            }
+        })
+
         //서버로부터 메세지를 받음
         mSocket.on("message",Emitter.Listener {
             val json = JSONObject(it[0].toString())
@@ -68,6 +96,7 @@ class GroupChatActivity : AppCompatActivity() {
             message.message = json.getString("message")
             message.nickname = json.getString("nickname")
             message.timestamp = json.getLong("timestamp")
+            message.photourl = json.getString("photourl")
             dbHandler.insert(message)
             printMessage(message)
         })
@@ -117,22 +146,25 @@ class GroupChatActivity : AppCompatActivity() {
     private fun printMessage(message: Message){
         val date = Date(message.timestamp!!)
         val format = SimpleDateFormat("MM월 dd일 HH시 mm분")
+        val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val layout:LinearLayout
         if (message.id == user.id){
+            layout = inflater.inflate(R.layout.chatbox_me, null) as LinearLayout
             runOnUiThread {
-                val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-                val layout = inflater.inflate(R.layout.chatbox_me, null) as LinearLayout
-                layout.findViewById<TextView>(R.id.tv_checkbox_me_message).text = message.message
-                layout.findViewById<TextView>(R.id.tv_checkbox_me_date).text = format.format(date)
+                layout.findViewById<TextView>(R.id.tv_checkbox_id).text = message.id
+                layout.findViewById<TextView>(R.id.tv_checkbox_message).text = message.message
+                layout.findViewById<TextView>(R.id.tv_checkbox_date).text = format.format(date)
                 layout_group_chat.addView(layout)
             }
         }
         else {
+            layout = inflater.inflate(R.layout.chatbox_others, null) as LinearLayout
             runOnUiThread {
-                val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-                val layout = inflater.inflate(R.layout.chatbox_others, null) as LinearLayout
-                layout.findViewById<TextView>(R.id.tv_checkbox_others_nickname).text = message.nickname
-                layout.findViewById<TextView>(R.id.tv_checkbox_others_message).text = message.message
-                layout.findViewById<TextView>(R.id.tv_checkbox_others_date).text = format.format(date)
+                layout.findViewById<TextView>(R.id.tv_checkbox_id).text = message.id
+                layout.findViewById<TextView>(R.id.tv_checkbox_nickname).text = message.nickname
+                layout.findViewById<TextView>(R.id.tv_checkbox_message).text = message.message
+                layout.findViewById<TextView>(R.id.tv_checkbox_date).text = format.format(date)
+                Glide.with(this).load(this.getString(R.string.server_base_url)+message.photourl).apply(RequestOptions().circleCrop()).into(layout.findViewById<ImageView>(R.id.im_checkbox_profile))
                 layout_group_chat.addView(layout)
             }
         }

@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:paddingTop="4dp"
     android:gravity="right"
-    android:layout_marginLeft="64dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <TextView
-        android:id="@+id/tv_checkbox_me_message"
+        android:id="@+id/tv_checkbox_message"
+        android:layout_marginLeft="64dp"
         android:paddingHorizontal="20dp"
         android:paddingVertical="10dp"
         android:background="@drawable/chatbox_me_style"
-        android:text=""
+        android:text="메세지를 불러오지 못했습니다"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <TextView
-        android:id="@+id/tv_checkbox_me_date"
+        android:visibility="visible"
+        android:id="@+id/tv_checkbox_date"
         android:layout_margin="5dp"
+        android:text="날짜를 불러오지 못했습니다"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/tv_checkbox_id"
         android:text=""
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 </LinearLayout>
