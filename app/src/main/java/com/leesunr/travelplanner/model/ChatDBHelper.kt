@@ -9,15 +9,16 @@ import android.util.Log
 class ChatDBHelper(context:Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION){
 
     companion object{
-        private val DB_VERSION = 2
-        private val DB_NAME = "TRAVELPLANNER"
-        private val TABLE_NAME = "CHAT"
-        private val CNO = "cno"
-        private val GNO = "gno"
-        private val ID = "id"
-        private val TIMESTAMP = "timestamp"
-        private val NICKNAME = "nickname"
-        private val MESSAGE = "message"
+        private const val DB_VERSION = 7
+        private const val DB_NAME = "TRAVELPLANNER"
+        private const val TABLE_NAME = "CHAT"
+        private const val CNO = "cno"
+        private const val GNO = "gno"
+        private const val ID = "id"
+        private const val TIMESTAMP = "timestamp"
+        private const val NICKNAME = "nickname"
+        private const val MESSAGE = "message"
+        private const val CONFIRMED= "confirmed"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -27,6 +28,7 @@ class ChatDBHelper(context:Context): SQLiteOpenHelper(context, DB_NAME, null, DB
                 "$ID TEXT," +
                 "$TIMESTAMP LONG," +
                 "$NICKNAME TEXT," +
+                "$CONFIRMED BOOLEAN DEFAULT FALSE," +
                 "$MESSAGE TEXT)")
         db!!.execSQL(CREATE_TABLE_QUERY)
     }
@@ -45,18 +47,17 @@ class ChatDBHelper(context:Context): SQLiteOpenHelper(context, DB_NAME, null, DB
         contentValues.put(TIMESTAMP,message.timestamp)
         contentValues.put(NICKNAME,message.nickname)
         contentValues.put(MESSAGE,message.message)
-
         db.insert(TABLE_NAME ,null ,contentValues)
+        Log.e("insert","insert")
+
     }
 
     fun select(gno:Int):ArrayList<Message>{
         var list = ArrayList<Message>()
 
         val selectQueryHandler = "SELECT * FROM $TABLE_NAME WHERE $GNO=$gno"
-
         Log.e("select",selectQueryHandler)
         val cursor = writableDatabase.rawQuery(selectQueryHandler,null)
-
         if (cursor.moveToFirst()){
             do{
                 val message = Message()
@@ -70,8 +71,14 @@ class ChatDBHelper(context:Context): SQLiteOpenHelper(context, DB_NAME, null, DB
                 list.add(message)
             }while (cursor.moveToNext())
         }
-        writableDatabase.close()
+        val contentValues = ContentValues()
+        contentValues.put(CONFIRMED,true)
+        writableDatabase.update(TABLE_NAME,contentValues,"",null)
         return list
+    }
+
+    fun deleteAll(){
+        writableDatabase.delete(TABLE_NAME,"",null)
     }
 
 }

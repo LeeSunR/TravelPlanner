@@ -41,7 +41,7 @@ class GroupChatActivity : AppCompatActivity() {
         if(intent.hasExtra("group"))
             group = intent.getParcelableExtra<Group>("group");
 
-        mSocket = IO.socket("http://192.168.35.235:5000")
+        mSocket = IO.socket(this.resources.getString(R.string.chat_server_base_url))
 
         //서버로부터 인증정보 요청을 받음
         mSocket.on("auth",Emitter.Listener {
@@ -63,7 +63,7 @@ class GroupChatActivity : AppCompatActivity() {
             val json = JSONObject(it[0].toString())
             val dbHandler = ChatDBHelper(this)
             val message = Message()
-            message.gno = group.gno
+            message.gno = json.getInt("gno")
             message.id = json.getString("id")
             message.message = json.getString("message")
             message.nickname = json.getString("nickname")

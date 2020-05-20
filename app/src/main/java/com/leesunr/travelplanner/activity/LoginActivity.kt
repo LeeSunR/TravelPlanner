@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.leesunr.travelplanner.util.App
 import com.leesunr.travelplanner.R
+import com.leesunr.travelplanner.model.ChatDBHelper
 import com.leesunr.travelplanner.retrofit.INodeJS
 import com.leesunr.travelplanner.retrofit.RetrofitClient
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -77,6 +78,8 @@ class LoginActivity : AppCompatActivity() {
                             //SharedPreferences 사용하여 access_token 디바이스에 저장
                             App.prefs_access.myAccessToken = access_token
                             App.prefs_refresh.myRefreshToken = refresh_token
+
+                            ChatDBHelper(this).deleteAll()
                         },
                         { error ->
                             Toast.makeText(this,"로그인 실패", Toast.LENGTH_SHORT).show()
