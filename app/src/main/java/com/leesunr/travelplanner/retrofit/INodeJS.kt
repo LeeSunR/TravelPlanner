@@ -37,16 +37,6 @@ interface INodeJS {
         @Part imagefile : MultipartBody.Part
     ): Observable<String>
 
-    @POST("createGroup")
-    @FormUrlEncoded
-    fun createGroup(
-        @Field("gname") gname : String,
-        @Field("photourl") photourl : String
-    ) : Observable<String>
-
-    @POST("groupList")
-    fun loadGroupList() : Observable<String>
-
     @POST("passwordChange")
     @FormUrlEncoded
     fun passwordChange(
@@ -66,6 +56,16 @@ interface INodeJS {
         @Part imagefile : MultipartBody.Part
     ) : Observable<String>
 
+    @POST("createGroup")
+    @FormUrlEncoded
+    fun createGroup(
+        @Field("gname") gname : String,
+        @Field("photourl") photourl : String
+    ) : Observable<String>
+
+    @POST("groupList")
+    fun loadGroupList() : Observable<String>
+
     @POST("createPlan")
     @FormUrlEncoded
     fun createPlan(
@@ -76,5 +76,11 @@ interface INodeJS {
         @Field("ptype") ptype : String,
         @Field("start_date") start_date : Date,
         @Field("start_time") start_time : Time
+    ) : Observable<String>
+
+    @POST("planList")
+    @FormUrlEncoded
+    fun loadPlanList(
+        @Field("gno") gno : Int
     ) : Observable<String>
 }
