@@ -2,15 +2,21 @@ package com.leesunr.travelplanner.activity
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -85,12 +91,39 @@ class GroupChatActivity : AppCompatActivity() {
                 rcv_group_chat.adapter!!.notifyDataSetChanged()
                 rcv_group_chat.scrollToPosition(rcv_group_chat.adapter!!.itemCount - 1);
             }
-
         })
 
+
+        /*버튼 엑션*/
+
+        //보내기 버튼
         btn_group_chat_send.setOnClickListener {
             messageSend()
         }
+
+        //채팅방 종료 버튼
+        button_group_chat_back.setOnClickListener {
+            finish()
+        }
+
+        /*이벤트*/
+
+        //텍스트 입력 이벤트
+        et_group_chat_message.addTextChangedListener(object: TextWatcher{
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if(s!!.isEmpty())
+                    btn_group_chat_send.backgroundTintList = ContextCompat.getColorStateList(context,R.color.colorMessageEnable)
+                else
+                    btn_group_chat_send.backgroundTintList = ContextCompat.getColorStateList(context,R.color.colorMessageAble)
+            }
+        })
     }
 
     override fun onResume() {
@@ -109,6 +142,7 @@ class GroupChatActivity : AppCompatActivity() {
                 val mAdapter = MessageRcyAdapter(this, messageList!!)
                 rcv_group_chat.adapter = mAdapter
                 rcv_group_chat.layoutManager = LinearLayoutManager(this)
+                rcv_group_chat.scrollToPosition(rcv_group_chat.adapter!!.itemCount - 1);
             }
         },{
             return@call true
@@ -124,6 +158,7 @@ class GroupChatActivity : AppCompatActivity() {
         val message = et_group_chat_message.text.toString()
         if(message != ""){
             mSocket.send(message)
+            et_group_chat_message.text=null
         }
     }
 }

@@ -5,8 +5,9 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorFocusBottomMenu">#505050</color>
     <color name="colorBlurBottomMenu">#999999</color>
-
     <color name="colorTopNavigationBack">#CCC</color>
     <color name="colorMessageOthers">#DDEEFF</color>
     <color name="colorMessageMe">#4499FF</color>
+    <color name="colorMessageEnable">#999999</color>
+    <color name="colorMessageAble">#4499FF</color>
 </resources>

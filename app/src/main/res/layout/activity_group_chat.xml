@@ -52,26 +52,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <LinearLayout
+        android:paddingVertical="4dp"
+        android:background="#C4DAEF"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
         <EditText
+            android:paddingLeft="10dp"
+
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/style_chat_edittext"
             android:id="@+id/et_group_chat_message"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_weight="1"
             android:ems="10"
             android:hint="메세지를 입력하세요"
             android:inputType="textPersonName" />
 
         <Button
+            android:backgroundTint="@color/colorMessageEnable"
+            android:background="@drawable/ic_send_black_24dp"
             android:id="@+id/btn_group_chat_send"
-            android:layout_marginHorizontal="8dp"
-            android:layout_width="32dp"
-            android:layout_height="32dp"/>
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
     </LinearLayout>
-
-
 
 </LinearLayout>
