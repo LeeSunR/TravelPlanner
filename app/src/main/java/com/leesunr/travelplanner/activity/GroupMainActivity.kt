@@ -7,7 +7,6 @@ import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.adapter.AllPlanRcyAdapter
-import com.leesunr.travelplanner.adapter.PlanRcyAdapter
 import com.leesunr.travelplanner.model.Group
 import com.leesunr.travelplanner.model.Plan
 import com.leesunr.travelplanner.retrofit.INodeJS

@@ -1,14 +1,22 @@
 package com.leesunr.travelplanner.adapter
 
+import android.app.Activity
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.model.Plan
+import com.leesunr.travelplanner.retrofit.INodeJS
+import com.leesunr.travelplanner.retrofit.MyServerAPI
+import com.leesunr.travelplanner.retrofit.RetrofitClientWithAccessToken
 import java.text.SimpleDateFormat
 
 class PlanRcyAdapter(val context: Context, val planList: ArrayList<Plan>) :
@@ -31,12 +39,29 @@ class PlanRcyAdapter(val context: Context, val planList: ArrayList<Plan>) :
         val pname = itemView.findViewById<TextView>(R.id.plan_list_title)
         val pinfo = itemView.findViewById<TextView>(R.id.plan_list_info_text)
         val pcomment = itemView.findViewById<TextView>(R.id.plan_list_comment_text)
+        val optionBtn = itemView.findViewById<Button>(R.id.plan_list_option_button)
 
         fun bind (plan: Plan, context: Context) {
             start_time.text = SimpleDateFormat("HH:mm").format(plan.start_time)
             pname.text = plan.pname
             pinfo.text = plan.pinfo
             pcomment.text = plan.pcomment
+
+            optionBtn.setOnClickListener {
+                    var pop = PopupMenu(context, optionBtn)
+
+                    pop.inflate(R.menu.popup_menu_plan)
+                    pop.setOnMenuItemClickListener { item ->
+                        when(item?.itemId){
+                            R.id.plan_modify ->
+                                Log.d("tag", "test")
+                            R.id.plan_delete ->
+                                deletePlan(plan.pno!!)
+                        }
+                        false
+                    }
+                    pop.show()
+            }
 
             when (plan.ptype){
                 "비행기" -> {
@@ -80,6 +105,19 @@ class PlanRcyAdapter(val context: Context, val planList: ArrayList<Plan>) :
                     ptype?.setImageResource(resourceId)
                 }
             }
+        }
+
+        fun deletePlan(pno : Int){
+            val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
+            MyServerAPI.call(context as Activity, myAPI.deletePlan(pno),
+                { result ->
+                    Log.d("deletePlan", result)
+                },
+                { error ->
+                    Log.e("deletePlan error", error)
+                    return@call true
+                }
+            )
         }
     }
 }

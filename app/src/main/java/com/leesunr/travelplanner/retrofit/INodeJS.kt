@@ -83,4 +83,10 @@ interface INodeJS {
     fun loadPlanList(
         @Field("gno") gno : Int
     ) : Observable<String>
+
+    @POST("deletePlan")
+    @FormUrlEncoded
+    fun deletePlan(
+        @Field("pno") pno : Int
+    ) : Observable<String>
 }
