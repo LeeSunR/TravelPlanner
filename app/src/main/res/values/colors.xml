@@ -7,4 +7,6 @@
     <color name="colorBlurBottomMenu">#999999</color>
 
     <color name="colorTopNavigationBack">#CCC</color>
+    <color name="colorMessageOthers">#DDEEFF</color>
+    <color name="colorMessageMe">#4499FF</color>
 </resources>
