@@ -21,7 +21,7 @@ class GroupPlanAddActivity : AppCompatActivity() {
         button_plan_add_submit.setOnClickListener {
             val year = plan_add_startDate.year
             val month = plan_add_startDate.month + 1
-            val day = plan_add_startDate.dayOfMonth
+            val day = plan_add_startDate.dayOfMonth +1
             val date_str = "$year-$month-$day"
 
             val hour = plan_add_startTime.hour

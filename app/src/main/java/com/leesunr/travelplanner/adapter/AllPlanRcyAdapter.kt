@@ -24,7 +24,6 @@ class AllPlanRcyAdapter (val context: Context, val allPlanList: ArrayList<ArrayL
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        Log.e("Adapter: ", allPlanList[position].toString())
         holder?.bind(allPlanList[position], context, position)
     }
 
@@ -39,7 +38,7 @@ class AllPlanRcyAdapter (val context: Context, val allPlanList: ArrayList<ArrayL
             allPlanRcycler.layoutManager = lm
             allPlanRcycler.adapter = adapter
 
-            start_date.text = SimpleDateFormat("MM월 dd일").format(plan[position].start_date)
+            start_date.text = SimpleDateFormat("MM월 dd일").format(plan[0].start_date)
         }
     }
 }

@@ -58,14 +58,13 @@ class GroupMainActivity : AppCompatActivity() {
 
                 var cur_date : String? = null
                 var new_date : String? = null
-
+                // 첫번째 일정의 날짜 세팅
                 var jsonObject = jsonArray.getJSONObject(0)
                 var plan = Plan().parsePlan(jsonObject)
                 cur_date = dateFormat.format(plan.start_date)
 
                 var allPlanList = ArrayList<ArrayList<Plan>>()
                 var planList = ArrayList<Plan>()
-                var tempList = ArrayList<Plan>()
 
                 for(i in 0 until jsonArray.length()){
                     jsonObject = jsonArray.getJSONObject(i)
@@ -77,16 +76,13 @@ class GroupMainActivity : AppCompatActivity() {
                     }
                     else {
                         cur_date = new_date
+                        allPlanList.add(planList)
 
-                        tempList.addAll(planList)
-                        allPlanList.add(tempList)
-
-                        planList.clear()
+                        planList = ArrayList<Plan>()
                         planList.add(plan)
-                        tempList = planList
                     }
                 }
-                allPlanList.add(tempList)
+                allPlanList.add(planList)
 
                 //레이아웃매니저를 설정해줍니다.
                 val mAdapter = AllPlanRcyAdapter(this, allPlanList)
