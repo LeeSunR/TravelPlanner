@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
             R.id.fragmentView,
             HomeFragment()
         ).commit()
+
         bottomNavi.setOnNavigationItemSelectedListener { item: MenuItem ->
             when (item.itemId){
                 R.id.tab_home ->{
@@ -48,6 +49,16 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             true
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(intent.hasExtra("groupFragment")){
+            supportFragmentManager.beginTransaction().replace(
+                R.id.fragmentView,
+                GroupListFragment()
+            ).commit()
         }
     }
 }

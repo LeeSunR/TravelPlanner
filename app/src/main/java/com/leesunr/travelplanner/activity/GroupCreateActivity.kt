@@ -6,11 +6,11 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.ThumbnailUtils
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.retrofit.INodeJS
@@ -112,7 +112,11 @@ class GroupCreateActivity : AppCompatActivity() {
                 { result ->
                     Toast.makeText(this, "그룹 만들기 성공", Toast.LENGTH_SHORT).show()
                     Log.d("group create: ", result)
-                    finish()
+                    setResult(Activity.RESULT_OK)
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("groupFragment", "")
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
                 },
                 { error ->
                     Toast.makeText(this, "그룹 만들기 실패", Toast.LENGTH_SHORT).show()

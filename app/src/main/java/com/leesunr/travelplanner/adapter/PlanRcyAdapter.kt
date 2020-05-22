@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.leesunr.travelplanner.R
@@ -56,7 +55,7 @@ class PlanRcyAdapter(val context: Context, val planList: ArrayList<Plan>) :
                             R.id.plan_modify ->
                                 Log.d("tag", "test")
                             R.id.plan_delete ->
-                                deletePlan(plan.pno!!)
+                                deletePlan(plan.pno!!, plan)
                         }
                         false
                     }
@@ -107,11 +106,13 @@ class PlanRcyAdapter(val context: Context, val planList: ArrayList<Plan>) :
             }
         }
 
-        fun deletePlan(pno : Int){
+        fun deletePlan(pno : Int, plan : Plan){
             val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
             MyServerAPI.call(context as Activity, myAPI.deletePlan(pno),
                 { result ->
                     Log.d("deletePlan", result)
+                    planList.remove(plan)
+                    this@PlanRcyAdapter.notifyDataSetChanged()
                 },
                 { error ->
                     Log.e("deletePlan error", error)

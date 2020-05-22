@@ -1,5 +1,6 @@
 package com.leesunr.travelplanner.activity
 
+import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -23,9 +24,14 @@ import java.text.SimpleDateFormat
 
 
 class GroupMainActivity : AppCompatActivity() {
-
+    val PLAN_ADD_REQUEST = 0
     lateinit var group: Group
     lateinit var myBroadcastReceiver:MyBroadcastReceiver
+
+    lateinit var planAdapter : AllPlanRcyAdapter
+    lateinit var allPlanList : ArrayList<ArrayList<Plan>>
+    lateinit var planList : ArrayList<Plan>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group_main)
@@ -41,22 +47,42 @@ class GroupMainActivity : AppCompatActivity() {
         filter.addAction("chatReceived")
         registerReceiver(myBroadcastReceiver, filter)
 
-        group.gno?.let { loadPlanList(it) }
+        planList = ArrayList<Plan>()
+        allPlanList = ArrayList<ArrayList<Plan>>()
+        planAdapter = AllPlanRcyAdapter(this, allPlanList)
 
         button_group_back.setOnClickListener { finish() }
         button_group_setting.setOnClickListener {
-            startActivity(Intent(this, GroupSettingActivity::class.java))
+            val intent = Intent(this, GroupSettingActivity::class.java)
+            Log.e("group.gno", group.gno.toString())
+            intent.putExtra("gno", group.gno)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
         }
         button_group_plan_add.setOnClickListener {
             val intent = Intent(this, GroupPlanAddActivity::class.java)
             intent.putExtra("gno", group.gno)
-            startActivity(intent)
+            startActivityForResult(intent, PLAN_ADD_REQUEST)
         }
 
         button_group_chat.setOnClickListener {
             val intent = Intent(this, GroupChatActivity::class.java)
             intent.putExtra("group", group)
             startActivity(intent)
+        }
+        loadPlanList(group.gno!!)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode){
+            PLAN_ADD_REQUEST -> {
+                if(resultCode == Activity.RESULT_OK) {
+                    planList = ArrayList<Plan>()
+                    allPlanList = ArrayList<ArrayList<Plan>>()
+                    loadPlanList(group.gno!!)
+                }
+            }
         }
     }
 
@@ -74,11 +100,9 @@ class GroupMainActivity : AppCompatActivity() {
                 var plan = Plan().parsePlan(jsonObject)
                 cur_date = dateFormat.format(plan.start_date)
 
-                var allPlanList = ArrayList<ArrayList<Plan>>()
-                var planList = ArrayList<Plan>()
-
                 for(i in 0 until jsonArray.length()){
                     jsonObject = jsonArray.getJSONObject(i)
+                    Log.d("jsonObject", jsonObject.toString())
                     plan = Plan().parsePlan(jsonObject)
 
                     new_date = dateFormat.format(plan.start_date)
@@ -96,8 +120,8 @@ class GroupMainActivity : AppCompatActivity() {
                 allPlanList.add(planList)
 
                 //레이아웃매니저를 설정해줍니다.
-                val mAdapter = AllPlanRcyAdapter(this, allPlanList)
-                recyclerView_all_plan.adapter = mAdapter
+                planAdapter = AllPlanRcyAdapter(this, allPlanList)
+                recyclerView_all_plan.adapter = planAdapter
 
                 val lm = LinearLayoutManager(this)
                 recyclerView_all_plan.layoutManager = lm

@@ -1,5 +1,6 @@
 package com.leesunr.travelplanner.activity
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +19,7 @@ class GroupPlanAddActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group_plan_add)
 
+        button_plan_add_back.setOnClickListener { finish() }
         button_plan_add_submit.setOnClickListener {
             val year = plan_add_startDate.year
             val month = plan_add_startDate.month + 1
@@ -51,8 +53,9 @@ class GroupPlanAddActivity : AppCompatActivity() {
         val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
         MyServerAPI.call(this, myAPI.createPlan(gno, pname, pcomment, pinfo, ptype, start_date, start_time),
             { result ->
-                Toast.makeText(this, "일정 등록을 성공하였습니다.", Toast.LENGTH_SHORT).show()
-                Log.d("plan creat: ", result)
+                Toast.makeText(this, "일정을 등록하였습니다.", Toast.LENGTH_SHORT).show()
+                Log.d("plan create", result)
+                setResult(Activity.RESULT_OK)
                 finish()
             },
             { error ->

@@ -32,7 +32,6 @@ class GroupListFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_group_list, null)
 
-
         return view
     }
 
@@ -41,7 +40,7 @@ class GroupListFragment : Fragment() {
 
         btn_goto_group_create.setOnClickListener { view ->
             val nextIntent = Intent(mContext, GroupCreateActivity::class.java)
-            startActivityForResult(nextIntent, 1)
+            startActivity(nextIntent)
         }
         loadGroupList()
     }
@@ -52,7 +51,6 @@ class GroupListFragment : Fragment() {
             { result ->
                 val jsonArray = JSONArray(result)
                 var groupList = arrayListOf<Group>()
-                //    lateinit var groupMemberCnt : IntArray
 
                 for(i in 0 until jsonArray.length()){
                     val jsonObject = jsonArray.getJSONObject(i)
@@ -60,11 +58,7 @@ class GroupListFragment : Fragment() {
                     groupList.add(group)
                 }
 
-                val groupAdapter =
-                    GroupListAdapter(
-                        mContext as Activity,
-                        groupList
-                    )
+                var groupAdapter = GroupListAdapter(mContext as Activity, groupList)
                 listView_group.adapter = groupAdapter
 
                 listView_group.setOnItemClickListener { parent, view, position, id ->
@@ -80,11 +74,6 @@ class GroupListFragment : Fragment() {
                 return@call true
             }
         )
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        loadGroupList()
     }
 
     override fun onAttach(context: Context) {

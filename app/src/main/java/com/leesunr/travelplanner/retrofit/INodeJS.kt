@@ -66,6 +66,12 @@ interface INodeJS {
     @POST("groupList")
     fun loadGroupList() : Observable<String>
 
+    @POST("deleteGroup")
+    @FormUrlEncoded
+    fun deleteGroup(
+        @Field("gno") gno : Int
+    ) : Observable<String>
+
     @POST("createPlan")
     @FormUrlEncoded
     fun createPlan(
