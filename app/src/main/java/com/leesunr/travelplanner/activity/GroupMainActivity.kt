@@ -1,12 +1,17 @@
 package com.leesunr.travelplanner.activity
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.adapter.AllPlanRcyAdapter
+import com.leesunr.travelplanner.model.ChatDBHelper
 import com.leesunr.travelplanner.model.Group
 import com.leesunr.travelplanner.model.Plan
 import com.leesunr.travelplanner.retrofit.INodeJS
@@ -16,10 +21,11 @@ import kotlinx.android.synthetic.main.activity_group_main.*
 import org.json.JSONArray
 import java.text.SimpleDateFormat
 
+
 class GroupMainActivity : AppCompatActivity() {
 
     lateinit var group: Group
-
+    lateinit var myBroadcastReceiver:MyBroadcastReceiver
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group_main)
@@ -28,6 +34,12 @@ class GroupMainActivity : AppCompatActivity() {
             group = intent.getParcelableExtra<Group>("group")
             button_group_title.text = group.gname
         }
+
+        myBroadcastReceiver = MyBroadcastReceiver(group_chat_alarm,group)
+
+        val filter = IntentFilter()
+        filter.addAction("chatReceived")
+        registerReceiver(myBroadcastReceiver, filter)
 
         group.gno?.let { loadPlanList(it) }
 
@@ -96,5 +108,29 @@ class GroupMainActivity : AppCompatActivity() {
                 return@call true
             }
         )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(myBroadcastReceiver);
+    }
+
+    override fun onResume() {
+        super.onResume()
+        group_chat_alarm.visibility=View.GONE
+        val unconfirmedMessage = ChatDBHelper(this).unconfirmedMessage(group.gno!!)
+        Log.e("result",unconfirmedMessage.toString())
+        if (unconfirmedMessage)
+            group_chat_alarm.visibility=View.VISIBLE
+    }
+
+    //새로운 채팅 수신 브로드케스트 리시버
+    class MyBroadcastReceiver(view: View, group:Group) : BroadcastReceiver() {
+        private val view = view
+        private val group = group
+        override fun onReceive(context: Context, intent: Intent) {
+            var gno = intent.getIntExtra("gno",-1)
+            if(gno==group.gno) view.visibility=View.VISIBLE
+        }
     }
 }

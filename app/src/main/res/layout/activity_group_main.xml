@@ -55,7 +55,9 @@
             app:layout_constraintRight_toLeftOf="@+id/button_group_setting"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <View
+            android:visibility="gone"
+            android:id="@+id/group_chat_alarm"
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:background="@drawable/round_style"

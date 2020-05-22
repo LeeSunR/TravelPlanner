@@ -1,5 +1,6 @@
 package com.leesunr.travelplanner.google
 
+import android.content.Intent
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -19,7 +20,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         if (remoteMessage.data.isNotEmpty()) {
-            Log.e(TAG, "${remoteMessage.data} : 이것은 data입니다.")
+            Log.e(TAG, "${remoteMessage.data} : fcm 수신.")
             val json = JSONObject(remoteMessage.data)
             val dbHandler = ChatDBHelper(applicationContext)
             val message = Message()
@@ -29,12 +30,15 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             message.nickname = json.getString("nickname")
             message.timestamp = json.getLong("timestamp")
             message.photourl = json.getString("photourl")
-            dbHandler.insert(message)
+            dbHandler.insert(message,false)
+
+            val intent = Intent("chatReceived")
+            intent.putExtra("gno",json.getInt("gno"))
+            sendBroadcast(intent)
         }
     }
 
     override fun onMessageSent(p0: String) {
         super.onMessageSent(p0)
     }
-
 }

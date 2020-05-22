@@ -84,7 +84,7 @@ class GroupChatActivity : AppCompatActivity() {
             message.nickname = json.getString("nickname")
             message.timestamp = json.getLong("timestamp")
             message.photourl = json.getString("photourl")
-            dbHandler.insert(message)
+            dbHandler.insert(message,true)
 
             messageList!!.add(message)
             runOnUiThread {
