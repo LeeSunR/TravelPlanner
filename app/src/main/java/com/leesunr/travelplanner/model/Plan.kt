@@ -15,7 +15,8 @@ data class Plan(
     var pinfo : String? = null,
     var ptype : String? = null,
     var start_date : Date? = null,
-    var start_time : Time? = null
+    var start_time : Time? = null,
+    var gno : Int? = null
 ): Parcelable
 {
     fun parsePlan(jsonObject: JSONObject): Plan{
@@ -26,6 +27,7 @@ data class Plan(
         this.ptype = jsonObject.getString("PTYPE")
         this.start_date = SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("START_DATE"))
         this.start_time = Time.valueOf(jsonObject.getString("START_TIME"))
+        this.gno = jsonObject.getInt("GNO")
         return this
     }
 }

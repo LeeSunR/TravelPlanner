@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -28,7 +27,6 @@ import org.json.JSONObject
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.model.Weather
 import com.leesunr.travelplanner.util.App

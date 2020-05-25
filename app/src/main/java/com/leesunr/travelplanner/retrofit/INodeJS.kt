@@ -115,4 +115,17 @@ interface INodeJS {
         @Field("pno") pno : Int
     ) : Observable<String>
 
+    @POST("modifyPlan")
+    @FormUrlEncoded
+    fun modifyPlan(
+        @Field("pno") pno : Int,
+        @Field("pname") pname : String,
+        @Field("pcomment") pcomment : String,
+        @Field("pinfo") pinfo : String,
+        @Field("ptype") ptype : String,
+        @Field("start_date") start_date : Date,
+        @Field("start_time") start_time : Time,
+        @Field("gno") gno : Int
+    ) : Observable<String>
+
 }

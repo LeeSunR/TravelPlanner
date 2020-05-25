@@ -2,6 +2,7 @@ package com.leesunr.travelplanner.activity
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.media.ThumbnailUtils
@@ -51,6 +52,7 @@ class GroupSettingActivity : AppCompatActivity() {
 
         Glide.with(this).load(group_image)
             .override(100, 100)
+            .signature(ObjectKey(System.currentTimeMillis()))
             .into(group_setting_image)
 
         button_group_setting_back.setOnClickListener {
@@ -99,9 +101,24 @@ class GroupSettingActivity : AppCompatActivity() {
                 .setNegativeButton("취소") { dialogInterface, i -> }
                 .show()
         }
-
+//그룹 삭제
         group_setting_delete.setOnClickListener {
-            deleteGroup(gno)
+            var builder = AlertDialog.Builder(this)
+            builder.setTitle("그룹 삭제")
+            builder.setMessage("이 그룹을 삭제하시겠습니까?")
+
+            var listener = object : DialogInterface.OnClickListener{
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+                    when(which){
+                        DialogInterface.BUTTON_POSITIVE ->
+                            deleteGroup(gno)
+                    }
+                }
+            }
+
+            builder.setPositiveButton("확인", listener)
+            builder.setNegativeButton("취소", listener)
+            builder.show()
         }
     }
 
@@ -131,6 +148,7 @@ class GroupSettingActivity : AppCompatActivity() {
                     Glide.with(this)
                         .load(group.gphotourl)
                         .signature(ObjectKey(System.currentTimeMillis()))
+                        .override(100, 100)
                         .into(group_setting_image)
                     change = true
                 },{ error ->

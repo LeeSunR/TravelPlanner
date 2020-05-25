@@ -1,7 +1,6 @@
 package com.leesunr.travelplanner.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +37,7 @@ class AllPlanRcyAdapter (val context: Context, val allPlanList: ArrayList<ArrayL
             allPlanRcycler.layoutManager = lm
             allPlanRcycler.adapter = adapter
 
-            start_date.text = SimpleDateFormat("MM월 dd일").format(plan[0].start_date)
+            start_date.text = SimpleDateFormat("yyyy/MM/dd (EEE)").format(plan[0].start_date)
         }
     }
 }

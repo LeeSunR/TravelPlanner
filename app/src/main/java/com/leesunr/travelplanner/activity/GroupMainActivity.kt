@@ -24,7 +24,9 @@ import java.text.SimpleDateFormat
 
 
 class GroupMainActivity : AppCompatActivity() {
-    val PLAN_ADD_REQUEST = 0
+    companion object {
+        const val PLAN_ADD_REQUEST = 0
+    }
     lateinit var group: Group
     lateinit var myBroadcastReceiver:MyBroadcastReceiver
 
@@ -76,18 +78,14 @@ class GroupMainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when(requestCode){
-            PLAN_ADD_REQUEST -> {
-                if(resultCode == Activity.RESULT_OK) {
-                    planList = ArrayList<Plan>()
-                    allPlanList = ArrayList<ArrayList<Plan>>()
-                    loadPlanList(group.gno!!)
-                }
-            }
+        if(resultCode == Activity.RESULT_OK) {
+            planList = ArrayList<Plan>()
+            allPlanList = ArrayList<ArrayList<Plan>>()
+            loadPlanList(group.gno!!)
         }
     }
 
-    fun loadPlanList(gno : Int){
+    private fun loadPlanList(gno : Int){
         val dateFormat = SimpleDateFormat("yyyy-MM-dd");
         val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
         MyServerAPI.call(this, myAPI.loadPlanList(gno),

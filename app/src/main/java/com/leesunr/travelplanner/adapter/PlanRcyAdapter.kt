@@ -2,6 +2,7 @@ package com.leesunr.travelplanner.adapter
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.leesunr.travelplanner.R
+import com.leesunr.travelplanner.activity.GroupPlanAddActivity
 import com.leesunr.travelplanner.model.Plan
 import com.leesunr.travelplanner.retrofit.INodeJS
 import com.leesunr.travelplanner.retrofit.MyServerAPI
@@ -66,8 +68,11 @@ class PlanRcyAdapter(val context: Context, val planList: ArrayList<Plan>) :
                     pop.inflate(R.menu.popup_menu_plan)
                     pop.setOnMenuItemClickListener { item ->
                         when(item?.itemId){
-                            R.id.plan_modify ->
-                                Log.d("tag", "test")
+                            R.id.plan_modify ->{
+                                val intent = Intent(context, GroupPlanAddActivity::class.java)
+                                intent.putExtra("planInfo", plan)
+                                context.startActivity(intent)
+                            }
                             R.id.plan_delete ->
                                 deletePlan(plan.pno!!, plan)
                         }
@@ -120,7 +125,7 @@ class PlanRcyAdapter(val context: Context, val planList: ArrayList<Plan>) :
             }
         }
 
-        fun deletePlan(pno : Int, plan : Plan){
+        private fun deletePlan(pno : Int, plan : Plan){
             val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
             MyServerAPI.call(context as Activity, myAPI.deletePlan(pno),
                 { result ->
