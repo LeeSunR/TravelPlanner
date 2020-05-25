@@ -9,6 +9,7 @@ import android.media.ThumbnailUtils
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -92,7 +93,8 @@ class ProfileFragment : Fragment() {
                         val payload = JWT.decoded(App.prefs_access.myAccessToken)
                         val user = User().parseUser(payload!!)
                         profile_nickname.text = user.nickname
-                    },{
+                    },{ error ->
+                        Log.e("profile Nickname Change Error", error)
                         return@call true
                     })
                 }

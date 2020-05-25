@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
@@ -39,12 +40,25 @@ class PlanRcyAdapter(val context: Context, val planList: ArrayList<Plan>) :
         val pinfo = itemView.findViewById<TextView>(R.id.plan_list_info_text)
         val pcomment = itemView.findViewById<TextView>(R.id.plan_list_comment_text)
         val optionBtn = itemView.findViewById<Button>(R.id.plan_list_option_button)
+        val fold = itemView.findViewById<Button>(R.id.plan_list_fold_button)
+        val hidden_layout = itemView.findViewById<LinearLayout>(R.id.plan_list_layout2)
 
         fun bind (plan: Plan, context: Context) {
             start_time.text = SimpleDateFormat("HH:mm").format(plan.start_time)
             pname.text = plan.pname
             pinfo.text = plan.pinfo
             pcomment.text = plan.pcomment
+
+            fold.setOnClickListener {
+                if(hidden_layout.visibility == View.GONE){
+                    fold.setBackgroundResource(R.drawable.ic_arrow_drop_up_black_24dp)
+                    hidden_layout.visibility = View.VISIBLE
+                }
+                else {
+                    fold.setBackgroundResource(R.drawable.ic_arrow_drop_down_black_24dp)
+                    hidden_layout.visibility = View.GONE
+                }
+            }
 
             optionBtn.setOnClickListener {
                     var pop = PopupMenu(context, optionBtn)

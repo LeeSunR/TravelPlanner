@@ -1,5 +1,6 @@
 package com.leesunr.travelplanner.retrofit
 
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import okhttp3.*
 import retrofit2.http.*
@@ -31,6 +32,7 @@ interface INodeJS {
     @POST("renewalAccessToken")
     fun renewalAccessToken(): Observable<String>
 
+    /******************** 프로필 ********************/
     @Multipart
     @POST("uploadProfile")
     fun uploadProfile(
@@ -56,6 +58,7 @@ interface INodeJS {
         @Part imagefile : MultipartBody.Part
     ) : Observable<String>
 
+    /******************** 그룹 ********************/
     @POST("createGroup")
     @FormUrlEncoded
     fun createGroup(
@@ -72,6 +75,22 @@ interface INodeJS {
         @Field("gno") gno : Int
     ) : Observable<String>
 
+    @POST("groupNameChange")
+    @FormUrlEncoded
+    fun groupNameChange(
+        @Field("gno") gno : Int,
+        @Field("newGroupName") newGroupName : String
+    ) : Observable<String>
+
+    @Multipart
+    @POST("groupPhotoChange")
+    fun groupPhotoChange(
+        @Part imagefile : MultipartBody.Part,
+        @Part("gno") gno : RequestBody
+    ) : Observable<String>
+
+
+    /******************** 일정 ********************/
     @POST("createPlan")
     @FormUrlEncoded
     fun createPlan(
@@ -95,4 +114,5 @@ interface INodeJS {
     fun deletePlan(
         @Field("pno") pno : Int
     ) : Observable<String>
+
 }

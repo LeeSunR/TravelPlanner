@@ -23,8 +23,16 @@ data class Group(
         this.gno = jsonObject.getInt("GNO")
         this.gname = jsonObject.getString("GNAME")
         this.gregdate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX").parse(jsonObject.getString("REGDATE"))
-        this.gphotourl = App.context.resources.getString(R.string.server_base_url) + jsonObject.getString("PHOTO_URL") //getString 사용 어떻게?
+        this.gphotourl = App.context.resources.getString(R.string.server_base_url) + jsonObject.getString("PHOTO_URL")
         this.gmember_count = jsonObject.getInt("MEMBER_COUNT")
+        return this
+    }
+
+    fun parseEditGroup(jsonObject: JSONObject) : Group {
+        this.gno = jsonObject.getInt("GNO")
+        this.gname = jsonObject.getString("GNAME")
+        this.gregdate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX").parse(jsonObject.getString("REGDATE"))
+        this.gphotourl = App.context.resources.getString(R.string.server_base_url) + jsonObject.getString("PHOTO_URL")
         return this
     }
 

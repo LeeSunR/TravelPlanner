@@ -54,8 +54,9 @@ class GroupMainActivity : AppCompatActivity() {
         button_group_back.setOnClickListener { finish() }
         button_group_setting.setOnClickListener {
             val intent = Intent(this, GroupSettingActivity::class.java)
-            Log.e("group.gno", group.gno.toString())
             intent.putExtra("gno", group.gno)
+            intent.putExtra("groupName", group.gname)
+            intent.putExtra("groupImage", group.gphotourl)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
         }
@@ -102,13 +103,10 @@ class GroupMainActivity : AppCompatActivity() {
 
                 for(i in 0 until jsonArray.length()){
                     jsonObject = jsonArray.getJSONObject(i)
-                    Log.d("jsonObject", jsonObject.toString())
                     plan = Plan().parsePlan(jsonObject)
-
                     new_date = dateFormat.format(plan.start_date)
-                    if(cur_date.equals(new_date)){
-                        planList.add(plan)
-                    }
+
+                    if(cur_date.equals(new_date)) planList.add(plan)
                     else {
                         cur_date = new_date
                         allPlanList.add(planList)
@@ -153,8 +151,8 @@ class GroupMainActivity : AppCompatActivity() {
         private val view = view
         private val group = group
         override fun onReceive(context: Context, intent: Intent) {
-            var gno = intent.getIntExtra("gno",-1)
-            if(gno==group.gno) view.visibility=View.VISIBLE
+            var gno = intent.getIntExtra("gno", -1)
+            if (gno == group.gno) view.visibility = View.VISIBLE
         }
     }
 }
