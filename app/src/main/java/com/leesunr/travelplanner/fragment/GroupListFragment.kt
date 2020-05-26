@@ -42,6 +42,11 @@ class GroupListFragment : Fragment() {
             val nextIntent = Intent(mContext, GroupCreateActivity::class.java)
             startActivity(nextIntent)
         }
+        //loadGroupList()
+    }
+
+    override fun onResume() {
+        super.onResume()
         loadGroupList()
     }
 

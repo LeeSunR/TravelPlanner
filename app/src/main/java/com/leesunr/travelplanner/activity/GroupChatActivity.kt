@@ -1,32 +1,15 @@
 package com.leesunr.travelplanner.activity
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.ScrollView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
-import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.TransformationUtils.circleCrop
-import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.leesunr.travelplanner.R
-import com.leesunr.travelplanner.adapter.AllPlanRcyAdapter
 import com.leesunr.travelplanner.adapter.MessageRcyAdapter
-import com.leesunr.travelplanner.model.ChatDBHelper
+import com.leesunr.travelplanner.DBHelper.ChatDBHelper
 import com.leesunr.travelplanner.model.Group
 import com.leesunr.travelplanner.model.Message
 import com.leesunr.travelplanner.model.User
@@ -40,11 +23,8 @@ import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_group_chat.*
-import kotlinx.android.synthetic.main.activity_group_main.*
 import org.json.JSONObject
 import java.net.URISyntaxException
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -138,7 +118,9 @@ class GroupChatActivity : AppCompatActivity() {
                 e.printStackTrace()
                 finish()
             } finally {
-                messageList = ChatDBHelper(this).select(group.gno!!)
+                messageList = ChatDBHelper(
+                    this
+                ).select(group.gno!!)
                 val mAdapter = MessageRcyAdapter(this, messageList!!)
                 rcv_group_chat.adapter = mAdapter
                 rcv_group_chat.layoutManager = LinearLayoutManager(this)
