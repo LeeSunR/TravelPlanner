@@ -10,6 +10,7 @@ class App : Application() {
         lateinit var prefs_access : MySharedPreferences
         lateinit var prefs_refresh : MySharedPreferences
         lateinit var prefs_weather : MySharedPreferences
+        lateinit var groupConfirmed : MySharedPreferences
     }
     /* prefs라는 이름의 MySharedPreferences 하나만 생성할 수 있도록 설정. */
 
@@ -19,6 +20,8 @@ class App : Application() {
         prefs_refresh =
             MySharedPreferences(applicationContext)
         prefs_weather =
+            MySharedPreferences(applicationContext)
+        groupConfirmed =
             MySharedPreferences(applicationContext)
 
         context = applicationContext

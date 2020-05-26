@@ -7,9 +7,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
+import com.leesunr.travelplanner.DBHelper.ChatDBHelper
 import com.leesunr.travelplanner.util.App
 import com.leesunr.travelplanner.R
-import com.leesunr.travelplanner.model.ChatDBHelper
 import com.leesunr.travelplanner.retrofit.INodeJS
 import com.leesunr.travelplanner.retrofit.RetrofitClient
 import io.reactivex.android.schedulers.AndroidSchedulers

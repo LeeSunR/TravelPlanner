@@ -12,14 +12,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.adapter.AllPlanRcyAdapter
-import com.leesunr.travelplanner.model.ChatDBHelper
+import com.leesunr.travelplanner.DBHelper.ChatDBHelper
 import com.leesunr.travelplanner.model.Group
 import com.leesunr.travelplanner.model.Plan
 import com.leesunr.travelplanner.retrofit.INodeJS
 import com.leesunr.travelplanner.retrofit.MyServerAPI
 import com.leesunr.travelplanner.retrofit.RetrofitClientWithAccessToken
+import com.leesunr.travelplanner.util.App
 import kotlinx.android.synthetic.main.activity_group_main.*
 import org.json.JSONArray
+import org.json.JSONObject
 import java.text.SimpleDateFormat
 
 
@@ -29,6 +31,7 @@ class GroupMainActivity : AppCompatActivity() {
     }
     lateinit var group: Group
     lateinit var myBroadcastReceiver:MyBroadcastReceiver
+    lateinit var planBroadcastReceiver:PlanBroadcastReceiver
 
     lateinit var planAdapter : AllPlanRcyAdapter
     lateinit var allPlanList : ArrayList<ArrayList<Plan>>
@@ -44,10 +47,16 @@ class GroupMainActivity : AppCompatActivity() {
         }
 
         myBroadcastReceiver = MyBroadcastReceiver(group_chat_alarm,group)
+        planBroadcastReceiver = PlanBroadcastReceiver(this, group)
 
-        val filter = IntentFilter()
-        filter.addAction("chatReceived")
-        registerReceiver(myBroadcastReceiver, filter)
+
+        val chhatFilter = IntentFilter()
+        chhatFilter.addAction("chatReceived")
+        registerReceiver(myBroadcastReceiver, chhatFilter)
+
+        val planFilter = IntentFilter()
+        planFilter.addAction("planReceived")
+        registerReceiver(planBroadcastReceiver, planFilter)
 
         planList = ArrayList<Plan>()
         allPlanList = ArrayList<ArrayList<Plan>>()
@@ -122,6 +131,9 @@ class GroupMainActivity : AppCompatActivity() {
                 val lm = LinearLayoutManager(this)
                 recyclerView_all_plan.layoutManager = lm
                 recyclerView_all_plan.setHasFixedSize(true)
+
+                val json = JSONObject(App.groupConfirmed.groupConfirmed)
+                App.groupConfirmed.groupConfirmed = json.put(group.gno.toString(),1).toString()
             },
             { error ->
                 Log.e("PlanList error", error)
@@ -132,13 +144,16 @@ class GroupMainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        unregisterReceiver(myBroadcastReceiver);
+        unregisterReceiver(myBroadcastReceiver)
+        unregisterReceiver(planBroadcastReceiver)
     }
 
     override fun onResume() {
         super.onResume()
         group_chat_alarm.visibility=View.GONE
-        val unconfirmedMessage = ChatDBHelper(this).unconfirmedMessage(group.gno!!)
+        val unconfirmedMessage = ChatDBHelper(
+            this
+        ).unconfirmedMessage(group.gno!!)
         Log.e("result",unconfirmedMessage.toString())
         if (unconfirmedMessage)
             group_chat_alarm.visibility=View.VISIBLE
@@ -151,6 +166,15 @@ class GroupMainActivity : AppCompatActivity() {
         override fun onReceive(context: Context, intent: Intent) {
             var gno = intent.getIntExtra("gno", -1)
             if (gno == group.gno) view.visibility = View.VISIBLE
+        }
+    }
+
+    class PlanBroadcastReceiver(activity: GroupMainActivity, group:Group) : BroadcastReceiver() {
+        private val activity = activity
+        private val group = group
+        override fun onReceive(context: Context, intent: Intent) {
+            var gno = intent.getIntExtra("gno", -1)
+            if (gno == group.gno) activity.loadPlanList(group.gno!!)
         }
     }
 }

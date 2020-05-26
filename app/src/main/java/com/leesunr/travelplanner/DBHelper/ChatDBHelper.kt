@@ -1,12 +1,16 @@
-package com.leesunr.travelplanner.model
+package com.leesunr.travelplanner.DBHelper
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import com.leesunr.travelplanner.model.Message
 
-class ChatDBHelper(context:Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION){
+class ChatDBHelper(context:Context): SQLiteOpenHelper(context,
+    DB_NAME, null,
+    DB_VERSION
+){
 
     companion object{
         private const val DB_VERSION = 10
@@ -40,7 +44,7 @@ class ChatDBHelper(context:Context): SQLiteOpenHelper(context, DB_NAME, null, DB
         onCreate(db!!)
     }
 
-    fun insert(message:Message,confirmed:Boolean) {
+    fun insert(message: Message, confirmed:Boolean) {
         val db = writableDatabase
         val contentValues = ContentValues()
         contentValues.put(CNO,message.cno)
@@ -51,7 +55,7 @@ class ChatDBHelper(context:Context): SQLiteOpenHelper(context, DB_NAME, null, DB
         contentValues.put(MESSAGE,message.message)
         contentValues.put(PHOTOURL,message.photourl)
         contentValues.put(CONFIRMED,confirmed)
-        db.insert(TABLE_NAME ,null ,contentValues)
+        db.insert(TABLE_NAME,null ,contentValues)
         Log.e("insert","insert")
 
     }
