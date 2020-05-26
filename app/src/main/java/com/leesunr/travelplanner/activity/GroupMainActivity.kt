@@ -1,6 +1,5 @@
 package com.leesunr.travelplanner.activity
 
-import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -24,9 +23,6 @@ import java.text.SimpleDateFormat
 
 
 class GroupMainActivity : AppCompatActivity() {
-    companion object {
-        const val PLAN_ADD_REQUEST = 0
-    }
     lateinit var group: Group
     lateinit var myBroadcastReceiver:MyBroadcastReceiver
 
@@ -53,7 +49,15 @@ class GroupMainActivity : AppCompatActivity() {
         allPlanList = ArrayList<ArrayList<Plan>>()
         planAdapter = AllPlanRcyAdapter(this, allPlanList)
 
-        button_group_back.setOnClickListener { finish() }
+        button_group_back.setOnClickListener {
+            if(intent.hasExtra("group")){
+                val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("groupFragment", "")
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+            } else finish()
+        }
+
         button_group_setting.setOnClickListener {
             val intent = Intent(this, GroupSettingActivity::class.java)
             intent.putExtra("gno", group.gno)
@@ -62,10 +66,11 @@ class GroupMainActivity : AppCompatActivity() {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
         }
+
         button_group_plan_add.setOnClickListener {
             val intent = Intent(this, GroupPlanAddActivity::class.java)
             intent.putExtra("gno", group.gno)
-            startActivityForResult(intent, PLAN_ADD_REQUEST)
+            startActivity(intent)
         }
 
         button_group_chat.setOnClickListener {
@@ -75,16 +80,7 @@ class GroupMainActivity : AppCompatActivity() {
         }
         loadPlanList(group.gno!!)
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK) {
-            planList = ArrayList<Plan>()
-            allPlanList = ArrayList<ArrayList<Plan>>()
-            loadPlanList(group.gno!!)
-        }
-    }
-
+//그룹 목록 출력
     private fun loadPlanList(gno : Int){
         val dateFormat = SimpleDateFormat("yyyy-MM-dd");
         val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)

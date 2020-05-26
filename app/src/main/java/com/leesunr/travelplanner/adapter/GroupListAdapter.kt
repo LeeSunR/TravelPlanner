@@ -39,7 +39,12 @@ class GroupListAdapter (val context: Context, val groupList: ArrayList<Group>) :
 
         val group = groupList[position]
 
-        Glide.with(context).load(group.gphotourl).signature(ObjectKey(System.currentTimeMillis())).override(48, 48).into(holder.groupPhoto!!)
+        Glide.with(context).load(group.gphotourl)
+            .signature(ObjectKey(System.currentTimeMillis()))
+            .placeholder(R.mipmap.ic_launcher)
+            .error(R.drawable.ic_error_black_24dp)
+            .override(48, 48)
+            .into(holder.groupPhoto!!)
         holder.groupName?.text = group.gname
         holder.groupRegdate?.text = "생성일 : ${SimpleDateFormat("yyyy-MM-dd").format(group.gregdate)}"
         holder.groupMemberCount?.text = "참가자 : ${group.gmember_count}명"

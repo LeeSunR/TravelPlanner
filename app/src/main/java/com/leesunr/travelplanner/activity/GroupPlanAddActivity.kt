@@ -1,6 +1,5 @@
 package com.leesunr.travelplanner.activity
 
-import android.app.Activity
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.os.Bundle
@@ -58,12 +57,6 @@ class GroupPlanAddActivity : AppCompatActivity() {
             } else {
                 modifyPlan(planInfo.pno!!, pname, pcomment, pinfo, ptype, start_date, start_time, planInfo.gno!!)
             }
-
-            /* 해당 날짜의 요일 구하는 방법
-            val dateFormat = SimpleDateFormat("EEE")
-            var dayOfWeek = dateFormat.format(start_date)
-            Log.e("dayOfWeek: ", dayOfWeek)
-            */
         }
     }
 
@@ -73,10 +66,16 @@ class GroupPlanAddActivity : AppCompatActivity() {
         val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
         MyServerAPI.call(this, myAPI.createPlan(gno, pname, pcomment, pinfo, ptype, start_date, start_time),
             { result ->
+                val jsonObject = JSONObject(result)
+                val group = Group().parseEditGroup(jsonObject)
+
                 Toast.makeText(this, "일정을 등록하였습니다.", Toast.LENGTH_SHORT).show()
-                Log.d("plan create", result)
-                setResult(Activity.RESULT_OK)
-                finish()
+                Log.d("plan create", "success")
+
+                val intent = Intent(this, GroupMainActivity::class.java)
+                intent.putExtra("group", group)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
             },
             { error ->
                 Toast.makeText(this, "일정 등록을 실패했습니다.", Toast.LENGTH_SHORT).show()
@@ -119,7 +118,6 @@ class GroupPlanAddActivity : AppCompatActivity() {
                 val intent = Intent(this, GroupMainActivity::class.java)
                 intent.putExtra("group", group)
                 intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP)
-                setResult(Activity.RESULT_OK)
 
                 Toast.makeText(this, "일정을 수정하였습니다.", Toast.LENGTH_SHORT).show()
                 Log.d("plan modify", result)

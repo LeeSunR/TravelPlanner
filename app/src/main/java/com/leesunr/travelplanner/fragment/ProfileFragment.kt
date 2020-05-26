@@ -62,6 +62,8 @@ class ProfileFragment : Fragment() {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd");
         Glide.with(this)
             .load(getString(R.string.server_base_url)+user.photourl)
+            .placeholder(R.mipmap.ic_launcher)
+            .error(R.drawable.ic_error_black_24dp)
             .signature(ObjectKey(System.currentTimeMillis()))
             .into(profile_image)
         profile_nickname.text = user.nickname
@@ -202,6 +204,8 @@ class ProfileFragment : Fragment() {
                 val user = User().parseUser(payload!!)
                 Glide.with(this)
                     .load(getString(R.string.server_base_url)+user.photourl)
+                    .placeholder(R.mipmap.ic_launcher)
+                    .error(R.drawable.ic_error_black_24dp)
                     .signature(ObjectKey(System.currentTimeMillis()))
                     .into(profile_image)
             },{
