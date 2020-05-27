@@ -65,10 +65,17 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     val builder: NotificationCompat.Builder = NotificationCompat.Builder(this, "default")
                     builder.setSmallIcon(R.drawable.stat_notify_chat)
                     builder.setContentTitle("일정이 추가되었습니다")
-                    builder.setContentText(json.getString("nickname")+"님이 <"+json.getString("pname")+"> 추가했습니다.")
+                    builder.setContentText(json.getString("nickname")+"님이 <"+json.getString("pname")+"> 일정을 추가했습니다.")
                     builder.setAutoCancel(true)
 
                     notificationManager.notify(1, builder.build())
+
+                    val group = Group()
+                    group.gno=json.getInt("gno")
+
+                    val groupjson = JSONObject(App.groupConfirmed.groupConfirmed)
+                    groupjson.put(group.gno.toString(),0)
+                    App.groupConfirmed.groupConfirmed = groupjson.toString()
 
                     val intent = Intent("planReceived")
                     intent.putExtra("gno",json.getInt("gno"))
@@ -79,7 +86,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     val builder: NotificationCompat.Builder = NotificationCompat.Builder(this, "default")
                     builder.setSmallIcon(R.drawable.stat_notify_chat)
                     builder.setContentTitle("일정이 수정되었습니다")
-                    builder.setContentText(json.getString("nickname")+"님이 <"+json.getString("pname")+"> 수정했습니다.")
+                    builder.setContentText(json.getString("nickname")+"님이 <"+json.getString("pname")+"> 일정을 수정했습니다.")
                     builder.setAutoCancel(true)
 
                     notificationManager.notify(1, builder.build())

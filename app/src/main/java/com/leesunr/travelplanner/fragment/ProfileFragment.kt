@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.signature.ObjectKey
 import com.leesunr.travelplanner.R
+import com.leesunr.travelplanner.activity.LockService
 import com.leesunr.travelplanner.activity.LoginActivity
 import com.leesunr.travelplanner.model.User
 import com.leesunr.travelplanner.retrofit.INodeJS
@@ -175,6 +176,11 @@ class ProfileFragment : Fragment() {
             var intent = Intent(Intent.ACTION_PICK)
             intent.type = MediaStore.Images.Media.CONTENT_TYPE
             startActivityForResult(intent, PHOTO_CHANGE_REQUEST_CODE)
+        }
+
+        profile_lock_screen_on.setOnClickListener {
+            val intent = Intent(mContext, LockService::class.java)
+            mContext!!.startService(intent)
         }
     }
 

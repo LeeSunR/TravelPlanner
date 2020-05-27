@@ -1,14 +1,17 @@
 package com.leesunr.travelplanner.fragment
 
 import android.app.Activity
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListView
 import android.widget.Toast
 import com.leesunr.travelplanner.adapter.GroupListAdapter
 import com.leesunr.travelplanner.R
@@ -23,7 +26,8 @@ import org.json.JSONArray
 
 class GroupListFragment : Fragment() {
     private var mContext: Context? = null
-
+    lateinit var planBroadcastReceiver: PlanBroadcastReceiver
+    lateinit var groupAdapter:GroupListAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -37,6 +41,11 @@ class GroupListFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        planBroadcastReceiver = PlanBroadcastReceiver(this)
+        val planFilter = IntentFilter()
+        planFilter.addAction("planReceived")
+        mContext!!.registerReceiver(planBroadcastReceiver, planFilter)
 
         btn_goto_group_create.setOnClickListener { view ->
             val nextIntent = Intent(mContext, GroupCreateActivity::class.java)
@@ -63,7 +72,7 @@ class GroupListFragment : Fragment() {
                     groupList.add(group)
                 }
 
-                var groupAdapter = GroupListAdapter(mContext as Activity, groupList)
+                groupAdapter = GroupListAdapter(mContext as Activity, groupList)
                 listView_group.adapter = groupAdapter
 
                 listView_group.setOnItemClickListener { parent, view, position, id ->
@@ -84,5 +93,18 @@ class GroupListFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mContext!!.unregisterReceiver(planBroadcastReceiver)
+    }
+
+    //일정 변경 수신 브로드케스트 리시버
+    class PlanBroadcastReceiver(groupListFragment: GroupListFragment) : BroadcastReceiver() {
+        private val groupListFragment = groupListFragment
+        override fun onReceive(context: Context, intent: Intent) {
+            groupListFragment.groupAdapter.notifyDataSetChanged()
+        }
     }
 }

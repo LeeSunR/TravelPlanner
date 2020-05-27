@@ -146,6 +146,34 @@
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="10dp"
                 android:textColor="#000"
+                android:text="앱 설정"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/profile_lock_screen_on"
+                android:text="잠금화면 표시"
+                android:background="@drawable/profile_box_inside_style"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="10dp"
+                android:textSize="16dp"
+                android:clickable="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:background="@drawable/profile_box_outside_style"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="20dp"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="10dp"
+                android:textColor="#000"
                 android:text="앱 정보"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

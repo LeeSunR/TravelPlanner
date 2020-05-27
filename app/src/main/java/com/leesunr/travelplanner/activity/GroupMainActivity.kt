@@ -169,6 +169,7 @@ class GroupMainActivity : AppCompatActivity() {
         }
     }
 
+    //일정 변경 수신 브로드케스트 리시버
     class PlanBroadcastReceiver(activity: GroupMainActivity, group:Group) : BroadcastReceiver() {
         private val activity = activity
         private val group = group
