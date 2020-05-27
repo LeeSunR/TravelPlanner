@@ -1,16 +1,20 @@
 package com.leesunr.travelplanner.activity
 
+import android.app.KeyguardManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.model.Group
@@ -53,11 +57,16 @@ class LockScreenActivity : AppCompatActivity() {
         btn_lock_screen_unlock.setOnClickListener {
             finish()
         }
+
+        setShowWhenLocked(true)
+        setTurnScreenOn(true)
+        val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+        keyguardManager.requestDismissKeyguard(this, null)
     }
 
     override fun onPause() {
         super.onPause()
-        finish()
+        //finish()
     }
 }
 
@@ -65,6 +74,7 @@ class LockReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
         if (intent?.action.equals(Intent.ACTION_SCREEN_ON)) {
+            Log.e("ee","ee")
             val i = Intent(context, LockScreenActivity::class.java)
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context!!.startActivity(i)
@@ -92,7 +102,6 @@ class LockService : Service() {
 
         val builder: NotificationCompat.Builder = NotificationCompat.Builder(this, "default")
         builder.setSmallIcon(android.R.drawable.stat_notify_sync_noanim)
-        builder.setContentTitle("앱이 실행중입니다")
         builder.setContentText("잠금화면 표시를 위하여 앱이 실행중입니다")
         builder.addAction(android.R.drawable.ic_menu_share, "STOP", pi)
         startForeground(1, builder.build())
