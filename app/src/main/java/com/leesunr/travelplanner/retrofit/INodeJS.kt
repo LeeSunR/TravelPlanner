@@ -75,20 +75,20 @@ interface INodeJS {
         @Field("gno") gno : Int
     ) : Observable<String>
 
-    @POST("groupNameChange")
-    @FormUrlEncoded
-    fun groupNameChange(
-        @Field("gno") gno : Int,
-        @Field("newGroupName") newGroupName : String
-    ) : Observable<String>
-
     @Multipart
-    @POST("groupPhotoChange")
-    fun groupPhotoChange(
+    @POST("groupInfoChange")
+    fun groupInfoChange(
         @Part imagefile : MultipartBody.Part,
-        @Part("gno") gno : RequestBody
+        @Part("gno") gno : RequestBody,
+        @Part("newGroupName") newGroupName: RequestBody
     ) : Observable<String>
 
+    @POST("groupInvite")
+    @FormUrlEncoded
+    fun groupInvite(
+        @Field("gno") gno : Int,
+        @Field("userid") userid : String
+    ) : Observable<String>
 
     /******************** 일정 ********************/
     @POST("createPlan")

@@ -145,7 +145,7 @@ class SignUpActivity : AppCompatActivity() {
                     myStartActivity(LoginActivity::class.java)
                 },
                 { error ->
-                    Toast.makeText(this, "회원가입 실패", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show()
                     Log.d("sign up error", error.message)
                 }
             )

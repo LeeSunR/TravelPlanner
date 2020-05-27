@@ -56,13 +56,7 @@ class GroupSettingActivity : AppCompatActivity() {
             .into(group_setting_image)
 
         button_group_setting_back.setOnClickListener {
-            if(change){
-                val intent = Intent(this, GroupMainActivity::class.java)
-                intent.putExtra("group", group)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                startActivity(intent)
-            }
-            else finish()
+            finish()
         }
 //        그룹 대표 이미지 변경
         group_setting_image.setOnClickListener {
@@ -85,23 +79,12 @@ class GroupSettingActivity : AppCompatActivity() {
             dialog.setView(linearLayout)
                 .setTitle("그룹이름 변경")
                 .setPositiveButton("확인") { dialogInterface, i ->
-                    val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
-                    MyServerAPI.call(this, myAPI.groupNameChange(gno, newGroupName.text.toString()),
-                        { result ->
-                            val jsonObject = JSONObject(result)
-                            group = Group().parseEditGroup(jsonObject)
-                            group_setting_gname.text = group.gname
-                            change = true
-                        },
-                        { error ->
-                            Log.e("groupNameChange Error", error)
-                            return@call true
-                        })
+                    group_setting_gname.text = newGroupName.text
                 }
                 .setNegativeButton("취소") { dialogInterface, i -> }
                 .show()
         }
-//그룹 삭제
+//  그룹 삭제
         group_setting_delete.setOnClickListener {
             var builder = AlertDialog.Builder(this)
             builder.setTitle("그룹 삭제")
@@ -115,10 +98,53 @@ class GroupSettingActivity : AppCompatActivity() {
                     }
                 }
             }
-
             builder.setPositiveButton("확인", listener)
             builder.setNegativeButton("취소", listener)
             builder.show()
+        }
+//  그룹 정보 변경
+        group_setting_ok_button.setOnClickListener {
+            //임시 저장된 이미지 전송
+            val newFile = File(getExternalFilesDir("tmp").path+"group.png")
+
+            var requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), newFile)
+            var body: MultipartBody.Part = MultipartBody.Part.createFormData("imagefile", newFile.name, requestBody)
+            val gno = RequestBody.create(MediaType.parse("text/plain"), gno.toString())
+            val newGroupName = RequestBody.create(MediaType.parse("text/plain"), group_setting_gname.text.toString())
+
+            val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
+            MyServerAPI.call(this, myAPI.groupInfoChange(body, gno, newGroupName),
+                { result ->
+                    val jsonObject = JSONObject(result)
+                    group = Group().parseEditGroup(jsonObject)
+                    val intent = Intent(this, GroupMainActivity::class.java)
+                    intent.putExtra("group", group)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
+                },{ error ->
+                    Log.e("Group PhotoChange Error", error)
+                    return@call false
+                })
+        }
+
+        group_setting_member_invite.setOnClickListener {
+            val dialog = AlertDialog.Builder(this)
+            val linearLayout = LinearLayout(this)
+            val findUserId = EditText(this)
+            val dpAsPixels = (20 * this!!.resources.displayMetrics.density + 0.5f).toInt()
+            linearLayout.orientation = LinearLayout.VERTICAL
+            linearLayout.setPadding(dpAsPixels, 0, dpAsPixels, 0)
+
+            findUserId.hint = "아이디를 입력하세요."
+            linearLayout.addView(findUserId)
+
+            dialog.setView(linearLayout)
+                .setTitle("멤버 초대")
+                .setPositiveButton("초대") { dialogInterface, i ->
+                    groupInvite(gno, findUserId.text.toString())
+                }
+                .setNegativeButton("취소") { dialogInterface, i -> }
+                .show()
         }
     }
 
@@ -133,32 +159,16 @@ class GroupSettingActivity : AppCompatActivity() {
             newBitmap.compress(Bitmap.CompressFormat.PNG, 0, FileOutputStream(file))
             fileStream.close()
 
-            //임시 저장된 이미지 전송
-            val newFile = File(getExternalFilesDir("tmp").path+"group.png")
-
-            var requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), newFile)
-            var body: MultipartBody.Part = MultipartBody.Part.createFormData("imagefile", newFile.name, requestBody)
-            val gno = RequestBody.create(MediaType.parse("text/plain"), gno.toString())
-
-            val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
-            MyServerAPI.call(this, myAPI.groupPhotoChange(body, gno),
-                { result ->
-                    val jsonObject = JSONObject(result)
-                    group = Group().parseEditGroup(jsonObject)
-                    Glide.with(this)
-                        .load(group.gphotourl)
-                        .signature(ObjectKey(System.currentTimeMillis()))
-                        .override(100, 100)
-                        .into(group_setting_image)
-                    change = true
-                },{ error ->
-                    Log.e("Group PhotoChange Error", error)
-                    return@call false
-                })
+            Glide.with(this)
+                .load(newBitmap)
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.drawable.ic_error_black_24dp)
+                .override(100, 100)
+                .into(group_setting_image)
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
-//그룹 삭제
+//  그룹 삭제
     fun deleteGroup(gno: Int) {
         val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
         MyServerAPI.call(this, myAPI.deleteGroup(gno),
@@ -171,6 +181,20 @@ class GroupSettingActivity : AppCompatActivity() {
             },
             { error ->
                 Log.e("deleteGroup error", error)
+                return@call true
+            }
+        )
+    }
+
+//    멤버 초대
+    fun groupInvite(gno: Int, userid: String) {
+        val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
+        MyServerAPI.call(this, myAPI.groupInvite(gno, userid),
+            { result ->
+                Log.d("groupInvite", result)
+            },
+            { error ->
+                Log.e("groupInvite error", error)
                 return@call true
             }
         )
