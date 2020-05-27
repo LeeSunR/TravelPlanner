@@ -90,6 +90,12 @@ interface INodeJS {
         @Field("userid") userid : String
     ) : Observable<String>
 
+    @POST("memberList")
+    @FormUrlEncoded
+    fun memberList(
+        @Field("gno") gno : Int
+    ) : Observable<String>
+
     /******************** 일정 ********************/
     @POST("createPlan")
     @FormUrlEncoded

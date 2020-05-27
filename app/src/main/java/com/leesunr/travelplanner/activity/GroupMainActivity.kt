@@ -46,9 +46,9 @@ class GroupMainActivity : AppCompatActivity() {
         planBroadcastReceiver = PlanBroadcastReceiver(this, group)
 
 
-        val chhatFilter = IntentFilter()
-        chhatFilter.addAction("chatReceived")
-        registerReceiver(myBroadcastReceiver, chhatFilter)
+        val chatFilter = IntentFilter()
+        chatFilter.addAction("chatReceived")
+        registerReceiver(myBroadcastReceiver, chatFilter)
 
         val planFilter = IntentFilter()
         planFilter.addAction("planReceived")

@@ -108,13 +108,14 @@
                 android:layout_width="64dp"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="10dp"
+                android:layout_marginRight="15dp"
                 android:gravity="center"
                 android:text="추방"
                 android:textAlignment="center"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/group_setting_image" />
 
-            <ListView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/group_setting_memberList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

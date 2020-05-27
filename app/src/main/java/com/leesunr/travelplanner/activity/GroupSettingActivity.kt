@@ -12,9 +12,11 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.EditText
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.signature.ObjectKey
 import com.leesunr.travelplanner.R
+import com.leesunr.travelplanner.adapter.MemberListRcyAdapter
 import com.leesunr.travelplanner.fragment.ProfileFragment.Companion.PHOTO_CHANGE_REQUEST_CODE
 import com.leesunr.travelplanner.model.Group
 import com.leesunr.travelplanner.model.User
@@ -28,6 +30,7 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
@@ -58,6 +61,8 @@ class GroupSettingActivity : AppCompatActivity() {
         button_group_setting_back.setOnClickListener {
             finish()
         }
+
+        memberList(gno)
 //        그룹 대표 이미지 변경
         group_setting_image.setOnClickListener {
             var intent = Intent(Intent.ACTION_PICK)
@@ -198,5 +203,29 @@ class GroupSettingActivity : AppCompatActivity() {
                 return@call true
             }
         )
+    }
+
+    fun memberList(gno: Int){
+        val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
+        MyServerAPI.call(this, myAPI.memberList(gno),
+            { result ->
+                val jsonArray = JSONArray(result)
+                var memberList = ArrayList<User>()
+                for(i in 0 until jsonArray.length()){
+                    val jsonObject = jsonArray.getJSONObject(i)
+                    val user = User().parseUser(jsonObject)
+                    memberList.add(user)
+                }
+
+                var memberListAdapter = MemberListRcyAdapter(this, memberList)
+                group_setting_memberList.adapter = memberListAdapter
+                val lm = LinearLayoutManager(this)
+                group_setting_memberList.layoutManager = lm
+                group_setting_memberList.setHasFixedSize(true)
+            },
+            { error ->
+                Log.e("MemberList Error", error)
+                return@call true
+            })
     }
 }

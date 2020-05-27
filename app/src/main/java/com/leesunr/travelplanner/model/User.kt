@@ -1,5 +1,7 @@
 package com.leesunr.travelplanner.model
 
+import com.leesunr.travelplanner.R
+import com.leesunr.travelplanner.util.App
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
@@ -13,21 +15,21 @@ class User (
 )
 {
     fun parseUser(jsonObject: JSONObject): User{
-        this.id = jsonObject.getString("userid")
-        this.email = jsonObject.getString("email")
-        this.nickname = jsonObject.getString("nickname")
-        this.regdate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX").parse(jsonObject.getString("regdate"))
-        this.photourl = jsonObject.getString("photourl")
+        this.id = jsonObject.getString("LOGIN_ID")
+        this.email = jsonObject.getString("EMAIL")
+        this.nickname = jsonObject.getString("NICKNAME")
+        this.regdate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX").parse(jsonObject.getString("REGDATE"))
+        this.photourl = App.context.resources.getString(R.string.server_base_url) + jsonObject.getString("PHOTO_URL")
         return this
     }
 
     fun parseUser(string: String): User{
         val jsonObject:JSONObject = JSONObject(string)
-        this.id = jsonObject.getString("userid")
-        this.email = jsonObject.getString("email")
-        this.nickname = jsonObject.getString("nickname")
-        this.regdate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX").parse(jsonObject.getString("regdate"))
-        this.photourl = jsonObject.getString("photourl")
+        this.id = jsonObject.getString("LOGIN_ID")
+        this.email = jsonObject.getString("EMAIL")
+        this.nickname = jsonObject.getString("NICKNAME")
+        this.regdate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX").parse(jsonObject.getString("REGDATE"))
+        this.photourl = App.context.resources.getString(R.string.server_base_url) + jsonObject.getString("PHOTO_URL")
         return this
     }
 }

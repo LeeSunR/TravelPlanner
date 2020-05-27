@@ -10,14 +10,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.signature.ObjectKey
-import com.leesunr.travelplanner.DBHelper.GroupDBHelper
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.model.Group
 import com.leesunr.travelplanner.util.App
-import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.Exception
-import java.sql.SQLException
 import java.text.SimpleDateFormat
 
 class GroupListAdapter (val context: Context, val groupList: ArrayList<Group>) : BaseAdapter() {
@@ -26,7 +23,7 @@ class GroupListAdapter (val context: Context, val groupList: ArrayList<Group>) :
         val holder : ViewHolder
 
         if(convertView == null){
-            view = LayoutInflater.from(context).inflate(R.layout.list_item_group, null)
+            view = LayoutInflater.from(context).inflate(R.layout.item_list_group, null)
             holder = ViewHolder()
             holder.groupName = view.findViewById(R.id.travel_group_title)
             holder.groupPhoto = view.findViewById(R.id.travel_group_image)
