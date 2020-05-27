@@ -1,6 +1,8 @@
 package com.leesunr.travelplanner.adapter
 
+import android.app.Activity
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,12 +10,14 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.signature.ObjectKey
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.model.User
+import com.leesunr.travelplanner.retrofit.INodeJS
+import com.leesunr.travelplanner.retrofit.MyServerAPI
+import com.leesunr.travelplanner.retrofit.RetrofitClientWithAccessToken
 
 class MemberListRcyAdapter (val context: Context, val memberList: ArrayList<User>) :
     RecyclerView.Adapter<MemberListRcyAdapter.Holder>(){
@@ -54,7 +58,22 @@ class MemberListRcyAdapter (val context: Context, val memberList: ArrayList<User
             }
             kick_button.setOnClickListener {
                 // 멤버 추방 처리
+                kickMember(member.gno!!, member.id!!, member)
             }
+        }
+
+        fun kickMember(gno: Int, login_id: String, user: User){
+            val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
+            MyServerAPI.call(context as Activity, myAPI.kickMember(gno, login_id),
+                { result ->
+                    memberList.remove(user)
+                    this@MemberListRcyAdapter.notifyDataSetChanged()
+                    Log.d("kickMember", result)
+                },
+                { error ->
+                    Log.e("kickMember Error", error)
+                    return@call true
+                })
         }
     }
 }

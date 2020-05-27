@@ -23,10 +23,8 @@ import com.leesunr.travelplanner.model.User
 import com.leesunr.travelplanner.retrofit.INodeJS
 import com.leesunr.travelplanner.retrofit.MyServerAPI
 import com.leesunr.travelplanner.retrofit.RetrofitClientWithAccessToken
-import com.leesunr.travelplanner.util.App
-import com.leesunr.travelplanner.util.JWT
 import kotlinx.android.synthetic.main.activity_group_setting.*
-import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.android.synthetic.main.item_list_group_setting_member.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -38,6 +36,8 @@ import kotlin.properties.Delegates
 
 class GroupSettingActivity : AppCompatActivity() {
     lateinit var group : Group
+    lateinit var memberListAdapter: MemberListRcyAdapter
+    lateinit var memberList : ArrayList<User>
     var gno by Delegates.notNull<Int>()
     var change by Delegates.notNull<Boolean>()
 
@@ -89,7 +89,7 @@ class GroupSettingActivity : AppCompatActivity() {
                 .setNegativeButton("취소") { dialogInterface, i -> }
                 .show()
         }
-//  그룹 삭제
+//  그룹삭제 버튼 리스너
         group_setting_delete.setOnClickListener {
             var builder = AlertDialog.Builder(this)
             builder.setTitle("그룹 삭제")
@@ -107,7 +107,7 @@ class GroupSettingActivity : AppCompatActivity() {
             builder.setNegativeButton("취소", listener)
             builder.show()
         }
-//  그룹 정보 변경
+//  그룹정보 변경 버튼리스너
         group_setting_ok_button.setOnClickListener {
             //임시 저장된 이미지 전송
             val newFile = File(getExternalFilesDir("tmp").path+"group.png")
@@ -131,7 +131,7 @@ class GroupSettingActivity : AppCompatActivity() {
                     return@call false
                 })
         }
-
+//  멤버초대 버튼 리스너
         group_setting_member_invite.setOnClickListener {
             val dialog = AlertDialog.Builder(this)
             val linearLayout = LinearLayout(this)
@@ -196,6 +196,10 @@ class GroupSettingActivity : AppCompatActivity() {
         val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
         MyServerAPI.call(this, myAPI.groupInvite(gno, userid),
             { result ->
+                val jsonObject = JSONObject(result)
+                val user = User().parseUser(jsonObject)
+                memberList.add(user)
+                memberListAdapter.notifyDataSetChanged()
                 Log.d("groupInvite", result)
             },
             { error ->
@@ -204,20 +208,20 @@ class GroupSettingActivity : AppCompatActivity() {
             }
         )
     }
-
+//  그룹멤버 초기화
     fun memberList(gno: Int){
         val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
         MyServerAPI.call(this, myAPI.memberList(gno),
             { result ->
                 val jsonArray = JSONArray(result)
-                var memberList = ArrayList<User>()
+                memberList = ArrayList<User>()
                 for(i in 0 until jsonArray.length()){
                     val jsonObject = jsonArray.getJSONObject(i)
-                    val user = User().parseUser(jsonObject)
+                    val user = User().parseUserOfGroup(jsonObject, gno)
                     memberList.add(user)
                 }
 
-                var memberListAdapter = MemberListRcyAdapter(this, memberList)
+                memberListAdapter = MemberListRcyAdapter(this, memberList)
                 group_setting_memberList.adapter = memberListAdapter
                 val lm = LinearLayoutManager(this)
                 group_setting_memberList.layoutManager = lm

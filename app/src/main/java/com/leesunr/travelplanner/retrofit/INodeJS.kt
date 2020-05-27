@@ -96,6 +96,13 @@ interface INodeJS {
         @Field("gno") gno : Int
     ) : Observable<String>
 
+    @POST("kickMember")
+    @FormUrlEncoded
+    fun kickMember(
+        @Field("gno") gno : Int,
+        @Field("login_id") login_id : String
+    ) : Observable<String>
+
     /******************** 일정 ********************/
     @POST("createPlan")
     @FormUrlEncoded
