@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.adapter.AllPlanRcyAdapter
 import com.leesunr.travelplanner.DBHelper.ChatDBHelper
+import com.leesunr.travelplanner.listener.OnPlanListener
 import com.leesunr.travelplanner.model.Group
 import com.leesunr.travelplanner.model.Plan
 import com.leesunr.travelplanner.retrofit.INodeJS
@@ -32,6 +33,13 @@ class GroupMainActivity : AppCompatActivity() {
     lateinit var planAdapter : AllPlanRcyAdapter
     lateinit var allPlanList : ArrayList<ArrayList<Plan>>
     lateinit var planList : ArrayList<Plan>
+
+    val onPlanListener = object : OnPlanListener {
+        override fun onDelete() {
+            Log.d("로그", "삭제 성공")
+            planAdapter.notifyDataSetChanged()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +64,6 @@ class GroupMainActivity : AppCompatActivity() {
 
         planList = ArrayList<Plan>()
         allPlanList = ArrayList<ArrayList<Plan>>()
-        planAdapter = AllPlanRcyAdapter(this, allPlanList)
 
         button_group_back.setOnClickListener {
             if(intent.hasExtra("group")){
@@ -121,7 +128,7 @@ class GroupMainActivity : AppCompatActivity() {
                 allPlanList.add(planList)
 
                 //레이아웃매니저를 설정해줍니다.
-                planAdapter = AllPlanRcyAdapter(this, allPlanList)
+                planAdapter = AllPlanRcyAdapter(this, allPlanList, onPlanListener)
                 recyclerView_all_plan.adapter = planAdapter
 
                 val lm = LinearLayoutManager(this)

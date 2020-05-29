@@ -1,17 +1,20 @@
 package com.leesunr.travelplanner.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.leesunr.travelplanner.R
+import com.leesunr.travelplanner.listener.OnPlanListener
 import com.leesunr.travelplanner.model.Plan
 import java.text.SimpleDateFormat
 
-class AllPlanRcyAdapter (val context: Context, val allPlanList: ArrayList<ArrayList<Plan>>) :
+class AllPlanRcyAdapter (val context: Context, val allPlanList: ArrayList<ArrayList<Plan>>, val onPlanListener: OnPlanListener) :
     RecyclerView.Adapter<AllPlanRcyAdapter.Holder>(){
     override fun getItemCount(): Int {
         return allPlanList.size
@@ -27,17 +30,24 @@ class AllPlanRcyAdapter (val context: Context, val allPlanList: ArrayList<ArrayL
     }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val start_date = itemView.findViewById<TextView>(R.id.all_plan_list_title)
-        val allPlanRcycler = itemView.findViewById<RecyclerView>(R.id.recyclerView_plan)
+        var start_date = itemView.findViewById<TextView>(R.id.all_plan_list_title)
+        var allPlanRcycler = itemView.findViewById<RecyclerView>(R.id.recyclerView_plan)
+        var line = itemView.findViewById<RelativeLayout>(R.id.all_plan_list_line)
 
         fun bind(plan: ArrayList<Plan>, context: Context, position: Int){
-            val adapter = PlanRcyAdapter(context, plan)
-            allPlanRcycler.setHasFixedSize(true)
-            val lm = LinearLayoutManager(context)
-            allPlanRcycler.layoutManager = lm
-            allPlanRcycler.adapter = adapter
+            val adapter = PlanRcyAdapter(context, plan, onPlanListener)
 
-            start_date.text = SimpleDateFormat("yyyy/MM/dd (EEE)").format(plan[0].start_date)
+            if(!plan.isEmpty()) {
+                allPlanRcycler.setHasFixedSize(true)
+                val lm = LinearLayoutManager(context)
+                allPlanRcycler.layoutManager = lm
+                allPlanRcycler.adapter = adapter
+                start_date.text = SimpleDateFormat("yyyy/MM/dd (EEE)").format(plan[0].start_date)
+            } else {
+                start_date.visibility = View.GONE
+                allPlanRcycler.visibility = View.GONE
+                line.visibility= View.GONE
+            }
         }
     }
 }

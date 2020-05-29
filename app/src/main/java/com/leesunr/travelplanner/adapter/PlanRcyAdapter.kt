@@ -15,13 +15,14 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.activity.GroupPlanAddActivity
+import com.leesunr.travelplanner.listener.OnPlanListener
 import com.leesunr.travelplanner.model.Plan
 import com.leesunr.travelplanner.retrofit.INodeJS
 import com.leesunr.travelplanner.retrofit.MyServerAPI
 import com.leesunr.travelplanner.retrofit.RetrofitClientWithAccessToken
 import java.text.SimpleDateFormat
 
-class PlanRcyAdapter(val context: Context, val planList: ArrayList<Plan>) :
+class PlanRcyAdapter(val context: Context, val planList: ArrayList<Plan>, val onPlanListener: OnPlanListener) :
     RecyclerView.Adapter<PlanRcyAdapter.Holder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_plan_list, parent, false)
@@ -132,6 +133,7 @@ class PlanRcyAdapter(val context: Context, val planList: ArrayList<Plan>) :
                     Log.d("deletePlan", result)
                     planList.remove(plan)
                     this@PlanRcyAdapter.notifyDataSetChanged()
+                    onPlanListener.onDelete()
                 },
                 { error ->
                     Log.e("deletePlan error", error)
