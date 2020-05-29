@@ -171,7 +171,7 @@ class GroupMainActivity : AppCompatActivity() {
         private val group = group
         override fun onReceive(context: Context, intent: Intent) {
             var gno = intent.getIntExtra("gno", -1)
-            if (gno == group.gno) activity.loadPlanList(group.gno!!)
+//            if (gno == group.gno) activity.loadPlanList(group.gno!!)
         }
     }
 }
