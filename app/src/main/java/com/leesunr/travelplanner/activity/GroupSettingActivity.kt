@@ -197,7 +197,7 @@ class GroupSettingActivity : AppCompatActivity() {
         MyServerAPI.call(this, myAPI.groupInvite(gno, userid),
             { result ->
                 val jsonObject = JSONObject(result)
-                val user = User().parseUser(jsonObject)
+                val user = User().parseUserOfGroup(jsonObject)
                 memberList.add(user)
                 memberListAdapter.notifyDataSetChanged()
                 Log.d("groupInvite", result)
