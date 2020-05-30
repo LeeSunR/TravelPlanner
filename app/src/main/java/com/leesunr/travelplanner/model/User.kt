@@ -12,7 +12,8 @@ class User (
     var photourl:String? = null,
     var nickname:String? = null,
     var regdate:Date? = null,
-    var gno: Int? = null
+    var gno: Int? = null,
+    var is_writable : Int? = null
 )
 {
     fun parseUser(jsonObject: JSONObject): User{
@@ -28,9 +29,8 @@ class User (
         this.id = jsonObject.getString("LOGIN_ID")
         this.email = jsonObject.getString("EMAIL")
         this.nickname = jsonObject.getString("NICKNAME")
-        this.regdate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX").parse(jsonObject.getString("REGDATE"))
+        this.regdate = SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("REGDATE"))
         this.photourl = App.context.resources.getString(R.string.server_base_url) + jsonObject.getString("PHOTO_URL")
-        this.gno = gno
         return this
     }
 
@@ -38,9 +38,10 @@ class User (
         this.id = jsonObject.getString("LOGIN_ID")
         this.email = jsonObject.getString("EMAIL")
         this.nickname = jsonObject.getString("NICKNAME")
-        this.regdate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX").parse(jsonObject.getString("REGDATE"))
+        this.regdate = SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("REGDATE"))
         this.photourl = App.context.resources.getString(R.string.server_base_url) + jsonObject.getString("PHOTO_URL")
         this.gno = gno
+        this.is_writable = jsonObject.getInt("IS_WRITABLE")
         return this
     }
 }

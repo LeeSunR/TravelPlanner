@@ -31,7 +31,7 @@ class MemberListRcyAdapter (val context: Context, val memberList: ArrayList<User
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder?.bind(memberList[position], context)
+        holder?.bind(memberList[position], context, position)
     }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -40,7 +40,7 @@ class MemberListRcyAdapter (val context: Context, val memberList: ArrayList<User
         val permission_sw = itemView.findViewById<Switch>(R.id.group_setting_member_permission)
         val kick_button = itemView.findViewById<Button>(R.id.group_setting_member_kick)
 
-        fun bind(member: User, context: Context){
+        fun bind(member: User, context: Context, position : Int){
             Glide.with(context).load(member.photourl)
                 .signature(ObjectKey(System.currentTimeMillis()))
                 .placeholder(R.mipmap.ic_launcher)
@@ -49,12 +49,19 @@ class MemberListRcyAdapter (val context: Context, val memberList: ArrayList<User
                 .into(member_img)
 
             member_name.text = member.nickname
+            permission_sw.isChecked = member.is_writable != 0
+
             permission_sw.setOnCheckedChangeListener { compoundButton, b ->
-                if(b){
-                    // 활성화 처리
-                } else{
-                    // 비활성화 처리
-                }
+                val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
+                MyServerAPI.call(context as Activity, myAPI.modifyPermission(member.gno!!, member.nickname!!),
+                    { result ->
+                        this@MemberListRcyAdapter.notifyItemChanged(position)
+                        Log.d("modifyPermission", "success")
+                    },
+                    { error ->
+                        Log.e("modifyPermission", error)
+                        return@call true
+                    })
             }
             kick_button.setOnClickListener {
                 // 멤버 추방 처리
