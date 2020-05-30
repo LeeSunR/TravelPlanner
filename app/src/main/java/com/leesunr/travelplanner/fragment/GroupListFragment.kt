@@ -27,7 +27,7 @@ class GroupListFragment : Fragment() {
     private var mContext: Context? = null
     lateinit var planBroadcastReceiver: PlanBroadcastReceiver
     lateinit var groupAdapter:GroupListAdapter
-    var groupList:ArrayList<Group> = arrayListOf<Group>()
+    lateinit var groupList:ArrayList<Group>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -78,7 +78,7 @@ class GroupListFragment : Fragment() {
         MyServerAPI.call(mContext as Activity, myAPI.loadGroupList(),
             { result ->
                 val jsonArray = JSONArray(result)
-
+                groupList = ArrayList<Group>()
                 for(i in 0 until jsonArray.length()){
                     val jsonObject = jsonArray.getJSONObject(i)
                     val group = Group().parseGroup(jsonObject)
