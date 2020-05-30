@@ -19,7 +19,7 @@ class User (
         this.id = jsonObject.getString("userid")
         this.email = jsonObject.getString("email")
         this.nickname = jsonObject.getString("nickname")
-        this.regdate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX").parse(jsonObject.getString("regdate"))
+        this.regdate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(jsonObject.getString("regdate"))
         this.photourl = App.context.resources.getString(R.string.server_base_url) + jsonObject.getString("photourl")
         return this
     }
