@@ -3,6 +3,7 @@ package com.leesunr.travelplanner.activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,7 @@ import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_group_chat.*
+import org.json.JSONException
 import org.json.JSONObject
 import java.net.URISyntaxException
 import kotlin.collections.ArrayList
@@ -32,13 +34,21 @@ class GroupChatActivity : AppCompatActivity() {
     private lateinit var group:Group
     private lateinit var mSocket:Socket
     private lateinit var user:User
-    private var messageList:ArrayList<Message>? = null
+    private lateinit var messageList:ArrayList<Message>
+    private lateinit var mAdapter:MessageRcyAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group_chat)
 
         if(intent.hasExtra("group"))
-            group = intent.getParcelableExtra<Group>("group");
+            group = intent.getParcelableExtra<Group>("group")
+
+        messageList = ChatDBHelper(this).select(group.gno!!)
+        mAdapter = MessageRcyAdapter(this, messageList)
+        rcv_group_chat.layoutManager = LinearLayoutManager(this)
+        rcv_group_chat.adapter = mAdapter
+        rcv_group_chat.scrollToPosition(rcv_group_chat.adapter!!.itemCount - 1)
 
         mSocket = IO.socket(this.resources.getString(R.string.chat_server_base_url))
 
@@ -117,14 +127,6 @@ class GroupChatActivity : AppCompatActivity() {
             } catch (e: URISyntaxException) {
                 e.printStackTrace()
                 finish()
-            } finally {
-                messageList = ChatDBHelper(
-                    this
-                ).select(group.gno!!)
-                val mAdapter = MessageRcyAdapter(this, messageList!!)
-                rcv_group_chat.adapter = mAdapter
-                rcv_group_chat.layoutManager = LinearLayoutManager(this)
-                rcv_group_chat.scrollToPosition(rcv_group_chat.adapter!!.itemCount - 1);
             }
         },{
             return@call true
