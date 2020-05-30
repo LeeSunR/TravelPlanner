@@ -103,6 +103,13 @@ interface INodeJS {
         @Field("login_id") login_id : String
     ) : Observable<String>
 
+    @POST("modifyPermission")
+    @FormUrlEncoded
+    fun modifyPermission(
+        @Field("gno") gno : Int,
+        @Field("nickname") nickname: String
+    ) : Observable<String>
+
     /******************** 일정 ********************/
     @POST("createPlan")
     @FormUrlEncoded
