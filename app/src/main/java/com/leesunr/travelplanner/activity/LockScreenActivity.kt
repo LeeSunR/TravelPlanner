@@ -13,14 +13,15 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.leesunr.travelplanner.DBHelper.ChatDBHelper
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.adapter.LockPlanRcyAdapter
-import com.leesunr.travelplanner.adapter.MessageRcyAdapter
-import com.leesunr.travelplanner.model.Message
 import com.leesunr.travelplanner.model.Plan
-import kotlinx.android.synthetic.main.activity_group_chat.*
+import com.leesunr.travelplanner.retrofit.INodeJS
+import com.leesunr.travelplanner.retrofit.MyServerAPI
+import com.leesunr.travelplanner.retrofit.RetrofitClientWithAccessToken
+import com.leesunr.travelplanner.util.App
 import kotlinx.android.synthetic.main.activity_lock_screen.*
+import org.json.JSONArray
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -29,10 +30,8 @@ import kotlin.collections.ArrayList
 class LockScreenActivity : AppCompatActivity() {
 
 
-    private var planListToday:ArrayList<Plan> = ArrayList<Plan>()
-    private var planListTomorrow:ArrayList<Plan> = ArrayList<Plan>()
-    private var adapterToday: LockPlanRcyAdapter = LockPlanRcyAdapter(this, planListToday)
-    private var adapterTomorrow: LockPlanRcyAdapter = LockPlanRcyAdapter(this, planListTomorrow)
+    private var planList:ArrayList<Plan> = ArrayList<Plan>()
+    private var planAdapter: LockPlanRcyAdapter = LockPlanRcyAdapter(this, planList)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lock_screen)
@@ -40,17 +39,30 @@ class LockScreenActivity : AppCompatActivity() {
         val attrib = window.attributes
         attrib.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
 
-        rcv_lock_plan_today.layoutManager = LinearLayoutManager(this)
-        rcv_lock_plan_tomorrow.layoutManager = LinearLayoutManager(this)
-        rcv_lock_plan_today.adapter = adapterToday
-        rcv_lock_plan_tomorrow.adapter = adapterTomorrow
+        rcv_lock_plan.layoutManager = LinearLayoutManager(this)
+        rcv_lock_plan.adapter = planAdapter
 
-        //TODO 주그룹 플랜 LIST 가져오기
+        val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
+        MyServerAPI.call(this, myAPI.loadPlanList(App.mainGroupNumber.mainGroupNumber),
+            { result ->
+                val jsonArray:JSONArray = JSONArray(result)
+                for (i in 0 until jsonArray.length()){
+                    val plan = Plan().parsePlan(jsonArray.getJSONObject(i))
+                    val now = Date()
+                    now.time -= 86400000
+                    if(plan.start_date !!.after(now)){
+                        planList.add(plan)
+                    }
+                }
+                if(planList.isEmpty())
+                    tv_lock_plan_info.visibility = View.VISIBLE
+            },
+            { error ->
+                Log.e("PlanList error", error)
+                return@call true
+            }
+        )
 
-        if(planListToday.isEmpty())
-            tv_lock_plan_today_info.visibility = View.VISIBLE
-        if(planListTomorrow.isEmpty())
-            tv_lock_plan_tomorrow_info.visibility = View.VISIBLE
 
         if (intent.getBooleanExtra("stop",false)){
             val intent = Intent(this, LockService::class.java)
