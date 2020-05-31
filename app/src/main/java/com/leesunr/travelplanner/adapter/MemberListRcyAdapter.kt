@@ -6,10 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.Switch
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.signature.ObjectKey
@@ -54,12 +51,13 @@ class MemberListRcyAdapter (val context: Context, val memberList: ArrayList<User
             permission_sw.setOnCheckedChangeListener { compoundButton, b ->
                 val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
                 MyServerAPI.call(context as Activity, myAPI.modifyPermission(member.gno!!, member.nickname!!),
-                    { result ->
+                    { result -> member.is_writable.toString()
+                        member.is_writable = member.is_writable!!.xor(1)
                         this@MemberListRcyAdapter.notifyItemChanged(position)
-                        Log.d("modifyPermission", "success")
                     },
                     { error ->
-                        Log.e("modifyPermission", error)
+                        Toast.makeText(context, "권한이 없습니다.", Toast.LENGTH_SHORT).show()
+                        Log.e("modifyPermission error", error)
                         return@call true
                     })
             }
