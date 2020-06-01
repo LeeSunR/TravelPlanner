@@ -23,7 +23,7 @@ class MemberListRcyAdapter (val context: Context, val memberList: ArrayList<User
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemberListRcyAdapter.Holder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_list_group_setting_member, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.recycler_item_group_setting_member, parent, false)
         return Holder(view)
     }
 
@@ -46,36 +46,39 @@ class MemberListRcyAdapter (val context: Context, val memberList: ArrayList<User
                 .into(member_img)
 
             member_name.text = member.nickname
-            permission_sw.isChecked = member.is_writable != 0
 
+            permission_sw.isChecked = member.is_writable != 0
             permission_sw.setOnCheckedChangeListener { compoundButton, b ->
                 val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
                 MyServerAPI.call(context as Activity, myAPI.modifyPermission(member.gno!!, member.nickname!!),
-                    { result -> member.is_writable.toString()
+                    { result ->
                         member.is_writable = member.is_writable!!.xor(1)
+                        Toast.makeText(context, "${member.nickname}의 권한을 수정하였습니다.", Toast.LENGTH_SHORT).show()
+                        Log.d("modifyPermission", "success")
                         this@MemberListRcyAdapter.notifyItemChanged(position)
                     },
                     { error ->
-                        Toast.makeText(context, "권한이 없습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "권한이 없습니다.", Toast.LENGTH_LONG).show()
                         Log.e("modifyPermission error", error)
                         return@call true
                     })
             }
             kick_button.setOnClickListener {
                 // 멤버 추방 처리
-                kickMember(member.gno!!, member.id!!, member)
+                kickMember(member.gno!!, member.id!!, member, position)
             }
         }
 
-        fun kickMember(gno: Int, login_id: String, user: User){
+        fun kickMember(gno: Int, login_id: String, user: User, position: Int){
             val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
             MyServerAPI.call(context as Activity, myAPI.kickMember(gno, login_id),
                 { result ->
                     memberList.remove(user)
-                    this@MemberListRcyAdapter.notifyDataSetChanged()
+                    this@MemberListRcyAdapter.notifyItemRemoved(position)
                     Log.d("kickMember", result)
                 },
                 { error ->
+                    Toast.makeText(context, "권한이 없습니다.", Toast.LENGTH_LONG).show()
                     Log.e("kickMember Error", error)
                     return@call true
                 })

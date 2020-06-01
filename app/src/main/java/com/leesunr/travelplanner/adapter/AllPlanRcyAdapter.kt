@@ -21,7 +21,7 @@ class AllPlanRcyAdapter (val context: Context, val allPlanList: ArrayList<ArrayL
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllPlanRcyAdapter.Holder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_all_plan_list, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.recycler_item_all_plan, parent, false)
         return Holder(view)
     }
 

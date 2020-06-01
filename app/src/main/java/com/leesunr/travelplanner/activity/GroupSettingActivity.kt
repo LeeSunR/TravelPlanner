@@ -12,6 +12,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.signature.ObjectKey
@@ -23,8 +24,10 @@ import com.leesunr.travelplanner.model.User
 import com.leesunr.travelplanner.retrofit.INodeJS
 import com.leesunr.travelplanner.retrofit.MyServerAPI
 import com.leesunr.travelplanner.retrofit.RetrofitClientWithAccessToken
+import com.leesunr.travelplanner.util.App
+import com.leesunr.travelplanner.util.JWT
 import kotlinx.android.synthetic.main.activity_group_setting.*
-import kotlinx.android.synthetic.main.item_list_group_setting_member.*
+import kotlinx.android.synthetic.main.recycler_item_group_setting_member.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -63,6 +66,7 @@ class GroupSettingActivity : AppCompatActivity() {
         }
 
         memberList(gno)
+
 //        그룹 대표 이미지 변경
         group_setting_image.setOnClickListener {
             var intent = Intent(Intent.ACTION_PICK)
@@ -126,6 +130,8 @@ class GroupSettingActivity : AppCompatActivity() {
                     intent.putExtra("group", group)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startActivity(intent)
+                    Toast.makeText(this, "그룹 정보를 변경하였습니다.", Toast.LENGTH_SHORT).show()
+                    Log.d("Group Setting Change", "success")
                 },{ error ->
                     Log.e("Group PhotoChange Error", error)
                     return@call false
@@ -200,7 +206,7 @@ class GroupSettingActivity : AppCompatActivity() {
                 val user = User().parseUserOfGroup(jsonObject)
                 memberList.add(user)
                 memberListAdapter.notifyDataSetChanged()
-                Log.d("groupInvite", result)
+                Log.d("groupInvite", "success")
             },
             { error ->
                 Log.e("groupInvite error", error)
@@ -217,8 +223,8 @@ class GroupSettingActivity : AppCompatActivity() {
                 memberList = ArrayList<User>()
                 for(i in 0 until jsonArray.length()){
                     val jsonObject = jsonArray.getJSONObject(i)
-                    val user = User().parseUserOfGroup(jsonObject, gno)
-                    memberList.add(user)
+                    val member = User().parseUserOfGroup(jsonObject, gno)
+                    memberList.add(member)
                 }
 
                 memberListAdapter = MemberListRcyAdapter(this, memberList)

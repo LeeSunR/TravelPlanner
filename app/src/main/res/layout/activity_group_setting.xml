@@ -19,8 +19,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
-            android:background="@drawable/ic_arrow_back_black_24dp"
-            android:backgroundTint="@color/colorFocusBottomMenu"
+            android:background="@drawable/selector_back_img"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,6 +39,8 @@
 
         <TextView
             android:id="@+id/group_setting_ok_button"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
@@ -63,6 +64,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_margin="15dp"
+                android:clickable="true"
                 app:layout_constraintBottom_toTopOf="@+id/group_setting_member_isWritable"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/group_setting_gname"
@@ -86,7 +88,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginLeft="10dp"
-                android:background="@drawable/ic_mode_edit_black_24dp"
+                android:background="@drawable/selector_edit_gname_img"
                 app:layout_constraintBottom_toTopOf="@+id/group_setting_member_isWritable"
                 app:layout_constraintLeft_toRightOf="@+id/group_setting_gname"
                 app:layout_constraintTop_toTopOf="parent" />

@@ -25,7 +25,7 @@ import java.text.SimpleDateFormat
 class PlanRcyAdapter(val context: Context, val planList: ArrayList<Plan>, val onPlanListener: OnPlanListener) :
     RecyclerView.Adapter<PlanRcyAdapter.Holder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_plan_list, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.recycler_item_plan, parent, false)
         return Holder(view)
     }
     override fun getItemCount(): Int {
@@ -33,7 +33,7 @@ class PlanRcyAdapter(val context: Context, val planList: ArrayList<Plan>, val on
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder?.bind(planList[position], context)
+        holder?.bind(planList[position], context, position)
     }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -46,7 +46,7 @@ class PlanRcyAdapter(val context: Context, val planList: ArrayList<Plan>, val on
         val fold = itemView.findViewById<Button>(R.id.plan_list_fold_button)
         val hidden_layout = itemView.findViewById<LinearLayout>(R.id.plan_list_layout2)
 
-        fun bind (plan: Plan, context: Context) {
+        fun bind (plan: Plan, context: Context, position: Int) {
             start_time.text = SimpleDateFormat("HH:mm").format(plan.start_time)
             pname.text = plan.pname
             pinfo.text = plan.pinfo
@@ -75,7 +75,7 @@ class PlanRcyAdapter(val context: Context, val planList: ArrayList<Plan>, val on
                                 context.startActivity(intent)
                             }
                             R.id.plan_delete ->
-                                deletePlan(plan.pno!!, plan)
+                                deletePlan(plan.pno!!, plan, position)
                         }
                         false
                     }
@@ -126,13 +126,13 @@ class PlanRcyAdapter(val context: Context, val planList: ArrayList<Plan>, val on
             }
         }
 
-        private fun deletePlan(pno : Int, plan : Plan){
+        private fun deletePlan(pno : Int, plan : Plan, position: Int){
             val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
             MyServerAPI.call(context as Activity, myAPI.deletePlan(pno),
                 { result ->
                     Log.d("deletePlan", result)
                     planList.remove(plan)
-                    this@PlanRcyAdapter.notifyDataSetChanged()
+                    this@PlanRcyAdapter.notifyItemRemoved(position)
                     onPlanListener.onDelete()
                 },
                 { error ->

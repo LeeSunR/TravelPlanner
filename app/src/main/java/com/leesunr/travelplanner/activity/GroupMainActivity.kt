@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.leesunr.travelplanner.R
@@ -21,11 +22,13 @@ import com.leesunr.travelplanner.retrofit.RetrofitClientWithAccessToken
 import com.leesunr.travelplanner.util.App
 import kotlinx.android.synthetic.main.activity_group_main.*
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 
 
 class GroupMainActivity : AppCompatActivity() {
+    val TAG = "GroupMainActivity"
     lateinit var group: Group
     lateinit var myBroadcastReceiver:MyBroadcastReceiver
     lateinit var planBroadcastReceiver:PlanBroadcastReceiver
@@ -36,8 +39,8 @@ class GroupMainActivity : AppCompatActivity() {
 
     val onPlanListener = object : OnPlanListener {
         override fun onDelete() {
-            Log.d("로그", "삭제 성공")
             planAdapter.notifyDataSetChanged()
+            Log.d("로그", "삭제 성공")
         }
     }
 
@@ -102,43 +105,50 @@ class GroupMainActivity : AppCompatActivity() {
         val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
         MyServerAPI.call(this, myAPI.loadPlanList(gno),
             { result ->
-                val jsonArray = JSONArray(result)
+                try {
+                    val jsonArray = JSONArray(result)
+                    var cur_date : String? = null
+                    var new_date : String? = null
+                    // 첫번째 일정의 날짜 세팅
+                    var jsonObject = jsonArray.getJSONObject(0)
+                    var plan = Plan().parsePlan(jsonObject)
+                    cur_date = dateFormat.format(plan.start_date)
 
-                var cur_date : String? = null
-                var new_date : String? = null
-                // 첫번째 일정의 날짜 세팅
-                var jsonObject = jsonArray.getJSONObject(0)
-                var plan = Plan().parsePlan(jsonObject)
-                cur_date = dateFormat.format(plan.start_date)
+                    for(i in 0 until jsonArray.length()){
+                        jsonObject = jsonArray.getJSONObject(i)
+                        plan = Plan().parsePlan(jsonObject)
+                        new_date = dateFormat.format(plan.start_date)
 
-                for(i in 0 until jsonArray.length()){
-                    jsonObject = jsonArray.getJSONObject(i)
-                    plan = Plan().parsePlan(jsonObject)
-                    new_date = dateFormat.format(plan.start_date)
+                        if(cur_date.equals(new_date)) planList.add(plan)
+                        else {
+                            cur_date = new_date
+                            allPlanList.add(planList)
 
-                    if(cur_date.equals(new_date)) planList.add(plan)
-                    else {
-                        cur_date = new_date
-                        allPlanList.add(planList)
-
-                        planList = ArrayList<Plan>()
-                        planList.add(plan)
+                            planList = ArrayList<Plan>()
+                            planList.add(plan)
+                        }
                     }
+                    allPlanList.add(planList)
+
+                    //레이아웃매니저를 설정해줍니다.
+                    planAdapter = AllPlanRcyAdapter(this, allPlanList, onPlanListener)
+                    recyclerView_all_plan.adapter = planAdapter
+
+                    val lm = LinearLayoutManager(this)
+                    recyclerView_all_plan.layoutManager = lm
+                    recyclerView_all_plan.setHasFixedSize(true)
+
+                    val json = JSONObject(App.groupConfirmed.groupConfirmed)
+                    App.groupConfirmed.groupConfirmed = json.put(group.gno.toString(),1).toString()
+
+                    Log.d(TAG, "success")
+                } catch (e : JSONException){
+                    if(JSONArray(result).length() == 0)
+                        group_main_no_plan.visibility = View.VISIBLE
                 }
-                allPlanList.add(planList)
-
-                //레이아웃매니저를 설정해줍니다.
-                planAdapter = AllPlanRcyAdapter(this, allPlanList, onPlanListener)
-                recyclerView_all_plan.adapter = planAdapter
-
-                val lm = LinearLayoutManager(this)
-                recyclerView_all_plan.layoutManager = lm
-                recyclerView_all_plan.setHasFixedSize(true)
-
-                val json = JSONObject(App.groupConfirmed.groupConfirmed)
-                App.groupConfirmed.groupConfirmed = json.put(group.gno.toString(),1).toString()
             },
             { error ->
+                Toast.makeText(this, error, Toast.LENGTH_SHORT)
                 Log.e("PlanList error", error)
                 return@call true
             }
