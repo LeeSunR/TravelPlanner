@@ -1,7 +1,9 @@
 package com.leesunr.travelplanner.adapter
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -63,9 +65,23 @@ class MemberListRcyAdapter (val context: Context, val memberList: ArrayList<User
                         return@call true
                     })
             }
+
             kick_button.setOnClickListener {
-                // 멤버 추방 처리
-                kickMember(member.gno!!, member.id!!, member, position)
+                var builder = AlertDialog.Builder(context)
+                builder.setTitle("멤버 추방")
+                builder.setMessage("이 멤버를 추방하시겠습니까?")
+
+                var listener = object : DialogInterface.OnClickListener{
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                        when(which){
+                            DialogInterface.BUTTON_POSITIVE ->
+                                kickMember(member.gno!!, member.id!!, member, position)
+                        }
+                    }
+                }
+                builder.setPositiveButton("확인", listener)
+                builder.setNegativeButton("취소", listener)
+                builder.show()
             }
         }
 

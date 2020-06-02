@@ -36,18 +36,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/button_group_setting_back"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/group_setting_ok_button"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:text="확인"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
@@ -69,6 +57,14 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/group_setting_gname"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_photo_camera_black_24dp"
+                android:background="@drawable/custom_button"
+                app:layout_constraintBottom_toBottomOf="@+id/group_setting_image"
+                app:layout_constraintEnd_toEndOf="@+id/group_setting_image" />
 
             <TextView
                 android:id="@+id/group_setting_gname"

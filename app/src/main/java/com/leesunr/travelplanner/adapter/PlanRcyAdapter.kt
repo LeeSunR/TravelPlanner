@@ -133,7 +133,7 @@ class PlanRcyAdapter(val context: Context, val planList: ArrayList<Plan>, val on
                     Log.d("deletePlan", result)
                     planList.remove(plan)
                     this@PlanRcyAdapter.notifyItemRemoved(position)
-                    onPlanListener.onDelete()
+                    onPlanListener.onDelete(planList)
                 },
                 { error ->
                     Log.e("deletePlan error", error)

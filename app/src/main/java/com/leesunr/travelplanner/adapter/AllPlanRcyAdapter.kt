@@ -14,8 +14,16 @@ import com.leesunr.travelplanner.listener.OnPlanListener
 import com.leesunr.travelplanner.model.Plan
 import java.text.SimpleDateFormat
 
-class AllPlanRcyAdapter (val context: Context, val allPlanList: ArrayList<ArrayList<Plan>>, val onPlanListener: OnPlanListener) :
+class AllPlanRcyAdapter (val context: Context, val allPlanList: ArrayList<ArrayList<Plan>>) :
     RecyclerView.Adapter<AllPlanRcyAdapter.Holder>(){
+
+    val onPlanListener = object : OnPlanListener {
+        override fun onDelete(planList : ArrayList<Plan>) {
+            this@AllPlanRcyAdapter.notifyItemRangeChanged(allPlanList.indexOf(planList), allPlanList.size)
+            Log.d("PlanList", "onDelete Success")
+        }
+    }
+
     override fun getItemCount(): Int {
         return allPlanList.size
     }

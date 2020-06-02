@@ -28,7 +28,6 @@ import java.text.SimpleDateFormat
 
 
 class GroupMainActivity : AppCompatActivity() {
-    val TAG = "GroupMainActivity"
     lateinit var group: Group
     lateinit var myBroadcastReceiver:MyBroadcastReceiver
     lateinit var planBroadcastReceiver:PlanBroadcastReceiver
@@ -37,12 +36,7 @@ class GroupMainActivity : AppCompatActivity() {
     lateinit var allPlanList : ArrayList<ArrayList<Plan>>
     lateinit var planList : ArrayList<Plan>
 
-    val onPlanListener = object : OnPlanListener {
-        override fun onDelete() {
-            planAdapter.notifyDataSetChanged()
-            Log.d("로그", "삭제 성공")
-        }
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,7 +93,7 @@ class GroupMainActivity : AppCompatActivity() {
         }
         loadPlanList(group.gno!!)
     }
-//그룹 목록 출력
+//  일정 목록 출력
     private fun loadPlanList(gno : Int){
         val dateFormat = SimpleDateFormat("yyyy-MM-dd");
         val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
@@ -131,7 +125,7 @@ class GroupMainActivity : AppCompatActivity() {
                     allPlanList.add(planList)
 
                     //레이아웃매니저를 설정해줍니다.
-                    planAdapter = AllPlanRcyAdapter(this, allPlanList, onPlanListener)
+                    planAdapter = AllPlanRcyAdapter(this, allPlanList)
                     recyclerView_all_plan.adapter = planAdapter
 
                     val lm = LinearLayoutManager(this)
@@ -141,7 +135,7 @@ class GroupMainActivity : AppCompatActivity() {
                     val json = JSONObject(App.groupConfirmed.groupConfirmed)
                     App.groupConfirmed.groupConfirmed = json.put(group.gno.toString(),1).toString()
 
-                    Log.d(TAG, "success")
+                    Log.d("PlanList", "success")
                 } catch (e : JSONException){
                     if(JSONArray(result).length() == 0)
                         group_main_no_plan.visibility = View.VISIBLE
