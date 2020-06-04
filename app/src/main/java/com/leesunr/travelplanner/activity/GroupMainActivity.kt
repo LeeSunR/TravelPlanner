@@ -1,5 +1,6 @@
 package com.leesunr.travelplanner.activity
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -7,13 +8,13 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.adapter.AllPlanRcyAdapter
 import com.leesunr.travelplanner.DBHelper.ChatDBHelper
-import com.leesunr.travelplanner.listener.OnPlanListener
 import com.leesunr.travelplanner.model.Group
 import com.leesunr.travelplanner.model.Plan
 import com.leesunr.travelplanner.retrofit.INodeJS
@@ -36,8 +37,11 @@ class GroupMainActivity : AppCompatActivity() {
     lateinit var allPlanList : ArrayList<ArrayList<Plan>>
     lateinit var planList : ArrayList<Plan>
 
+    companion object {
+        var is_writable : Int? = 0
+    }
 
-
+    @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group_main)
@@ -50,7 +54,6 @@ class GroupMainActivity : AppCompatActivity() {
         myBroadcastReceiver = MyBroadcastReceiver(group_chat_alarm,group)
         planBroadcastReceiver = PlanBroadcastReceiver(this, group)
 
-
         val chatFilter = IntentFilter()
         chatFilter.addAction("chatReceived")
         registerReceiver(myBroadcastReceiver, chatFilter)
@@ -61,6 +64,27 @@ class GroupMainActivity : AppCompatActivity() {
 
         planList = ArrayList<Plan>()
         allPlanList = ArrayList<ArrayList<Plan>>()
+
+        val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
+        MyServerAPI.call(this, myAPI.checkPermission(group.gno),
+            { result ->
+                val jsonArray = JSONArray(result)
+                val jsonObject = jsonArray.getJSONObject(0)
+                val owner = jsonObject.getInt("IS_OWNER")
+                is_writable = jsonObject.getInt("IS_WRITABLE")
+
+                if(owner == 0) {
+                    button_group_setting.visibility = View.GONE
+                    setMarginsInDp(button_group_chat, 0, 0, 0, 0)
+                }
+                if(is_writable == 0){
+                    button_group_plan_add.visibility = View.GONE
+                }
+            },
+            { error ->
+                Log.e("checkPermission Error", error)
+                return@call true
+            })
 
         button_group_back.setOnClickListener {
             if(intent.hasExtra("group")){
@@ -93,6 +117,16 @@ class GroupMainActivity : AppCompatActivity() {
         }
         loadPlanList(group.gno!!)
     }
+
+    fun setMarginsInDp(view: View, left: Int, top: Int, right: Int, bottom: Int){
+        if(view.layoutParams is ViewGroup.MarginLayoutParams){
+            val screenDesity: Float = view.context.resources.displayMetrics.density
+            val params: ViewGroup.MarginLayoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
+            params.setMargins(left*screenDesity.toInt(), top*screenDesity.toInt(), right*screenDesity.toInt(), bottom*screenDesity.toInt())
+            view.requestLayout()
+        }
+    }
+
 //  일정 목록 출력
     private fun loadPlanList(gno : Int){
         val dateFormat = SimpleDateFormat("yyyy-MM-dd");

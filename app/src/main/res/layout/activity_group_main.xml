@@ -39,9 +39,10 @@
             android:id="@+id/button_group_setting"
             android:layout_width="26dp"
             android:layout_height="26dp"
+            android:visibility="visible"
             android:background="@drawable/selector_setting_img"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <Button
             android:id="@+id/button_group_chat"

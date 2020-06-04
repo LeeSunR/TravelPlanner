@@ -116,6 +116,12 @@ interface INodeJS {
         @Field("nickname") nickname: String
     ) : Observable<String>
 
+    @POST("checkPermission")
+    @FormUrlEncoded
+    fun checkPermission(
+        @Field("gno") gno : Int?
+    ) : Observable<String>
+
     /******************** 일정 ********************/
     @POST("createPlan")
     @FormUrlEncoded

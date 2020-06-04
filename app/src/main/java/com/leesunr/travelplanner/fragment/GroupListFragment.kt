@@ -93,7 +93,7 @@ class GroupListFragment : Fragment() {
                     intent.putExtra("group", groupList[position])
                     startActivity(intent)
                 }
-                Log.e("GroupList: ", "success")
+                Log.d("GroupList: ", "success")
             },
             { error ->
                 Toast.makeText(mContext, "그룹 리스트를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()

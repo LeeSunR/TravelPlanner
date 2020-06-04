@@ -7,13 +7,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.leesunr.travelplanner.R
+import com.leesunr.travelplanner.activity.GroupMainActivity.Companion.is_writable
 import com.leesunr.travelplanner.activity.GroupPlanAddActivity
 import com.leesunr.travelplanner.listener.OnPlanListener
 import com.leesunr.travelplanner.model.Plan
@@ -21,6 +19,7 @@ import com.leesunr.travelplanner.retrofit.INodeJS
 import com.leesunr.travelplanner.retrofit.MyServerAPI
 import com.leesunr.travelplanner.retrofit.RetrofitClientWithAccessToken
 import java.text.SimpleDateFormat
+
 
 class PlanRcyAdapter(val context: Context, val planList: ArrayList<Plan>, val onPlanListener: OnPlanListener) :
     RecyclerView.Adapter<PlanRcyAdapter.Holder>() {
@@ -51,6 +50,14 @@ class PlanRcyAdapter(val context: Context, val planList: ArrayList<Plan>, val on
             pname.text = plan.pname
             pinfo.text = plan.pinfo
             pcomment.text = plan.pcomment
+
+            if(is_writable == 0){
+                optionBtn.visibility = View.GONE
+                val params: RelativeLayout.LayoutParams =
+                    pname.layoutParams as RelativeLayout.LayoutParams
+                params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+                pname.layoutParams = params
+            }
 
             fold.setOnClickListener {
                 if(hidden_layout.visibility == View.GONE){
