@@ -1,6 +1,7 @@
 package com.leesunr.travelplanner.adapter
 
 import android.animation.ValueAnimator
+import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,8 +20,14 @@ import java.text.SimpleDateFormat
 class LockPlanRcyAdapter(val context: Context, val plans: ArrayList<Plan>) :
     RecyclerView.Adapter<LockPlanRcyAdapter.Holder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LockPlanRcyAdapter.Holder {
-        val view = LayoutInflater.from(context).inflate(R.layout.lock_screen_rcy_item_plan, parent, false)
-        return Holder(view)
+        if ((context as Activity).localClassName == "activity.MainActivity"){
+            val view = LayoutInflater.from(context).inflate(R.layout.home_screen_rcy_item_plan, parent, false)
+            return Holder(view)
+        }
+        else{
+            val view = LayoutInflater.from(context).inflate(R.layout.lock_screen_rcy_item_plan, parent, false)
+            return Holder(view)
+        }
     }
 
     override fun getItemCount(): Int {

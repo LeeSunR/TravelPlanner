@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:textSize="16sp"
+        android:textColor="#222"
+        android:textStyle="bold"
+        android:paddingVertical="4dp"
+        android:paddingHorizontal="40dp"
+        android:id="@+id/tv_lock_plan_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="05/11 (수)"
+        android:layout_marginVertical="10dp"
+        android:layout_gravity="center"
+        android:background="@drawable/round_style"
+        android:backgroundTint="@color/lockBackgroundBold"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_lock_plan_back"
+        android:backgroundTint="@color/lockBackgroundLight"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="15dp"
+        android:layout_marginVertical="4dp"
+        android:background="@drawable/round_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textColor="#222"
+            android:id="@+id/tv_plan_start_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="08:00"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_marginVertical="10dp"
+            android:id="@+id/iv_plan_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_plan_start_time"
+            app:layout_constraintRight_toRightOf="@+id/tv_plan_start_time"
+            app:layout_constraintTop_toBottomOf="@+id/tv_plan_start_time"
+            android:tint="#222"
+            app:srcCompat="@drawable/ic_plan_flight" />
+
+        <TextView
+            android:textStyle="bold"
+            android:textColor="#222"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/tv_lock_plan_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintLeft_toRightOf="@+id/tv_plan_start_time"
+            app:layout_constraintTop_toTopOf="@id/tv_plan_start_time"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_plan_type"
+            android:text="main title"/>
+
+        <Button
+            android:id="@+id/btn_lock_plan_detail"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:padding="20dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_plan_start_time"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_plan_type"
+            android:backgroundTint="#222"
+            android:background="@drawable/ic_arrow_drop_down_black_24dp" />
+
+        <LinearLayout
+            android:id="@+id/layout_lock_plan_detail"
+            app:layout_constraintTop_toBottomOf="@+id/iv_plan_type"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/iv_info_plan_info"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:tint="#222"
+                    android:src="@drawable/ic_info_black_24dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_lock_plan_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="#222"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_info_plan_info"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/iv_lock_plan_comment"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:tint="#222"
+                    android:src="@drawable/ic_comment_black_24dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_lock_plan_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="#222"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_lock_plan_comment"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/btn_lock_plan_detail_close"
+                android:textColor="#FF9E6D"
+                android:textStyle="bold"
+                android:paddingTop="10dp"
+                android:paddingHorizontal="10dp"
+                android:text="닫기"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
