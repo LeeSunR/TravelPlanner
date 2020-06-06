@@ -13,8 +13,10 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.adapter.LockPlanRcyAdapter
+import com.leesunr.travelplanner.model.Group
 import com.leesunr.travelplanner.model.Plan
 import com.leesunr.travelplanner.retrofit.INodeJS
 import com.leesunr.travelplanner.retrofit.MyServerAPI
@@ -42,8 +44,12 @@ class LockScreenActivity : AppCompatActivity() {
         rcv_lock_plan.layoutManager = LinearLayoutManager(this)
         rcv_lock_plan.adapter = planAdapter
 
+        var group = Gson().fromJson(App.mainGroupNumber.mainGroup, Group::class.java)
+        if(group==null) return
+
+        tv_lock_group_info.text = group.gname
         val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
-        MyServerAPI.call(this, myAPI.loadPlanList(App.mainGroupNumber.mainGroupNumber),
+        MyServerAPI.call(this, myAPI.loadPlanList(group.gno!!),
             { result ->
                 val jsonArray:JSONArray = JSONArray(result)
                 for (i in 0 until jsonArray.length()){

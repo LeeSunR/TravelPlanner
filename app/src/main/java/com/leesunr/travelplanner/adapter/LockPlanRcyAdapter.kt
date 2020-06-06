@@ -47,6 +47,7 @@ class LockPlanRcyAdapter(val context: Context, val plans: ArrayList<Plan>) :
         private val tvPlanInfo = itemView.findViewById<TextView>(R.id.tv_lock_plan_info)
         private val tvPlanComment = itemView.findViewById<TextView>(R.id.tv_lock_plan_comment)
         private val tvPlanDate = itemView.findViewById<TextView>(R.id.tv_lock_plan_date)
+        private val tvPlanStartTime = itemView.findViewById<TextView>(R.id.tv_plan_start_time)
         private val btnPlanDetail = itemView.findViewById<TextView>(R.id.btn_lock_plan_detail)
 
         fun bind(plans: ArrayList<Plan>, context: Context, position: Int){
@@ -54,6 +55,7 @@ class LockPlanRcyAdapter(val context: Context, val plans: ArrayList<Plan>) :
             tvPlanTitle.text = plans[position]!!.pname
             tvPlanInfo.text = plans[position]!!.pinfo
             tvPlanComment.text = plans[position]!!.pcomment
+            tvPlanStartTime.text = SimpleDateFormat("hh:mm").format(plans[position]!!.start_time)
             detailLayout.visibility=View.GONE
 
             btnDetail.setOnClickListener {

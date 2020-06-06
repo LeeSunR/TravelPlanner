@@ -30,13 +30,13 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.adapter.LockPlanRcyAdapter
+import com.leesunr.travelplanner.model.Group
 import com.leesunr.travelplanner.model.Plan
 import com.leesunr.travelplanner.model.Weather
 import com.leesunr.travelplanner.retrofit.INodeJS
 import com.leesunr.travelplanner.retrofit.MyServerAPI
 import com.leesunr.travelplanner.retrofit.RetrofitClientWithAccessToken
 import com.leesunr.travelplanner.util.App
-import kotlinx.android.synthetic.main.activity_lock_screen.*
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -223,11 +223,13 @@ class HomeFragment : Fragment() {
     fun groupPlnaLoad(){
         var planList:ArrayList<Plan> = ArrayList<Plan>()
         var planAdapter: LockPlanRcyAdapter? = LockPlanRcyAdapter(mContext!!, planList)
-
         rcv_home_plan.layoutManager = LinearLayoutManager(mContext)
         rcv_home_plan.adapter = planAdapter
+        var group = Gson().fromJson(App.mainGroupNumber.mainGroup,Group::class.java)
+        if(group==null) return
+        tv_home_plan_group.text = group.gname
         val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
-        MyServerAPI.call(mContext as Activity, myAPI.loadPlanList(App.mainGroupNumber.mainGroupNumber),
+        MyServerAPI.call(mContext as Activity, myAPI.loadPlanList(group.gno!!),
             { result ->
                 val jsonArray:JSONArray = JSONArray(result)
                 for (i in 0 until jsonArray.length()){
@@ -239,6 +241,7 @@ class HomeFragment : Fragment() {
                     }
                 }
                 planAdapter!!.notifyDataSetChanged()
+                layout_home_plan_rcy.visibility = View.VISIBLE
                 if(planList.isEmpty()){
                     tv_home_plan_info.text = "오늘 이후 일정이 없습니다"
                     tv_home_plan_info.visibility = View.VISIBLE

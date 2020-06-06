@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
 import android.widget.Toast
+import com.google.gson.Gson
 import com.leesunr.travelplanner.adapter.GroupListAdapter
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.activity.GroupCreateActivity
@@ -56,7 +56,7 @@ class GroupListFragment : Fragment() {
             dialog.setTitle("안내")
                 .setMessage("이 그룹을 주그룹으로 설정하시겠습니까?")
                 .setPositiveButton("예") { dialog, which ->
-                    App.mainGroupNumber.mainGroupNumber = groupList[position].gno!!
+                    App.mainGroupNumber.mainGroup = Gson().toJson(groupList[position])
                 }
                 .setNegativeButton("아니요"){ dialog, which ->
 

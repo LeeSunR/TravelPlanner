@@ -8,14 +8,13 @@
 
     <TextView
         android:textSize="16sp"
-        android:textColor="#222"
-        android:textStyle="bold"
         android:paddingVertical="4dp"
         android:paddingHorizontal="40dp"
         android:id="@+id/tv_lock_plan_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="05/11 (수)"
+        android:textStyle="bold"
         android:layout_marginVertical="10dp"
         android:layout_gravity="center"
         android:background="@drawable/round_style"
@@ -31,7 +30,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:textColor="#222"
             android:id="@+id/tv_plan_start_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,12 +46,9 @@
             app:layout_constraintLeft_toLeftOf="@+id/tv_plan_start_time"
             app:layout_constraintRight_toRightOf="@+id/tv_plan_start_time"
             app:layout_constraintTop_toBottomOf="@+id/tv_plan_start_time"
-            android:tint="#222"
             app:srcCompat="@drawable/ic_plan_flight" />
 
         <TextView
-            android:textStyle="bold"
-            android:textColor="#222"
             android:layout_marginLeft="20dp"
             android:id="@+id/tv_lock_plan_title"
             android:layout_width="wrap_content"
@@ -71,7 +66,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_plan_start_time"
             app:layout_constraintBottom_toBottomOf="@+id/iv_plan_type"
-            android:backgroundTint="#222"
             android:background="@drawable/ic_arrow_drop_down_black_24dp" />
 
         <LinearLayout
@@ -90,7 +84,6 @@
                     android:id="@+id/iv_info_plan_info"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:tint="#222"
                     android:src="@drawable/ic_info_black_24dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -100,7 +93,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
-                    android:textColor="#222"
                     app:layout_constraintLeft_toRightOf="@+id/iv_info_plan_info"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -114,7 +106,6 @@
                     android:id="@+id/iv_lock_plan_comment"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:tint="#222"
                     android:src="@drawable/ic_comment_black_24dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -124,7 +115,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
-                    android:textColor="#222"
                     app:layout_constraintLeft_toRightOf="@+id/iv_lock_plan_comment"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
