@@ -214,7 +214,7 @@ class GroupSettingActivity : AppCompatActivity() {
                 val jsonObject = JSONObject(result)
                 val user = User().parseUserOfGroup(jsonObject)
                 memberList.add(user)
-                memberListAdapter.notifyDataSetChanged()
+                memberList(gno)
                 Log.d("groupInvite", "success")
             },
             { error ->
