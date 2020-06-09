@@ -2,22 +2,30 @@ package com.leesunr.travelplanner.activity
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.PendingIntent.getActivity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.drawToBitmap
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import com.leesunr.travelplanner.DBHelper.ChatDBHelper
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.adapter.AllPlanRcyAdapter
-import com.leesunr.travelplanner.DBHelper.ChatDBHelper
 import com.leesunr.travelplanner.model.Group
 import com.leesunr.travelplanner.model.Plan
 import com.leesunr.travelplanner.retrofit.INodeJS
@@ -28,6 +36,8 @@ import kotlinx.android.synthetic.main.activity_group_main.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import java.io.File
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 
 
@@ -125,7 +135,20 @@ class GroupMainActivity : AppCompatActivity() {
             menu.setOnMenuItemClickListener { item->
                 when(item.itemId){
                     R.id.group_main_more_share->{
+                        val bitmap = getRecyclerViewScreenshot(recyclerView_all_plan)
 
+                        val file = File(getExternalFilesDir("tmp").path+"plan.png")
+                        val fileStream = FileOutputStream(file)
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 0, FileOutputStream(file))
+                        fileStream.close()
+
+                        //임시 저장된 이미지 전송
+                        var uri = Uri.parse(getExternalFilesDir("tmp").path+"plan.png")
+
+                        val intent = Intent(Intent.ACTION_SEND)
+                        intent.type = "image/*"
+                        intent.putExtra(Intent.EXTRA_STREAM, uri)
+                        startActivity(intent)
                     }
                     R.id.group_main_more_main_group->{
                         val dialog = AlertDialog.Builder(this)
@@ -227,6 +250,18 @@ class GroupMainActivity : AppCompatActivity() {
         Log.e("result",unconfirmedMessage.toString())
         if (unconfirmedMessage)
             group_chat_alarm.visibility=View.VISIBLE
+    }
+
+    private fun getRecyclerViewScreenshot(view: RecyclerView): Bitmap {
+        view.measure(
+            View.MeasureSpec.makeMeasureSpec(view.width, View.MeasureSpec.EXACTLY),
+            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        )
+        val bitmap = Bitmap.createBitmap(view.width, view.measuredHeight, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        canvas.drawColor(Color.WHITE);
+        view.draw(canvas)
+        return bitmap
     }
 
     //새로운 채팅 수신 브로드케스트 리시버
