@@ -51,21 +51,7 @@ class GroupListFragment : Fragment() {
             val nextIntent = Intent(mContext, GroupCreateActivity::class.java)
             startActivity(nextIntent)
         }
-        listView_group.setOnItemLongClickListener { parent, view, position, id ->
-            val dialog = AlertDialog.Builder(mContext)
-            dialog.setTitle("안내")
-                .setMessage("이 그룹을 주그룹으로 설정하시겠습니까?")
-                .setPositiveButton("예") { dialog, which ->
-                    App.mainGroupNumber.mainGroup = Gson().toJson(groupList[position])
-                }
-                .setNegativeButton("아니요"){ dialog, which ->
 
-                }
-                .show()
-
-            return@setOnItemLongClickListener true
-        }
-//        loadGroupList()
     }
 
     override fun onResume() {

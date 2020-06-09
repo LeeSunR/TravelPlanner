@@ -1,6 +1,7 @@
 package com.leesunr.travelplanner.activity
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -11,7 +12,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.adapter.AllPlanRcyAdapter
 import com.leesunr.travelplanner.DBHelper.ChatDBHelper
@@ -114,6 +117,32 @@ class GroupMainActivity : AppCompatActivity() {
             val intent = Intent(this, GroupChatActivity::class.java)
             intent.putExtra("group", group)
             startActivity(intent)
+        }
+
+        button_group_more.setOnClickListener {
+            var menu = PopupMenu(this, button_group_more)
+            menu.inflate(R.menu.group_main_more_menu)
+            menu.setOnMenuItemClickListener { item->
+                when(item.itemId){
+                    R.id.group_main_more_share->{
+
+                    }
+                    R.id.group_main_more_main_group->{
+                        val dialog = AlertDialog.Builder(this)
+                        dialog.setTitle("안내")
+                            .setMessage("이 그룹을 주그룹으로 설정하시겠습니까?")
+                            .setPositiveButton("예") { dialog, which ->
+                                App.mainGroupNumber.mainGroup = Gson().toJson(group)
+                            }
+                            .setNegativeButton("아니요"){ dialog, which -> }
+                            .show()
+                    }
+                }
+
+                return@setOnMenuItemClickListener true
+            }
+            menu.show()
+
         }
         loadPlanList(group.gno!!)
     }
