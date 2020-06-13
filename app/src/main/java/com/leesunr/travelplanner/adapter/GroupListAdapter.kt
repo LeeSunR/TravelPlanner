@@ -77,7 +77,7 @@ class GroupListAdapter (val context: Context, val groupList: ArrayList<Group>) :
         holder.groupMemberCount?.text = "참가자 : ${group.gmember_count}명"
 
         var mainGroup = Gson().fromJson(App.mainGroupNumber.mainGroup,Group::class.java)
-        if(group!=null){
+        if(group.gno!=null && mainGroup.gno!=null){
             if(mainGroup.gno == group.gno) holder.groupStar?.visibility = View.VISIBLE
             else holder.groupStar?.visibility = View.GONE
         }
