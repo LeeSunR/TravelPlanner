@@ -34,6 +34,7 @@ class SignUpActivity : AppCompatActivity() {
     lateinit var myAPI: INodeJS
     var compositeDisposable = CompositeDisposable()
     var fileUri = ""
+    var chkNickname = false
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -75,6 +76,29 @@ class SignUpActivity : AppCompatActivity() {
             }
         })
 
+        signup_nickname_chk.setOnClickListener {
+            compositeDisposable.add(myAPI.checkNickname(signup_edt_nickname.text.toString())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { result ->
+                        if(result.equals("success")){
+                            chkNickname = true
+                            Toast.makeText(this, "사용 가능한 닉네임입니다.", Toast.LENGTH_SHORT).show()
+                            Log.d("check nickname", "ok")
+                        } else if(result.equals("overlap")){
+                            chkNickname = false
+                            Toast.makeText(this, "이미 사용 중인 닉네임입니다.", Toast.LENGTH_SHORT).show()
+                            Log.d("check nickname", "fail")
+                        }
+                    },
+                    { error ->
+                        Log.e("check nickname error", error.message)
+                    }
+                )
+            )
+        }
+
         signup_profile_photo.setOnClickListener {
             var intent = Intent(Intent.ACTION_PICK)
             intent.type = MediaStore.Images.Media.CONTENT_TYPE
@@ -88,11 +112,17 @@ class SignUpActivity : AppCompatActivity() {
             var email = signup_edt_email.text.toString()
             var nickname = signup_edt_nickname.text.toString()
 
-            if(user_id.isNotEmpty() && password.isNotEmpty() && passwordCheck.isNotEmpty() && nickname.isNotEmpty() && email.isNotEmpty()){
-                if(password.equals(passwordCheck))
-                    uploadStorage(fileUri, user_id, password, nickname, email)
-                else
-                    Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+            if(user_id.isNotEmpty() && password.isNotEmpty() && passwordCheck.isNotEmpty()
+                && nickname.isNotEmpty() && email.isNotEmpty()){
+                if(chkNickname){
+                    if(password.equals(passwordCheck))
+                        uploadStorage(fileUri, user_id, password, nickname, email)
+                    else
+                        Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "닉네임 중복확인을 해주세요.", Toast.LENGTH_SHORT).show()
+                }
+
             } else {
                 Toast.makeText(this, "회원정보를 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
             }

@@ -1,6 +1,5 @@
 package com.leesunr.travelplanner.retrofit
 
-import io.reactivex.Flowable
 import io.reactivex.Observable
 import okhttp3.*
 import retrofit2.http.*
@@ -24,6 +23,12 @@ interface INodeJS {
         @Field("userid") userid: String,
         @Field("password") password: String,
         @Field("fcmtoken") fcmtoken: String
+    ): Observable<String>
+
+    @POST("checkNickname")
+    @FormUrlEncoded
+    fun checkNickname(
+        @Field("input_nickname") input_nickname : String
     ): Observable<String>
 
     @POST("checkAccessToken")
