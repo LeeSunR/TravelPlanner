@@ -88,7 +88,7 @@ class GroupMainActivity : AppCompatActivity() {
 
                 if(owner == 0) {
                     button_group_setting.visibility = View.GONE
-                    setMarginsInDp(button_group_chat, 0, 0, 0, 0)
+//                    setMarginsInDp(button_group_chat, 0, 0, 0, 0)
                 }
                 if(is_writable == 0){
                     button_group_plan_add.visibility = View.GONE
