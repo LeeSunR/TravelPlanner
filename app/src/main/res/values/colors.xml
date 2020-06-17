@@ -10,4 +10,6 @@
     <color name="colorMessageMe">#4499FF</color>
     <color name="colorMessageEnable">#999999</color>
     <color name="colorMessageAble">#4499FF</color>
+    <color name="lockBackgroundBold">#80DDDDDD</color>
+    <color name="lockBackgroundLight">#33DDDDDD</color>
 </resources>

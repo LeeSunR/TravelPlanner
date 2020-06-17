@@ -12,6 +12,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.signature.ObjectKey
@@ -24,7 +25,6 @@ import com.leesunr.travelplanner.retrofit.INodeJS
 import com.leesunr.travelplanner.retrofit.MyServerAPI
 import com.leesunr.travelplanner.retrofit.RetrofitClientWithAccessToken
 import kotlinx.android.synthetic.main.activity_group_setting.*
-import kotlinx.android.synthetic.main.item_list_group_setting_member.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -59,17 +59,20 @@ class GroupSettingActivity : AppCompatActivity() {
             .into(group_setting_image)
 
         button_group_setting_back.setOnClickListener {
-            finish()
+            if(change){
+                val intent = Intent(this, GroupMainActivity::class.java)
+                intent.putExtra("group", group)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+            } else finish()
         }
-
-        memberList(gno)
-//        그룹 대표 이미지 변경
+//  그룹 대표 이미지 변경
         group_setting_image.setOnClickListener {
             var intent = Intent(Intent.ACTION_PICK)
             intent.type = MediaStore.Images.Media.CONTENT_TYPE
             startActivityForResult(intent, PHOTO_CHANGE_REQUEST_CODE)
         }
-//        그룹 이름 변경
+//  그룹 이름 변경
         group_setting_gname_edit.setOnClickListener {
             val dialog = AlertDialog.Builder(this)
             val linearLayout = LinearLayout(this)
@@ -84,7 +87,21 @@ class GroupSettingActivity : AppCompatActivity() {
             dialog.setView(linearLayout)
                 .setTitle("그룹이름 변경")
                 .setPositiveButton("확인") { dialogInterface, i ->
-                    group_setting_gname.text = newGroupName.text
+                    val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
+                    MyServerAPI.call(this, myAPI.groupNameChange(newGroupName.text.toString(), gno),
+                        { result ->
+                            val jsonObject = JSONObject(result)
+                            group = Group().parseEditGroup(jsonObject)
+                            group_setting_gname.text = newGroupName.text
+                            Toast.makeText(this, "그룹 이름을 변경하였습니다.", Toast.LENGTH_SHORT).show()
+                            change = true
+                            Log.d("groupNameChange", "success")
+                        },
+                        { error ->
+                            Log.e("groupNameChange Error", error)
+                            Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
+                            return@call true
+                        })
                 }
                 .setNegativeButton("취소") { dialogInterface, i -> }
                 .show()
@@ -107,30 +124,6 @@ class GroupSettingActivity : AppCompatActivity() {
             builder.setNegativeButton("취소", listener)
             builder.show()
         }
-//  그룹정보 변경 버튼리스너
-        group_setting_ok_button.setOnClickListener {
-            //임시 저장된 이미지 전송
-            val newFile = File(getExternalFilesDir("tmp").path+"group.png")
-
-            var requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), newFile)
-            var body: MultipartBody.Part = MultipartBody.Part.createFormData("imagefile", newFile.name, requestBody)
-            val gno = RequestBody.create(MediaType.parse("text/plain"), gno.toString())
-            val newGroupName = RequestBody.create(MediaType.parse("text/plain"), group_setting_gname.text.toString())
-
-            val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
-            MyServerAPI.call(this, myAPI.groupInfoChange(body, gno, newGroupName),
-                { result ->
-                    val jsonObject = JSONObject(result)
-                    group = Group().parseEditGroup(jsonObject)
-                    val intent = Intent(this, GroupMainActivity::class.java)
-                    intent.putExtra("group", group)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                    startActivity(intent)
-                },{ error ->
-                    Log.e("Group PhotoChange Error", error)
-                    return@call false
-                })
-        }
 //  멤버초대 버튼 리스너
         group_setting_member_invite.setOnClickListener {
             val dialog = AlertDialog.Builder(this)
@@ -151,6 +144,8 @@ class GroupSettingActivity : AppCompatActivity() {
                 .setNegativeButton("취소") { dialogInterface, i -> }
                 .show()
         }
+
+        memberList(gno)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -163,6 +158,26 @@ class GroupSettingActivity : AppCompatActivity() {
             val fileStream = FileOutputStream(file)
             newBitmap.compress(Bitmap.CompressFormat.PNG, 0, FileOutputStream(file))
             fileStream.close()
+
+            //임시 저장된 이미지 전송
+            val newFile = File(getExternalFilesDir("tmp").path+"group.png")
+
+            var requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), newFile)
+            var body: MultipartBody.Part = MultipartBody.Part.createFormData("imagefile", newFile.name, requestBody)
+            val gno = RequestBody.create(MediaType.parse("text/plain"), gno.toString())
+
+            val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
+            MyServerAPI.call(this, myAPI.groupPhotoChange(body, gno),
+                { result ->
+                    val jsonObject = JSONObject(result)
+                    group = Group().parseEditGroup(jsonObject)
+                    Toast.makeText(this, "그룹 대표이미지를 변경하였습니다.", Toast.LENGTH_SHORT).show()
+                    change = true
+                    Log.d("groupPhotoChange", "success")
+                },{ error ->
+                    Log.e("groupPhotoChange Error", error)
+                    return@call true
+                })
 
             Glide.with(this)
                 .load(newBitmap)
@@ -191,7 +206,7 @@ class GroupSettingActivity : AppCompatActivity() {
         )
     }
 
-//    멤버 초대
+//  멤버 초대
     fun groupInvite(gno: Int, userid: String) {
         val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
         MyServerAPI.call(this, myAPI.groupInvite(gno, userid),
@@ -199,8 +214,8 @@ class GroupSettingActivity : AppCompatActivity() {
                 val jsonObject = JSONObject(result)
                 val user = User().parseUserOfGroup(jsonObject)
                 memberList.add(user)
-                memberListAdapter.notifyDataSetChanged()
-                Log.d("groupInvite", result)
+                memberList(gno)
+                Log.d("groupInvite", "success")
             },
             { error ->
                 Log.e("groupInvite error", error)
@@ -217,8 +232,8 @@ class GroupSettingActivity : AppCompatActivity() {
                 memberList = ArrayList<User>()
                 for(i in 0 until jsonArray.length()){
                     val jsonObject = jsonArray.getJSONObject(i)
-                    val user = User().parseUserOfGroup(jsonObject, gno)
-                    memberList.add(user)
+                    val member = User().parseUserOfGroup(jsonObject, gno)
+                    memberList.add(member)
                 }
 
                 memberListAdapter = MemberListRcyAdapter(this, memberList)

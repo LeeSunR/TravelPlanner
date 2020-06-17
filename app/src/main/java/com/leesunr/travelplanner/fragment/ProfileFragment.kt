@@ -1,13 +1,17 @@
 package com.leesunr.travelplanner.fragment
 
+import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.media.ThumbnailUtils
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.Settings
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,6 +21,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.signature.ObjectKey
@@ -181,8 +186,15 @@ class ProfileFragment : Fragment() {
         }
 
         profile_lock_screen_on.setOnClickListener {
-            val intent = Intent(mContext, LockService::class.java)
-            mContext!!.startService(intent)
+
+            if(!Settings.canDrawOverlays(mContext)){
+                val myIntent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + mContext.applicationContext.packageName))
+                startActivity(myIntent)
+            }else{
+                val intent = Intent(mContext, LockService::class.java)
+                mContext!!.startService(intent)
+            }
+
         }
     }
 

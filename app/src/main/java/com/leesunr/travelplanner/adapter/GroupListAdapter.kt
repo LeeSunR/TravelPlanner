@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.signature.ObjectKey
+import com.google.gson.Gson
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.model.Group
 import com.leesunr.travelplanner.util.App
@@ -30,6 +31,7 @@ class GroupListAdapter (val context: Context, val groupList: ArrayList<Group>) :
             holder.groupRegdate = view.findViewById(R.id.travel_group_date)
             holder.groupMemberCount = view.findViewById(R.id.travel_group_member_count)
             holder.groupAlarm = view.findViewById(R.id.travel_group_new)
+            holder.groupStar = view.findViewById(R.id.travel_group_star)
 
             view.tag = holder
             /* convertView가 null, 즉 최초로 화면을 실행할 때에
@@ -74,6 +76,12 @@ class GroupListAdapter (val context: Context, val groupList: ArrayList<Group>) :
         holder.groupRegdate?.text = "생성일 : ${SimpleDateFormat("yyyy-MM-dd").format(group.gregdate)}"
         holder.groupMemberCount?.text = "참가자 : ${group.gmember_count}명"
 
+        var mainGroup = Gson().fromJson(App.mainGroupNumber.mainGroup,Group::class.java)
+        if(group!=null && mainGroup!=null){
+            if(mainGroup.gno == group.gno) holder.groupStar?.visibility = View.VISIBLE
+            else holder.groupStar?.visibility = View.GONE
+        }
+
         return view
     }
 
@@ -95,6 +103,7 @@ class GroupListAdapter (val context: Context, val groupList: ArrayList<Group>) :
         var groupPhoto : ImageView? = null
         var groupMemberCount : TextView? = null
         var groupAlarm : View? = null
+        var groupStar : ImageView? = null
     }
 
 }

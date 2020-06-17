@@ -1,6 +1,7 @@
 package com.leesunr.travelplanner.google
 
 import android.R
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
@@ -48,13 +49,17 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                         )
                     dbHandler.insert(message,false)
                     val notificationManager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                    val builder: NotificationCompat.Builder = NotificationCompat.Builder(this, "default")
+
+                    val mChannel = NotificationChannel("chatChannel", "채팅 알림", NotificationManager.IMPORTANCE_HIGH)
+                    (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(mChannel)
+
+                    val builder: NotificationCompat.Builder = NotificationCompat.Builder(this, "chatChannel")
                     builder.setSmallIcon(R.drawable.stat_notify_chat)
                     builder.setContentTitle(json.getString("nickname"))
                     builder.setContentText(json.getString("message"))
                     builder.setAutoCancel(true)
 
-                    notificationManager.notify(1, builder.build())
+                    notificationManager.notify(2, builder.build())
 
                     val intent = Intent("chatReceived")
                     intent.putExtra("gno",json.getInt("gno"))
@@ -62,13 +67,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 }
                 "createPlan"->{
                     val notificationManager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                    val builder: NotificationCompat.Builder = NotificationCompat.Builder(this, "default")
+
+                    val mChannel = NotificationChannel("planChannel", "일정 알림", NotificationManager.IMPORTANCE_HIGH)
+                    (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(mChannel)
+                    val builder: NotificationCompat.Builder = NotificationCompat.Builder(this, "planChannel")
                     builder.setSmallIcon(R.drawable.stat_notify_chat)
                     builder.setContentTitle("일정이 추가되었습니다")
                     builder.setContentText(json.getString("nickname")+"님이 <"+json.getString("pname")+"> 일정을 추가했습니다.")
                     builder.setAutoCancel(true)
 
-                    notificationManager.notify(1, builder.build())
+                    notificationManager.notify(2, builder.build())
 
                     val group = Group()
                     group.gno=json.getInt("gno")
@@ -83,13 +91,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 }
                 "modifyPlan"->{
                     val notificationManager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                    val builder: NotificationCompat.Builder = NotificationCompat.Builder(this, "default")
+
+                    val mChannel = NotificationChannel("planChannel", "일정 알림", NotificationManager.IMPORTANCE_HIGH)
+                    (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(mChannel)
+                    val builder: NotificationCompat.Builder = NotificationCompat.Builder(this, "planChannel")
                     builder.setSmallIcon(R.drawable.stat_notify_chat)
                     builder.setContentTitle("일정이 수정되었습니다")
                     builder.setContentText(json.getString("nickname")+"님이 <"+json.getString("pname")+"> 일정을 수정했습니다.")
                     builder.setAutoCancel(true)
 
-                    notificationManager.notify(1, builder.build())
+                    notificationManager.notify(2, builder.build())
 
                     val group = Group()
                     group.gno=json.getInt("gno")

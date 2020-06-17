@@ -1,6 +1,5 @@
 package com.leesunr.travelplanner.retrofit
 
-import io.reactivex.Flowable
 import io.reactivex.Observable
 import okhttp3.*
 import retrofit2.http.*
@@ -24,6 +23,12 @@ interface INodeJS {
         @Field("userid") userid: String,
         @Field("password") password: String,
         @Field("fcmtoken") fcmtoken: String
+    ): Observable<String>
+
+    @POST("checkNickname")
+    @FormUrlEncoded
+    fun checkNickname(
+        @Field("input_nickname") input_nickname : String
     ): Observable<String>
 
     @POST("checkAccessToken")
@@ -75,12 +80,18 @@ interface INodeJS {
         @Field("gno") gno : Int
     ) : Observable<String>
 
+    @POST("groupNameChange")
+    @FormUrlEncoded
+    fun groupNameChange(
+        @Field("newGroupName") newGroupName : String,
+        @Field("gno") gno : Int
+    ) : Observable<String>
+
     @Multipart
-    @POST("groupInfoChange")
-    fun groupInfoChange(
+    @POST("groupPhotoChange")
+    fun groupPhotoChange(
         @Part imagefile : MultipartBody.Part,
-        @Part("gno") gno : RequestBody,
-        @Part("newGroupName") newGroupName: RequestBody
+        @Part("gno") gno : RequestBody
     ) : Observable<String>
 
     @POST("groupInvite")
@@ -101,6 +112,19 @@ interface INodeJS {
     fun kickMember(
         @Field("gno") gno : Int,
         @Field("login_id") login_id : String
+    ) : Observable<String>
+
+    @POST("modifyPermission")
+    @FormUrlEncoded
+    fun modifyPermission(
+        @Field("gno") gno : Int,
+        @Field("nickname") nickname: String
+    ) : Observable<String>
+
+    @POST("checkPermission")
+    @FormUrlEncoded
+    fun checkPermission(
+        @Field("gno") gno : Int?
     ) : Observable<String>
 
     /******************** 일정 ********************/

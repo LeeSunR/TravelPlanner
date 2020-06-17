@@ -13,13 +13,12 @@
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/button_group_create_back"
-            android:backgroundTint="@color/colorFocusBottomMenu"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginBottom="15dp"
             android:layout_marginTop="15dp"
             android:layout_marginLeft="15dp"
-            android:background="@drawable/ic_arrow_back_black_24dp"
+            android:background="@drawable/selector_back_img"
             android:layout_width="26dp"
             android:layout_height="26dp"/>
         <TextView

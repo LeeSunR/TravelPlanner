@@ -35,6 +35,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
+    <ImageView
+        android:id="@+id/travel_group_star"
+        android:visibility="gone"
+        android:background="@drawable/ic_star_black_24dp"
+        android:backgroundTint="#FFB300"
+        android:layout_marginLeft="5dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/travel_group_title"
+        android:layout_width="24dp"
+        android:layout_height="24dp"/>
+
     <View
         android:id="@+id/travel_group_new"
         app:layout_constraintBottom_toBottomOf="@+id/travel_group_image"

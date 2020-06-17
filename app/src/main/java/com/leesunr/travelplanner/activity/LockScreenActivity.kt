@@ -1,33 +1,73 @@
 package com.leesunr.travelplanner.activity
 
-import android.app.KeyguardManager
-import android.app.PendingIntent
-import android.app.Service
+import android.app.*
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import com.leesunr.travelplanner.R
+import com.leesunr.travelplanner.adapter.LockPlanRcyAdapter
 import com.leesunr.travelplanner.model.Group
-import kotlinx.android.synthetic.main.activity_group_main.*
+import com.leesunr.travelplanner.model.Plan
+import com.leesunr.travelplanner.retrofit.INodeJS
+import com.leesunr.travelplanner.retrofit.MyServerAPI
+import com.leesunr.travelplanner.retrofit.RetrofitClientWithAccessToken
+import com.leesunr.travelplanner.util.App
 import kotlinx.android.synthetic.main.activity_lock_screen.*
+import org.json.JSONArray
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class LockScreenActivity : AppCompatActivity() {
+
+
+    private var planList:ArrayList<Plan> = ArrayList<Plan>()
+    private var planAdapter: LockPlanRcyAdapter = LockPlanRcyAdapter(this, planList)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lock_screen)
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        val attrib = window.attributes
+        attrib.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+
+        rcv_lock_plan.layoutManager = LinearLayoutManager(this)
+        rcv_lock_plan.adapter = planAdapter
+
+        var group = Gson().fromJson(App.mainGroupNumber.mainGroup, Group::class.java)
+        if(group==null) return
+
+        tv_lock_group_info.text = group.gname
+        val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
+        MyServerAPI.call(this, myAPI.loadPlanList(group.gno!!),
+            { result ->
+                val jsonArray:JSONArray = JSONArray(result)
+                for (i in 0 until jsonArray.length()){
+                    val plan = Plan().parsePlan(jsonArray.getJSONObject(i))
+                    val now = Date()
+                    now.time -= 86400000
+                    if(plan.start_date !!.after(now)){
+                        planList.add(plan)
+                    }
+                }
+                if(planList.isEmpty())
+                    tv_lock_plan_info.visibility = View.VISIBLE
+            },
+            { error ->
+                Log.e("PlanList error", error)
+                return@call true
+            }
+        )
 
 
         if (intent.getBooleanExtra("stop",false)){
@@ -100,7 +140,9 @@ class LockService : Service() {
         intent.putExtra("stop",true)
         val pi = PendingIntent.getActivity(applicationContext,System.currentTimeMillis().toInt(),intent,0)
 
-        val builder: NotificationCompat.Builder = NotificationCompat.Builder(this, "default")
+        val mChannel = NotificationChannel("lockChannel", "잠금화면 사용중 알림", NotificationManager.IMPORTANCE_HIGH)
+        (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(mChannel)
+        val builder: NotificationCompat.Builder = NotificationCompat.Builder(this, "lockChannel")
         builder.setSmallIcon(android.R.drawable.stat_notify_sync_noanim)
         builder.setContentText("잠금화면 표시를 위하여 앱이 실행중입니다")
         builder.addAction(android.R.drawable.ic_menu_share, "STOP", pi)

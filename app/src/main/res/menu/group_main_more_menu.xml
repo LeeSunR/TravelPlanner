@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/group_main_more_share"
+        android:title="공유하기" />
+    <item
+        android:id="@+id/group_main_more_main_group"
+        android:title="주그룹 설정" />
+
+</menu>
