@@ -6,5 +6,8 @@
     <item
         android:id="@+id/group_main_more_main_group"
         android:title="주그룹 설정" />
+    <item
+        android:id="@+id/group_main_map"
+        android:title="일정 지도보기" />
 
 </menu>
