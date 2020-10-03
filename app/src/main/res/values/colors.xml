@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#416AAE</color>
     <color name="colorPrimaryDark">#FFF</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#FF3F3F</color>
     <color name="colorFocusBottomMenu">#505050</color>
     <color name="colorBlurBottomMenu">#999999</color>
     <color name="colorTopNavigationBack">#CCC</color>
@@ -12,4 +12,5 @@
     <color name="colorMessageAble">#4499FF</color>
     <color name="lockBackgroundBold">#80DDDDDD</color>
     <color name="lockBackgroundLight">#33DDDDDD</color>
+    <color name="colorExpenseDate">#2196F3</color>
 </resources>

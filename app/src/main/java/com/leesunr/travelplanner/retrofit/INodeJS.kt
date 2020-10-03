@@ -165,4 +165,13 @@ interface INodeJS {
         @Field("gno") gno : Int
     ) : Observable<String>
 
+    /******************** 가계부 ********************/
+    @POST("createExpenses")
+    @FormUrlEncoded
+    fun createExpenses(
+        @Field("etitle") etitle : String,
+        @Field("cost") cost : Int,
+        @Field("regdate") regdate : Date,
+        @Field("gno") gno: Int
+    ) : Observable<String>
 }

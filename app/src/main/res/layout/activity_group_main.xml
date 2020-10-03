@@ -7,7 +7,7 @@
     tools:context=".activity.GroupMainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/group_map_constLayout"
+        android:id="@+id/group_main_constLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="20dp"

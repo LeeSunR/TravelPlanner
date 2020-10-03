@@ -2,7 +2,6 @@ package com.leesunr.travelplanner.activity
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.app.PendingIntent.getActivity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -15,11 +14,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.view.drawToBitmap
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -39,7 +36,6 @@ import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
-
 
 class GroupMainActivity : AppCompatActivity() {
     lateinit var group: Group
@@ -167,6 +163,13 @@ class GroupMainActivity : AppCompatActivity() {
             menu.show()
 
         }
+
+        button_group_expense.setOnClickListener {
+            val intent = Intent(this, GroupExpenseActivity::class.java)
+            intent.putExtra("gno", group.gno)
+            startActivity(intent)
+        }
+
         loadPlanList(group.gno!!)
     }
 

@@ -40,7 +40,7 @@ class AllPlanRcyAdapter (val context: Context, val allPlanList: ArrayList<ArrayL
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView){
         var start_date = itemView.findViewById<TextView>(R.id.all_plan_list_title)
         var allPlanRcycler = itemView.findViewById<RecyclerView>(R.id.recyclerView_plan)
-        var line = itemView.findViewById<RelativeLayout>(R.id.all_plan_list_line)
+        var line = itemView.findViewById<RelativeLayout>(R.id.all_expense_list_line)
 
         fun bind(plan: ArrayList<Plan>, context: Context, position: Int){
             val adapter = PlanRcyAdapter(context, plan, onPlanListener)
