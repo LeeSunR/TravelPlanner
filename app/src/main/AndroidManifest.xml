@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Main2Activity"></activity>
+        <activity android:name=".activity.GroupExpensesAddActivity"></activity>
 
         <receiver
             android:name=".activity.LockReceiver"
@@ -45,6 +45,7 @@
             </intent-filter>
         </service>
 
+        <activity android:name=".activity.GroupExpenseActivity" />
         <activity android:name=".activity.LockScreenActivity" />
         <activity android:name=".activity.GroupCreateActivity" />
         <activity android:name=".activity.FindIdPwActivity" />
