@@ -165,7 +165,7 @@ class GroupMainActivity : AppCompatActivity() {
         }
 
         button_group_expense.setOnClickListener {
-            val intent = Intent(this, GroupExpenseActivity::class.java)
+            val intent = Intent(this, GroupExpensesActivity::class.java)
             intent.putExtra("gno", group.gno)
             startActivity(intent)
         }

@@ -171,7 +171,8 @@ interface INodeJS {
     fun createExpenses(
         @Field("etitle") etitle : String,
         @Field("cost") cost : Int,
-        @Field("regdate") regdate : Date,
+        @Field("date") date : Date,
+        @Field("time") time : Time,
         @Field("gno") gno: Int
     ) : Observable<String>
 }

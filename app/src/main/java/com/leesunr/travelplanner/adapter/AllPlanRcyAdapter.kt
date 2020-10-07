@@ -13,6 +13,8 @@ import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.listener.OnPlanListener
 import com.leesunr.travelplanner.model.Plan
 import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AllPlanRcyAdapter (val context: Context, val allPlanList: ArrayList<ArrayList<Plan>>) :
     RecyclerView.Adapter<AllPlanRcyAdapter.Holder>(){
@@ -50,7 +52,7 @@ class AllPlanRcyAdapter (val context: Context, val allPlanList: ArrayList<ArrayL
                 val lm = LinearLayoutManager(context)
                 allPlanRcycler.layoutManager = lm
                 allPlanRcycler.adapter = adapter
-                start_date.text = SimpleDateFormat("yyyy/MM/dd (EEE)").format(plan[0].start_date)
+                start_date.text = SimpleDateFormat("yyyy/MM/dd (EEE)", Locale.KOREAN).format(plan[0].start_date)
             } else {
                 start_date.visibility = View.GONE
                 allPlanRcycler.visibility = View.GONE

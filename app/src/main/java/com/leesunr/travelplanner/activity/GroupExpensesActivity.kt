@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_group_expense.*
 import org.json.JSONObject
 import java.sql.Date
 
-class GroupExpenseActivity : AppCompatActivity() {
+class GroupExpensesActivity : AppCompatActivity() {
 
     var gno : Int? = null
 

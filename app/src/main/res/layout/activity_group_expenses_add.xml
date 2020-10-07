@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="20dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:padding="20dp">
 
     <LinearLayout
         android:id="@+id/expenses_add_dateLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:gravity="center">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/expenses_add_dateTextView"
+            android:id="@+id/expenses_add_dateText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -25,16 +25,24 @@
             android:textSize="18dp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/expenses_add_dateEdit"
+        <TextView
+            android:id="@+id/expenses_add_dateTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="2020년 9월 26일"
-            android:focusable="false"
+            android:layout_weight="1"
+            android:text="20년 9월 26일"
             android:textAlignment="center"
-            android:layout_weight="2"
-            android:background="@null"
-            android:textSize="18dp"/>
+            android:textColor="#000000"
+            android:textSize="18dp" />
+        <TextView
+            android:id="@+id/expenses_add_timeTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="오후 8:00"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="18dp" />
 
     </LinearLayout>
 
@@ -43,11 +51,11 @@
         android:id="@+id/expenses_add_priceLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:gravity="center"
         android:layout_marginVertical="15dp"
-        app:layout_constraintTop_toBottomOf="@+id/expenses_add_dateLayout"
-        app:layout_constraintLeft_toLeftOf="parent">
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/expenses_add_dateLayout">
 
         <TextView
             android:id="@+id/expenses_add_priceTextView"
@@ -63,24 +71,25 @@
             android:id="@+id/expenses_add_priceEdit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:background="@null"
             android:ems="10"
             android:hint="금액을 입력해주세요"
+            android:inputType="number"
+            android:maxLength="11"
             android:textAlignment="center"
-            android:layout_weight="2"
-
-            android:background="@null"
-            android:inputType="number" />
+            android:textColor="#000000" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/expenses_add_contentsLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:gravity="center"
         android:layout_marginVertical="15dp"
-        app:layout_constraintTop_toBottomOf="@+id/expenses_add_priceLayout"
-        app:layout_constraintLeft_toLeftOf="parent">
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/expenses_add_priceLayout">
 
         <TextView
             android:id="@+id/expenses_add_contentsTextView"
@@ -97,12 +106,13 @@
             android:id="@+id/expenses_add_contentsEdit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="내용을 입력해주세요"
-            android:textAlignment="center"
             android:layout_weight="2"
             android:background="@null"
-            android:inputType="textPersonName" />
+            android:ems="10"
+            android:hint="내용을 입력해주세요"
+            android:inputType="textPersonName"
+            android:textAlignment="center"
+            android:textColor="#000000" />
 
     </LinearLayout>
 
@@ -110,9 +120,9 @@
         android:id="@+id/expenses_add_btnLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:gravity="center"
         android:layout_marginVertical="15dp"
+        android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/expenses_add_contentsLayout">
 
         <Button

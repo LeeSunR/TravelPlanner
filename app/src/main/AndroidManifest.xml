@@ -45,7 +45,7 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".activity.GroupExpenseActivity" />
+        <activity android:name=".activity.GroupExpensesActivity" />
         <activity android:name=".activity.LockScreenActivity" />
         <activity android:name=".activity.GroupCreateActivity" />
         <activity android:name=".activity.FindIdPwActivity" />
