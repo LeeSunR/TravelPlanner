@@ -16,12 +16,15 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AllPlanRcyAdapter (val context: Context, val allPlanList: ArrayList<ArrayList<Plan>>) :
-    RecyclerView.Adapter<AllPlanRcyAdapter.Holder>(){
+class AllPlanRcyAdapter(val context: Context, val allPlanList: ArrayList<ArrayList<Plan>>) :
+    RecyclerView.Adapter<AllPlanRcyAdapter.Holder>() {
 
     val onPlanListener = object : OnPlanListener {
-        override fun onDelete(planList : ArrayList<Plan>) {
-            this@AllPlanRcyAdapter.notifyItemRangeChanged(allPlanList.indexOf(planList), allPlanList.size)
+        override fun onDelete(planList: ArrayList<Plan>) {
+            this@AllPlanRcyAdapter.notifyItemRangeChanged(
+                allPlanList.indexOf(planList),
+                allPlanList.size
+            )
             Log.d("PlanList", "onDelete Success")
         }
     }
@@ -31,7 +34,8 @@ class AllPlanRcyAdapter (val context: Context, val allPlanList: ArrayList<ArrayL
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllPlanRcyAdapter.Holder {
-        val view = LayoutInflater.from(context).inflate(R.layout.recycler_item_all_plan, parent, false)
+        val view =
+            LayoutInflater.from(context).inflate(R.layout.recycler_item_all_plan, parent, false)
         return Holder(view)
     }
 
@@ -39,24 +43,25 @@ class AllPlanRcyAdapter (val context: Context, val allPlanList: ArrayList<ArrayL
         holder?.bind(allPlanList[position], context, position)
     }
 
-    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var start_date = itemView.findViewById<TextView>(R.id.all_plan_list_title)
-        var allPlanRcycler = itemView.findViewById<RecyclerView>(R.id.recyclerView_plan)
-        var line = itemView.findViewById<RelativeLayout>(R.id.all_expense_list_line)
+        var planRcycler = itemView.findViewById<RecyclerView>(R.id.recyclerView_plan)
+        var line = itemView.findViewById<RelativeLayout>(R.id.all_plan_list_line)
 
-        fun bind(plan: ArrayList<Plan>, context: Context, position: Int){
-            val adapter = PlanRcyAdapter(context, plan, onPlanListener)
+        fun bind(plan: ArrayList<Plan>, context: Context, position: Int) {
+            val planAdapter = PlanRcyAdapter(context, plan, onPlanListener)
 
-            if(!plan.isEmpty()) {
-                allPlanRcycler.setHasFixedSize(true)
+            if (!plan.isEmpty()) {
+                planRcycler.setHasFixedSize(true)
                 val lm = LinearLayoutManager(context)
-                allPlanRcycler.layoutManager = lm
-                allPlanRcycler.adapter = adapter
-                start_date.text = SimpleDateFormat("yyyy/MM/dd (EEE)", Locale.KOREAN).format(plan[0].start_date)
+                planRcycler.layoutManager = lm
+                planRcycler.adapter = planAdapter
+                start_date.text =
+                    SimpleDateFormat("yyyy/MM/dd (EEE)", Locale.KOREAN).format(plan[0].start_date)
             } else {
                 start_date.visibility = View.GONE
-                allPlanRcycler.visibility = View.GONE
-                line.visibility= View.GONE
+                planRcycler.visibility = View.GONE
+                line.visibility = View.GONE
             }
         }
     }

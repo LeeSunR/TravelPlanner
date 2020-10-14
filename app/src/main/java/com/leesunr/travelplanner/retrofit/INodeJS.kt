@@ -175,4 +175,10 @@ interface INodeJS {
         @Field("time") time : Time,
         @Field("gno") gno: Int
     ) : Observable<String>
+
+    @POST("loadExpensesList")
+    @FormUrlEncoded
+    fun loadExpensesList(
+        @Field("gno") gno : Int
+    ) : Observable<String>
 }

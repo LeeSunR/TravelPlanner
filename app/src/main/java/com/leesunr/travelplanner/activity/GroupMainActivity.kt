@@ -42,7 +42,7 @@ class GroupMainActivity : AppCompatActivity() {
     lateinit var myBroadcastReceiver:MyBroadcastReceiver
     lateinit var planBroadcastReceiver:PlanBroadcastReceiver
 
-    lateinit var planAdapter : AllPlanRcyAdapter
+    lateinit var allPlanAdapter : AllPlanRcyAdapter
     lateinit var allPlanList : ArrayList<ArrayList<Plan>>
     lateinit var planList : ArrayList<Plan>
 
@@ -184,7 +184,7 @@ class GroupMainActivity : AppCompatActivity() {
 
 //  일정 목록 출력
     private fun loadPlanList(gno : Int){
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd");
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
         val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
         MyServerAPI.call(this, myAPI.loadPlanList(gno),
             { result ->
@@ -214,8 +214,8 @@ class GroupMainActivity : AppCompatActivity() {
                     allPlanList.add(planList)
 
                     //레이아웃매니저를 설정해줍니다.
-                    planAdapter = AllPlanRcyAdapter(this, allPlanList)
-                    recyclerView_all_plan.adapter = planAdapter
+                    allPlanAdapter = AllPlanRcyAdapter(this, allPlanList)
+                    recyclerView_all_plan.adapter = allPlanAdapter
 
                     val lm = LinearLayoutManager(this)
                     recyclerView_all_plan.layoutManager = lm

@@ -4,13 +4,16 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.leesunr.travelplanner.R
+import com.leesunr.travelplanner.activity.GroupMainActivity.Companion.is_writable
 import com.leesunr.travelplanner.listener.OnExpenseListener
 import com.leesunr.travelplanner.model.Expenses
 
 // 수정 필요
-class ExpenseRcyAdapter(val context: Context, val expensesList: ArrayList<Expenses>, val onPlanListener: OnExpenseListener) :
+class ExpenseRcyAdapter(val context: Context, val expensesList: ArrayList<Expenses>, val onExpensesListener: OnExpenseListener) :
     RecyclerView.Adapter<ExpenseRcyAdapter.Holder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view =
@@ -23,34 +26,31 @@ class ExpenseRcyAdapter(val context: Context, val expensesList: ArrayList<Expens
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-//        holder?.bind(expenseList[position], context, position)
+        holder?.bind(expensesList[position], context, position)
     }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        /*val start_time = itemView.findViewById<TextView>(R.id.plan_list_start_time)
-        val ptype = itemView.findViewById<ImageView>(R.id.plan_list_type)
-        val pname = itemView.findViewById<TextView>(R.id.plan_list_title)
-        val pinfo = itemView.findViewById<TextView>(R.id.plan_list_info_text)
-        val pcomment = itemView.findViewById<TextView>(R.id.plan_list_comment_text)
-        val optionBtn = itemView.findViewById<Button>(R.id.plan_list_option_button)
-        val fold = itemView.findViewById<Button>(R.id.plan_list_fold_button)
-        val hidden_layout = itemView.findViewById<LinearLayout>(R.id.plan_list_layout2)*/
+        val etitle = itemView.findViewById<TextView>(R.id.expenses_list_contents)
+        val cost = itemView.findViewById<TextView>(R.id.expenses_list_cost)
 
-        /*fun bind (expense: Expense, context: Context, position: Int) {
-            start_time.text = SimpleDateFormat("HH:mm").format(plan.start_time)
-            pname.text = plan.pname
-            pinfo.text = plan.pinfo
-            pcomment.text = plan.pcomment
+//        val optionBtn = itemView.findViewById<Button>(R.id.plan_list_option_button)
+//        val fold = itemView.findViewById<Button>(R.id.plan_list_fold_button)
+//        val hidden_layout = itemView.findViewById<LinearLayout>(R.id.plan_list_layout2)
 
-            if(is_writable == 0){
-                optionBtn.visibility = View.GONE
-                val params: RelativeLayout.LayoutParams =
-                    pname.layoutParams as RelativeLayout.LayoutParams
-                params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
-                pname.layoutParams = params
+        fun bind(expense: Expenses, context: Context, position: Int) {
+            etitle.text = expense.etitle
+            cost.text = expense.cost.toString()
+//            start_time.text = SimpleDateFormat("HH:mm").format(plan.start_time)
+
+            if (is_writable == 0) {
+//                optionBtn.visibility = View.GONE
+//                val params: RelativeLayout.LayoutParams =
+//                    pname.layoutParams as RelativeLayout.LayoutParams
+//                params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+//                pname.layoutParams = params
             }
 
-            fold.setOnClickListener {
+            /*fold.setOnClickListener {
                 if(hidden_layout.visibility == View.GONE){
                     fold.setBackgroundResource(R.drawable.ic_arrow_drop_up_black_24dp)
                     hidden_layout.visibility = View.VISIBLE
@@ -79,9 +79,9 @@ class ExpenseRcyAdapter(val context: Context, val expensesList: ArrayList<Expens
                     }
                     pop.show()
             }*/
-    }
+        }
 
-    /*private fun deletePlan(pno : Int, plan : Plan, position: Int){
+        /*private fun deletePlan(pno : Int, plan : Plan, position: Int){
             val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
             MyServerAPI.call(context as Activity, myAPI.deletePlan(pno),
                 { result ->
@@ -96,4 +96,6 @@ class ExpenseRcyAdapter(val context: Context, val expensesList: ArrayList<Expens
                 }
             )
         }*/
+
+    }
 }

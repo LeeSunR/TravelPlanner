@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <RelativeLayout
-        android:id="@+id/all_expense_list_line"
+        android:id="@+id/all_plan_list_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="5dp"
@@ -30,5 +30,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="15dp"
-        app:layout_constraintTop_toBottomOf="@+id/all_expense_list_line" />
+        app:layout_constraintTop_toBottomOf="@+id/all_plan_list_line" />
 </androidx.constraintlayout.widget.ConstraintLayout>

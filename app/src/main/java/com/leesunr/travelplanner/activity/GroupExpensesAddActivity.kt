@@ -13,7 +13,6 @@ import android.widget.TimePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.leesunr.travelplanner.R
-import com.leesunr.travelplanner.model.Group
 import com.leesunr.travelplanner.retrofit.INodeJS
 import com.leesunr.travelplanner.retrofit.MyServerAPI
 import com.leesunr.travelplanner.retrofit.RetrofitClientWithAccessToken
@@ -126,18 +125,17 @@ class GroupExpensesAddActivity : AppCompatActivity() {
         MyServerAPI.call(this, myAPI.createExpenses(etitle, cost, date, time, gno),
             { result ->
                 val jsonObject = JSONObject(result)
-                val group = Group().parseEditGroup(jsonObject)
 
                 Toast.makeText(this, "가계부 내역을 등록하였습니다.", Toast.LENGTH_SHORT).show()
                 Log.d("expenses create", "success")
 
                 val intent = Intent(this, GroupExpensesActivity::class.java)
-                intent.putExtra("group", group)
+                intent.putExtra("gno", gno)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(intent)
             },
             { error ->
-                Toast.makeText(this, "가계부 내역을 실패했습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "가계부 내역 등록에 실패했습니다.", Toast.LENGTH_SHORT).show()
                 Log.d("expenses create error", error)
                 return@call true
             })
