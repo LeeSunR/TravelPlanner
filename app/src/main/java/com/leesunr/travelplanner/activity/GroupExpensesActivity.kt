@@ -10,15 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.leesunr.travelplanner.R
 import com.leesunr.travelplanner.adapter.AllExpensesRcyAdapter
 import com.leesunr.travelplanner.model.Expenses
-import com.leesunr.travelplanner.model.Group
 import com.leesunr.travelplanner.retrofit.INodeJS
 import com.leesunr.travelplanner.retrofit.MyServerAPI
 import com.leesunr.travelplanner.retrofit.RetrofitClientWithAccessToken
 import kotlinx.android.synthetic.main.activity_group_expense.*
 import org.json.JSONArray
 import org.json.JSONException
-import org.json.JSONObject
-import java.sql.Date
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 
 class GroupExpensesActivity : AppCompatActivity() {
@@ -50,7 +48,6 @@ class GroupExpensesActivity : AppCompatActivity() {
 
         Log.e("gno : ", gno.toString())
         loadExpensesList(gno!!)
-
     }
 
     private fun loadExpensesList(gno : Int){
@@ -85,7 +82,8 @@ class GroupExpensesActivity : AppCompatActivity() {
                         }
                     }
                     allExpensesList.add(expensesList)
-                    group_expense_totalAmount.text = totalCost.toString()
+
+                    group_expense_totalAmount.text = "${makeCommaNumber(totalCost!!)}원"
 
                     //레이아웃매니저를 설정해줍니다.
                     allExpensesAdapter = AllExpensesRcyAdapter(this, allExpensesList)
@@ -107,5 +105,8 @@ class GroupExpensesActivity : AppCompatActivity() {
             })
     }
 
-
+    fun makeCommaNumber(input:Int): String {
+        val formatter = DecimalFormat("###,###")
+        return formatter.format(input)
+    }
 }

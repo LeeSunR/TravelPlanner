@@ -22,7 +22,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.GroupExpensesAddActivity"></activity>
+        <activity android:name=".activity.ExpensesModActivity"></activity>
+        <activity android:name=".activity.GroupExpensesAddActivity" />
 
         <receiver
             android:name=".activity.LockReceiver"

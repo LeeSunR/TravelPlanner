@@ -181,4 +181,21 @@ interface INodeJS {
     fun loadExpensesList(
         @Field("gno") gno : Int
     ) : Observable<String>
+
+    @POST("modifyExpenses")
+    @FormUrlEncoded
+    fun modifyExpenses(
+        @Field("eno") eno : Int,
+        @Field("etitle") etitle : String,
+        @Field("cost") cost : Int,
+        @Field("date") date : Date,
+        @Field("time") time : Time,
+        @Field("gno") gno : Int
+    ) : Observable<String>
+
+    @POST("deleteExpenses")
+    @FormUrlEncoded
+    fun deleteExpenses(
+        @Field("eno") eno : Int
+    ) : Observable<String>
 }

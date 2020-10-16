@@ -25,7 +25,7 @@ class AllExpensesRcyAdapter(val context: Context, val allExpensesList: ArrayList
                 allExpensesList.indexOf(expensesList),
                 allExpensesList.size
             )
-            Log.d("PlanList", "onDelete Success")
+            Log.d("ExpensesList", "onDelete Success")
         }
     }
     override fun getItemCount(): Int {
