@@ -1,7 +1,6 @@
 package com.leesunr.travelplanner.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.leesunr.travelplanner.R
-import com.leesunr.travelplanner.listener.OnExpenseListener
 import com.leesunr.travelplanner.model.Expenses
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,15 +17,6 @@ import kotlin.collections.ArrayList
 class AllExpensesRcyAdapter(val context: Context, val allExpensesList: ArrayList<ArrayList<Expenses>>) :
     RecyclerView.Adapter<AllExpensesRcyAdapter.Holder>() {
 
-    val onExpensesListener = object : OnExpenseListener {
-        override fun onDelete(expensesList: ArrayList<Expenses>) {
-            this@AllExpensesRcyAdapter.notifyItemRangeChanged(
-                allExpensesList.indexOf(expensesList),
-                allExpensesList.size
-            )
-            Log.d("ExpensesList", "onDelete Success")
-        }
-    }
     override fun getItemCount(): Int {
         return allExpensesList.size
     }
@@ -48,7 +37,7 @@ class AllExpensesRcyAdapter(val context: Context, val allExpensesList: ArrayList
         var line = itemView.findViewById<RelativeLayout>(R.id.all_expenses_list_line)
 
         fun bind(expenses: ArrayList<Expenses>, context: Context, position: Int){
-            val expensesAdapter = ExpenseRcyAdapter(context, expenses, onExpensesListener)
+            val expensesAdapter = ExpenseRcyAdapter(context, expenses)
 
             if(!expenses.isEmpty()){
                 expensesRcyAdapter.setHasFixedSize(true)

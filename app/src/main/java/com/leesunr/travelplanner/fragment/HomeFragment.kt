@@ -127,7 +127,7 @@ class HomeFragment : Fragment() {
 
                 client.newCall(request).enqueue(object: Callback {
                     override fun onFailure(call: Call, e: IOException){
-                        Log.i("result","fial")
+                        Log.i("result","fail")
                     }
                     @SuppressLint("SetTextI18n")
                     override fun onResponse(call: Call, response: Response) {

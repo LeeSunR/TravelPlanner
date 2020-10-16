@@ -4,8 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import org.json.JSONObject
 import java.sql.Time
-import java.text.SimpleDateFormat
-import java.util.*
+import java.sql.Date
 
 @Parcelize
 data class Expenses(
@@ -21,7 +20,7 @@ data class Expenses(
         this.eno = jsonObject.getInt("ENO")
         this.etitle = jsonObject.getString("ETITLE")
         this.cost = jsonObject.getInt("COST")
-        this.date = SimpleDateFormat("yyyy-MM-dd").parse(jsonObject.getString("DATE"))
+        this.date = Date.valueOf(jsonObject.getString("DATE"))
         this.time = Time.valueOf(jsonObject.getString("TIME"))
         this.gno = jsonObject.getInt("GNO")
         return this
