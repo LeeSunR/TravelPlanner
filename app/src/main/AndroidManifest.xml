@@ -22,7 +22,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.ExpensesModActivity"></activity>
+        <activity android:name=".activity.GroupPlanRouteActivity" />
+        <activity android:name=".activity.ExpensesModActivity" />
         <activity android:name=".activity.GroupExpensesAddActivity" />
 
         <receiver
@@ -59,10 +60,12 @@
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC-GIclco8JZrEMe8XvhUVSbTPlDeWNdS4" />
     </application>
 
 </manifest>
