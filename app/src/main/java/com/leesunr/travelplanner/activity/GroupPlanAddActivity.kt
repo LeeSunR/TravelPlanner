@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat
 class GroupPlanAddActivity : AppCompatActivity() {
 
     lateinit var planInfo : Plan
+    private val locationRequestCode = 0x0011
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +58,10 @@ class GroupPlanAddActivity : AppCompatActivity() {
             } else {
                 modifyPlan(planInfo.pno!!, pname, pcomment, pinfo, ptype, start_date, start_time, planInfo.gno!!)
             }
+        }
+
+        plan_add_location.setOnClickListener {
+            startActivityForResult(Intent(this,GroupPlanSelectLocationActivity::class.java),locationRequestCode)
         }
     }
 

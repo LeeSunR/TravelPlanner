@@ -64,6 +64,15 @@
                 android:layout_height="wrap_content"
                 android:textSize="20dp"/>
 
+            <EditText
+                android:id="@+id/plan_add_location"
+                android:hint="장소"
+                android:focusable="false"
+                android:layout_margin="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"/>
+
             <Spinner
                 android:id="@+id/plan_add_type"
                 android:entries="@array/아이콘"
