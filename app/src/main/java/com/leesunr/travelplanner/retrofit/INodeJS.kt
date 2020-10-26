@@ -25,6 +25,9 @@ interface INodeJS {
         @Field("fcmtoken") fcmtoken: String
     ): Observable<String>
 
+    @POST("deleteAccount")
+    fun deleteAccount() : Observable<String>
+
     @POST("checkNickname")
     @FormUrlEncoded
     fun checkNickname(

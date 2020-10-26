@@ -178,6 +178,30 @@ class ProfileFragment : Fragment() {
                 .show()
         }
 
+        profile_delete_account.setOnClickListener {
+            val dialog = AlertDialog.Builder(mContext)
+            dialog.setTitle("회원탈퇴")
+                .setMessage("회원탈퇴하시겠습니까?")
+                .setPositiveButton("예") { dialogInterface, i->
+
+                    val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
+                    MyServerAPI.call(mContext as Activity,myAPI.deleteAccount(),{
+                            result->
+                        Toast.makeText(mContext,"회원탈퇴 성공\n로그인 화면으로 돌아갑니다.",Toast.LENGTH_LONG).show()
+                        App.prefs_access.myAccessToken = null
+                        App.prefs_refresh.myRefreshToken = null
+                        val intent = Intent(mContext, LoginActivity::class.java)
+                        mContext.startActivity(intent)
+                        ActivityCompat.finishAffinity(mContext as Activity)
+                    },{
+                        Toast.makeText(mContext,"회원탈퇴에 실패했습니다.",Toast.LENGTH_SHORT).show()
+                        return@call true
+                    })
+                }
+                .setNegativeButton("아니오") { dialogInterface, i-> }
+                .show()
+        }
+
 
         profile_image_change.setOnClickListener {
             var intent = Intent(Intent.ACTION_PICK)
