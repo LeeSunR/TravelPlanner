@@ -67,6 +67,7 @@
             <EditText
                 android:id="@+id/plan_add_location"
                 android:hint="장소"
+                android:clickable="false"
                 android:focusable="false"
                 android:layout_margin="15dp"
                 android:layout_width="match_parent"

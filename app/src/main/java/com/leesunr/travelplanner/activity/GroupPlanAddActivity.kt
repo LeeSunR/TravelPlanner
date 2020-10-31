@@ -22,6 +22,8 @@ class GroupPlanAddActivity : AppCompatActivity() {
 
     lateinit var planInfo : Plan
     private val locationRequestCode = 0x0011
+    private var latitude:Double? = null
+    private var longitude:Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +71,7 @@ class GroupPlanAddActivity : AppCompatActivity() {
                            start_date: Date, start_time: Time)
     {
         val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
-        MyServerAPI.call(this, myAPI.createPlan(gno, pname, pcomment, pinfo, ptype, start_date, start_time),
+        MyServerAPI.call(this, myAPI.createPlan(gno, pname, pcomment, pinfo, ptype, start_date, start_time, latitude, longitude),
             { result ->
                 val jsonObject = JSONObject(result)
                 val group = Group().parseEditGroup(jsonObject)
@@ -133,5 +135,18 @@ class GroupPlanAddActivity : AppCompatActivity() {
                 Log.d("plan modify error", error)
                 return@call true
             })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode==0){
+            when(requestCode){
+                locationRequestCode->{
+                    latitude = data?.getDoubleExtra("latitude",0.0)
+                    longitude = data?.getDoubleExtra("longitude",0.0)
+                    plan_add_location.setText("위도 : $latitude\n경도 : $longitude")
+                }
+            }
+        }
     }
 }

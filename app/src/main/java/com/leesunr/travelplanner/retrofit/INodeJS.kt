@@ -140,7 +140,10 @@ interface INodeJS {
         @Field("pinfo") pinfo : String,
         @Field("ptype") ptype : String,
         @Field("start_date") start_date : Date,
-        @Field("start_time") start_time : Time
+        @Field("start_time") start_time : Time,
+        @Field("latitude") latitude : Double?,
+        @Field("longitude") longitude : Double?
+
     ) : Observable<String>
 
     @POST("planList")
