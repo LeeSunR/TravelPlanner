@@ -156,6 +156,11 @@ class GroupMainActivity : AppCompatActivity() {
                             .setNegativeButton("아니요"){ dialog, which -> }
                             .show()
                     }
+                    R.id.group_main_map->{
+                        val intent = Intent(this,GroupPlanRouteActivity::class.java)
+                        intent.putExtra("planList",allPlanList)
+                        startActivity(intent)
+                    }
                 }
 
                 return@setOnMenuItemClickListener true
