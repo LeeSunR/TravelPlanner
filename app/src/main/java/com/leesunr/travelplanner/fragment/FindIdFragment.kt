@@ -47,8 +47,7 @@ open class FindIdFragment : Fragment() {
         button_find_id.setOnClickListener { view ->
             email = edit_find_email.text.toString()
             if(email!!.isNotEmpty()){
-
-                compositeDisposable.add(myAPI.emailAuth(email!!)
+                compositeDisposable.add(myAPI.emailAuthId(email!!)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
@@ -71,29 +70,6 @@ open class FindIdFragment : Fragment() {
                         }
                     )
                 )
-//                val myAPI = RetrofitClient.instance.create(INodeJS::class.java)
-//                MyServerAPI.call(context as Activity, myAPI.emailAuth(email!!),
-//                    { result ->
-//                        // 1. 서버에서 랜덤 생성한 6자리 숫자 받아옴
-//                        // 2. 입력한 인증번호와 일치한지 검사 후 bool 변수에 true 또는 false 대입
-//                        // 3. OK 버튼 클릭이벤트 처리하기
-//                        Log.e("test", "test02030")
-//                        val authNum = result.toInt()
-//                        Log.e("authNum : ", authNum.toString())
-//
-//                        var builder = AlertDialog.Builder(this.requireContext())
-//                        builder.setTitle("이메일 인증")
-//                        builder.setIcon(R.mipmap.ic_launcher)
-//
-//                        var v1 = layoutInflater.inflate(R.layout.auth_dialog, null)
-//                        builder.setView(v1)
-//
-//                        var alert = builder.create()
-//                        countDownTimer(alert, authNum)
-//                    },
-//                    { error ->
-//                        return@call true
-//                    })
             } else
                 Toast.makeText(context, "이메일을 입력해주세요!", Toast.LENGTH_SHORT).show()
         }
@@ -134,7 +110,7 @@ open class FindIdFragment : Fragment() {
             if(input_num!!.text.toString().equals(authNum)) {
                 myAPI = RetrofitClient.instance.create(INodeJS::class.java)
 
-                compositeDisposable.add(myAPI.emailAuthSuccess(email!!)
+                compositeDisposable.add(myAPI.emailAuthSuccessId(email!!)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(

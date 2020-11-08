@@ -40,15 +40,28 @@ interface INodeJS {
     @POST("renewalAccessToken")
     fun renewalAccessToken(): Observable<String>
 
-    @POST("emailAuth")
+    @POST("emailAuthId")
     @FormUrlEncoded
-    fun emailAuth(
+    fun emailAuthId(
         @Field("email") email : String
     ) : Observable<String>
 
-    @POST("emailAuthSuccess")
+    @POST("emailAuthSuccessId")
     @FormUrlEncoded
-    fun emailAuthSuccess(
+    fun emailAuthSuccessId(
+        @Field("email") email : String
+    ) : Observable<String>
+
+    @POST("emailAuthPasswd")
+    @FormUrlEncoded
+    fun emailAuthPasswd(
+        @Field("uid") uid : String,
+        @Field("email") email : String
+    ) : Observable<String>
+
+    @POST("emailAuthSuccessPasswd")
+    @FormUrlEncoded
+    fun emailAuthSuccessPasswd(
         @Field("email") email : String
     ) : Observable<String>
 
@@ -180,7 +193,9 @@ interface INodeJS {
         @Field("ptype") ptype : String,
         @Field("start_date") start_date : Date,
         @Field("start_time") start_time : Time,
-        @Field("gno") gno : Int
+        @Field("gno") gno : Int,
+        @Field("latitude") latitude : Double?,
+        @Field("longitude") longitude : Double?
     ) : Observable<String>
 
     /******************** 가계부 ********************/

@@ -21,12 +21,12 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="아이디 찾기1" />
+            android:text="아이디 찾기" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="비밀번호 찾기2" />
+            android:text="비밀번호 찾기" />
 
     </com.google.android.material.tabs.TabLayout>
 

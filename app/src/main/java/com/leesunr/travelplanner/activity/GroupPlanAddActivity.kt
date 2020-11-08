@@ -58,7 +58,7 @@ class GroupPlanAddActivity : AppCompatActivity() {
                 Log.e("gno", gno.toString())
                 createPlan(gno, pname, pcomment, pinfo, ptype, start_date, start_time)
             } else {
-                modifyPlan(planInfo.pno!!, pname, pcomment, pinfo, ptype, start_date, start_time, planInfo.gno!!)
+                modifyPlan(planInfo.pno!!, pname, pcomment, pinfo, ptype, start_date, start_time, planInfo.gno!!,latitude!!, longitude!!)
             }
         }
 
@@ -94,7 +94,6 @@ class GroupPlanAddActivity : AppCompatActivity() {
     private fun planInit(){
         if(planInfo != null){
             val date = planInfo.start_date
-            Log.e("date", date.toString())
             val year = SimpleDateFormat("yyyy").format(date)
             val month = SimpleDateFormat("MM").format(date)
             val day = SimpleDateFormat("dd").format(date)
@@ -107,17 +106,20 @@ class GroupPlanAddActivity : AppCompatActivity() {
             val typeArray = resources.getStringArray(R.array.아이콘)
             plan_add_type.setSelection(typeArray.indexOf(planInfo.ptype))
 
+            latitude = planInfo.latitude
+            longitude = planInfo.longitude
             plan_add_title.setText(planInfo.pname)
             plan_add_info.setText(planInfo.pinfo)
             plan_add_comment.setText(planInfo.pcomment)
+            plan_add_location.setText("위도 : ${latitude}\n경도 : ${longitude}")
         }
     }
 
     private fun modifyPlan(pno: Int, pname: String, pcomment: String, pinfo: String, ptype: String,
-                           start_date: Date, start_time: Time, gno: Int)
+                           start_date: Date, start_time: Time, gno: Int, latitude: Double, longitude: Double)
     {
         val myAPI = RetrofitClientWithAccessToken.instance.create(INodeJS::class.java)
-        MyServerAPI.call(this, myAPI.modifyPlan(pno, pname, pcomment, pinfo, ptype, start_date, start_time, gno),
+        MyServerAPI.call(this, myAPI.modifyPlan(pno, pname, pcomment, pinfo, ptype, start_date, start_time, gno, latitude, longitude),
             { result ->
                 val jsonObject = JSONObject(result)
                 val group = Group().parseEditGroup(jsonObject)

@@ -37,11 +37,7 @@ class LoginActivity : AppCompatActivity() {
             myStartActivity(SignUpActivity::class.java)
         }
 
-        login_find_id.setOnClickListener {
-            myStartActivity(FindIdPwActivity::class.java)
-        }
-
-        login_find_pwd.setOnClickListener {
+        login_find_idpw.setOnClickListener {
             myStartActivity(FindIdPwActivity::class.java)
         }
 
