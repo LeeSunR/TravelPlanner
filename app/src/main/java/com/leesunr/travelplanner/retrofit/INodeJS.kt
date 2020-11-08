@@ -40,6 +40,18 @@ interface INodeJS {
     @POST("renewalAccessToken")
     fun renewalAccessToken(): Observable<String>
 
+    @POST("emailAuth")
+    @FormUrlEncoded
+    fun emailAuth(
+        @Field("email") email : String
+    ) : Observable<String>
+
+    @POST("emailAuthSuccess")
+    @FormUrlEncoded
+    fun emailAuthSuccess(
+        @Field("email") email : String
+    ) : Observable<String>
+
     /******************** 프로필 ********************/
     @Multipart
     @POST("uploadProfile")
