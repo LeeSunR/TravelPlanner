@@ -46,12 +46,6 @@ interface INodeJS {
         @Field("email") email : String
     ) : Observable<String>
 
-    @POST("emailAuthSuccessId")
-    @FormUrlEncoded
-    fun emailAuthSuccessId(
-        @Field("email") email : String
-    ) : Observable<String>
-
     @POST("emailAuthPasswd")
     @FormUrlEncoded
     fun emailAuthPasswd(
@@ -59,11 +53,6 @@ interface INodeJS {
         @Field("email") email : String
     ) : Observable<String>
 
-    @POST("emailAuthSuccessPasswd")
-    @FormUrlEncoded
-    fun emailAuthSuccessPasswd(
-        @Field("email") email : String
-    ) : Observable<String>
 
     /******************** 프로필 ********************/
     @Multipart
