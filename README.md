@@ -37,6 +37,17 @@ __이 프로젝트의 차별화 전략__
 
     ![채팅방](readme_file/채팅방.png)
 
-4. 가계부
+4. 그룹기능 - 가계부
 
     ![가계부](readme_file/가계부.png)
+
+5. 그룹기능 - 지도
+    ![지도](readme_file/지도.png)
+
+6. 기타 기능
+    ![기타기능](readme_file/기타%20기능.png)
+
+시연 영상
+---
+
+[![시연영상](https://img.youtube.com/vi/Ty-fj6D0R6Y/0.jpg)](https://www.youtube.com/watch?v=Ty-fj6D0R6Y)
